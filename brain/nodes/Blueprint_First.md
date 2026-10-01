@@ -9,10 +9,10 @@ tags:
 
 # Metodologia Blueprint-First
 
-Mandato de engenharia do [[Atlas_Engineering_OS]] acoplado a mente de [[ThSyr]].
+Mandato de engenharia baseado em [[spec_driven_development]] acoplado a mente de [[ThSyr]].
 
 ## Sinapses
-- Conectado a [[Atlas_Engineering_OS]], [[Lobo_Frontal]], [[Lobo_Parietal]], [[Padroes_Engenharia]], [[Drift_Checking]].
+- Conectado a [[spec_driven_development]], [[Lobo_Frontal]], [[Lobo_Parietal]], [[Padroes_Engenharia]], [[Drift_Checking]].
 
 ## Principio Inegociavel
 Nenhuma implementacao tecnica pode comecar antes que seu Blueprint Arquitetural esteja formalmente definido, validado e alinhado com as restricoes do projeto.

@@ -5,6 +5,8 @@ tags: [estrutura-de-dados, cpp, c, java, algoritmos, parietal]
 lobe: parietal
 ---
 
+# Estrutura de Dados
+
 ## Conceito Central
 
 Organização e manipulação eficiente de dados em memória. Cobre as estruturas fundamentais que todo o restante da computação usa como base.

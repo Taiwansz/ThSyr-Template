@@ -36,13 +36,31 @@ class AcademicMonitor:
         self.reference_date = reference_date or date.today()
 
     def get_upcoming_deadlines(self) -> list[dict[str, Any]]:
-        events = [
-            {
-                "data": date(2026, 9, 18),
-                "disciplina": "Interacao Humano Computador e Sistemas Multimidia",
-                "tipo": "Prova 1 (P1)",
-                "responsavel": "Docente Responsavel",
-                "urgencia": "CRITICA"
+        schedule_file = self.vault_path / "03 - Calendário" / "deadlines.json"
+        brain_schedule = settings.brain.brain_dir / "core" / "academic_deadlines.json"
+
+        events: list[dict[str, Any]] = []
+        target_file = schedule_file if schedule_file.exists() else (brain_schedule if brain_schedule.exists() else None)
+        if target_file:
+            try:
+                data = json.loads(target_file.read_text(encoding="utf-8"))
+                for item in data:
+                    item_copy = dict(item)
+                    if isinstance(item_copy.get("data"), str):
+                        item_copy["data"] = date.fromisoformat(item_copy["data"])
+                    events.append(item_copy)
+            except Exception as e:
+                logger.warning(f"Falha ao carregar prazos academicos customizados: {e}")
+                events = []
+
+        if not events:
+            events = [
+                {
+                    "data": date(2026, 9, 18),
+                    "disciplina": "Interacao Humano Computador e Sistemas Multimidia",
+                    "tipo": "Prova 1 (P1)",
+                    "responsavel": "Docente Responsavel",
+                    "urgencia": "CRITICA"
             },
             {
                 "data": date(2026, 9, 19),

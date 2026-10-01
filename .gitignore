@@ -38,5 +38,7 @@ cs_vault_mirror/
 *.db
 *.pid
 state/interaction_*.json
+state/memory_adaptation.json
+
 
 

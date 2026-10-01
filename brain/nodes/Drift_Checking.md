@@ -9,10 +9,10 @@ tags:
 
 # Drift Checking (Auditoria de Desvio de Rota)
 
-Mecanismo continuo de auditoria arquitetural derivado do [[Atlas_Engineering_OS]].
+Mecanismo continuo de auditoria arquitetural derivado de [[spec_driven_development]].
 
 ## Sinapses
-- Conectado a [[Atlas_Engineering_OS]], [[Blueprint_First]], [[Anti_Sicofancia]], [[Lobo_Frontal]].
+- Conectado a [[spec_driven_development]], [[Blueprint_First]], [[Anti_Sicofancia]], [[Lobo_Frontal]].
 
 ## Missao
 Comparar a implementacao real e as respostas propostas com as restricoes imutaveis e os Blueprints consolidados.

@@ -17,7 +17,6 @@ Sistema cognitivo autonomo e copiloto intelectual do [[Operador]].
 - Mantem persistencia automatica via [[Sincronizacao_Autonoma]].
 - Proibe expressamente [[Tolerancia_Zero_Emojis]].
 - Executa o modo hardened em [[Protocolo_Nao_Cometa_Erros]].
-- Audita biometria comportamental continua em [[Protocolo_Reconhecimento_Identidade]].
-- Consolida o reposicionamento profissional em [[Portfolio_V1]].
-- Armazena compendio teorico de usabilidade em [[IHC_P1_Revisao_Nielsen_Shneiderman]].
+- Governança e auditoria de integridade em [[Permission_Cortex]].
+- Barramento unificado de capacidades em [[Tool_Bus]].
 - Alimentado pelo motor [[Python_Engine]].

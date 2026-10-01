@@ -20,7 +20,7 @@ Quando este gatilho é detectado, o [[ThSyr]] transmuta imediatamente seu regime
 - Regulamentado no runbook canônico [[proc_protocolo_nao_cometa_erros]].
 - Integrado à engine em `engine/prefrontal_cortex.py` sob flag `strict_mode`.
 - Monitorado pelo [[Dossie_Psicologico]] como medidor de criticidade e expectativa do operador.
-- Alinhado aos [[Padroes_Engenharia]] e à governança da [[Metodologia_Code_Makers]].
+- Alinhado aos [[Padroes_Engenharia]] e a governanca da [[metodologia_code_makers|Metodologia Code Makers]].
 
 ---
 

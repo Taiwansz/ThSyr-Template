@@ -38,4 +38,4 @@ Subsistema de supervisao de processos continuos do ThSyr. Permite que o copilot 
 - Conectado a [[Cortex_Central]].
 - Conectado a [[Python_Engine]].
 - Conectado a [[Padroes_Engenharia]].
-- Conectado a [[Neural_Canvas]] e [[Continuous_Runtime]].
+- Conectado a [[Continuous_Runtime]] e [[Sensory_Watcher]].

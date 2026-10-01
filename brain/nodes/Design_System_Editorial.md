@@ -12,7 +12,7 @@ tags:
 Linguagem visual sofisticada e acolhedora de padrao editorial botanico.
 
 ## Sinapses
-- Conectado a [[Cortex_Central]], [[Design_Editorial]], [[Operador]].
+- Conectado a [[Cortex_Central]], [[design_systems]], [[Operador]].
 
 ## Identidade Cromatica
 - Marinho Profundo (#0D152D / #141A3C)

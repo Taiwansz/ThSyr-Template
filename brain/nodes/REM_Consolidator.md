@@ -27,4 +27,4 @@ O REM atual consolida metadados e resumos estruturais de mutação, não o conte
 - [[Sensory_Watcher]]
 - [[Continuous_Runtime]]
 - [[Cortex_Central]]
-- [[Neural_Canvas]]
+- [[Motor_Vetorial_Local]]

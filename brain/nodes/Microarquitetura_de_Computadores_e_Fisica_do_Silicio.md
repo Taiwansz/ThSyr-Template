@@ -100,6 +100,6 @@ $$I = \frac{\text{FLOPs}}{\text{Bytes Transferidos}}$$
 - Conectado a [[Lobo_Parietal]].
 - Conectado a [[Compiladores]].
 - Conectado a [[TokLang_Core_Engine]].
-- Conectado a [[Telemetria_Hardware_Host]].
+- Conectado a [[Sensory_Watcher]].
 - Conectado a [[Padroes_Engenharia]].
 - Conectado a [[Grafos_Computacionais_MLIR_e_Otimizacao_de_Tensores]].

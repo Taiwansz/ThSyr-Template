@@ -27,7 +27,7 @@ projeto/
 ---
 
 ## 2. Governanca Documental em Markdown
-- Arquitetura de Notas Interconectadas: Uso de [[wikilinks]], tags e mapas conceituais para que qualquer IA ou colaborador consiga navegar pelo conhecimento sem perder contexto.
+- Arquitetura de Notas Interconectadas: Uso de wikilinks (duplos colchetes), tags e mapas conceituais para que qualquer IA ou colaborador consiga navegar pelo conhecimento sem perder contexto.
 - Registro de Exploracoes e Descartes: Decisoes descartadas (como geracao de imagens com fundo inadequado ou paletas cliches) devem ser arquivadas em EXPLORACAO.md para evitar reincidencia de erros passados.
 - Preservacao contra Amnesia: Todo projeto relevante deve manter um BRAND_GUIDE.md ou constitution com as escolhas imutaveis.
 

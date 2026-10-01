@@ -15,7 +15,7 @@ Linguagem visual funcional, dinamica, de precisao tatil e alto contraste baseada
 Constitui a base do limiar de excelencia visual mandatorio do ecossistema.
 
 ## Sinapses
-- Conectado a [[Cortex_Central]], [[Atlas_Engineering_OS]], [[Operador]].
+- Conectado a [[Cortex_Central]], [[design_systems]], [[Operador]].
 - Referencia normativa de qualidade: [[design_excellence_benchmark]].
 
 ## Identidade Cromatica e Materialidade

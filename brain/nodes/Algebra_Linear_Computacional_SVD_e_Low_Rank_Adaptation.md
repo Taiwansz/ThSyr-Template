@@ -97,7 +97,7 @@ $$\kappa(A) = \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}$$
 ## Sinapses
 - Conectado a [[Microarquitetura_de_Computadores_e_Fisica_do_Silicio]].
 - Conectado a [[Grafos_Computacionais_MLIR_e_Otimizacao_de_Tensores]].
-- Conectado a [[Quantizacao_Aritmetica_e_Precisao_Reduzida_FP8_INT4.md|Quantizacao_Aritmetica_e_Precisao_Reduzida_FP8_INT4]].
-- Conectado a [[TokLang_Core_Engine]].
+- Conectado a [[Quantizacao_Aritmetica_e_Precisao_Reduzida_FP8_INT4]].
+- Conectado a [[Model_Gateway]].
 - Conectado a [[Lobo_Parietal]].
 - Conectado a [[Lobo_Frontal]].

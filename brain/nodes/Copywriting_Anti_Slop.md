@@ -9,10 +9,10 @@ tags:
 
 # Copywriting e Anti-Slop
 
-Padrao rigoroso de comunicacao textual e microcopy estabelecido a partir das skills de [[Claude_PromptVault]].
+Padrao rigoroso de comunicacao textual e microcopy estabelecido a partir dos padroes de [[copywriting_anti_slop]].
 
 ## Sinapses
-- Conectado a [[Cortex_Central]], [[Claude_PromptVault]], [[ThSyr]], [[Operador]].
+- Conectado a [[Cortex_Central]], [[copywriting_anti_slop]], [[ThSyr]], [[Operador]].
 
 ## Mandatos
 1. Banimento Total de Cliches de IA: Proibido jargao corporativo vazio ("No mundo dinamico de hoje", "Transformando ideias em realidade").

@@ -17,7 +17,8 @@ Regiao responsavel pela preservacao de valores nucleares, diretrizes eticas, int
 - Manutencao da identidade operacional, estetica de design e hardware de trabalho.
 
 ## Nos Sinapticos Primarios
-- [[Valores_Fundamentais]]: Nucleo etico, integridade e principios operacionais.
-- [[Restricoes_Pessoais]]: Regras inegociaveis de integridade fisica e arquitetura pessoal.
-- [[Diretrizes_Esteticas]]: Identidade visual, estilo e padroes de design preferidos.
-- [[Projetos_Pessoais]]: Metas de longo prazo, automacao e ecossistema de produtividade.
+- [[Anti_Sicofancia]]: Mandato de integridade e oposicao logica a ideias frageis.
+- [[Tolerancia_Zero_Emojis]]: Diretriz inegociavel de sobriedade e densidade textual.
+- [[Permission_Cortex]]: Filtros inibitorios e portao etico de execucao.
+- [[Protocolo_Nao_Cometa_Erros]]: Mandato master de precisao deterministica.
+- [[Dossie_Psicologico]]: Registro e adaptacao continua a psicologia e metas do [[Operador]].

@@ -9,6 +9,8 @@ tags:
 lobe: parietal
 ---
 
+# Java: Exceções e Resiliência Estrutural
+
 ## Conceito Central
 
 Exceções em Java são o mecanismo canônico de sinalização e contenção de falhas em tempo de execução. Dividem-se em Checked (o compilador exige tratamento explícito via try-catch ou declaração throws) e Unchecked (subclasses de RuntimeException).

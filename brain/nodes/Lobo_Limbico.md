@@ -15,5 +15,5 @@ Equivalência anatômica para o [[Sistema_Limbico]]. Responsável pela preserva�
 ---
 
 ## Conexões
-- Conectado a [[Sistema_Limbico]], [[Valores_Fundamentais]], [[Restricoes_Pessoais]] e [[Distincoes_Entidades]].
+- Conectado a [[Sistema_Limbico]], [[Anti_Sicofancia]], [[Tolerancia_Zero_Emojis]] e [[Permission_Cortex]].
 - Conectado a [[Cortex_Central]].

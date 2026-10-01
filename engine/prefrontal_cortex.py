@@ -3,6 +3,7 @@ ThSyr Pre-Frontal Cortex (Inhibitory Gating and Self-Audit System)
 Atua como o filtro pre-frontal que audita os impulsos e proposicoes antes da emissao de respostas.
 """
 
+import os
 import re
 from typing import Any
 

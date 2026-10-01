@@ -14,7 +14,7 @@ Se você acabou de clonar este repositório ou abriu esta pasta em uma IDE com I
 Basta mandar uma mensagem inicial como:
 > *"Olá, vamos iniciar o setup do meu copiloto"* ou *"Execute o protocolo de gênese"*
 
-### 2. A IA lerá o arquivo [BOOTSTRAP.md](file:///root/ThSyr-Template/BOOTSTRAP.md)
+### 2. A IA lerá o arquivo [BOOTSTRAP.md](BOOTSTRAP.md)
 Ela fará uma série de perguntas para moldar o copiloto:
 1. Qual será o **nome** do seu agente.
 2. Qual será o **tom/personalidade** dele (Britânico sóbrio, Ultron exigente, Mentor acadêmico, Engenheiro sênior).
@@ -25,4 +25,4 @@ Ela fará uma série de perguntas para moldar o copiloto:
 ### 3. O cérebro será gerado automaticamente
 A IA configurará os arquivos em `brain/`, compilará o grafo 3D interativo e o seu copiloto estará pronto para trabalhar com você de forma contínua e sem amnésia.
 
-Para mais detalhes da arquitetura, consulte o [README.md](file:///root/ThSyr-Template/README.md) e [BOOTSTRAP.md](file:///root/ThSyr-Template/BOOTSTRAP.md).
+Para mais detalhes da arquitetura, consulte o [README.md](README.md) e [BOOTSTRAP.md](BOOTSTRAP.md).

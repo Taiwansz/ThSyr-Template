@@ -18,7 +18,7 @@ Ao contrário de assistentes descartáveis e chatbots sem memória, esta arquite
 ### Cerebro Neural 3D
 
 <!-- THSYR_GRAPH_STATS:START -->
-**Estado atual do cérebro:** `135` nós e `412` sinapses.
+**Estado atual do cérebro:** `92` nós e `420` sinapses.
 
 <!-- THSYR_GRAPH_STATS:END -->
 
@@ -41,9 +41,9 @@ python thsyr.py graph3d
 ### Passo 2: Instale as Dependências
 Recomenda-se Python 3.11 ou superior:
 ```bash
-pip install -e .
+pip install -e ".[dev,desktop]"
 ```
-Ou instale as dependências via `pip`:
+Ou instale as dependências diretamente via `pip`:
 ```bash
 pip install pytest fastapi uvicorn pydantic requests
 ```
@@ -52,7 +52,7 @@ pip install pytest fastapi uvicorn pydantic requests
 Abra esta pasta no seu ambiente de preferência (Cursor, Antigravity, VS Code com Claude Code, Gemini CLI, etc.) e envie uma mensagem simples:
 > *"Olá! Vamos iniciar a configuração do meu copiloto."*
 
-A IA lerá automaticamente o arquivo [BOOTSTRAP.md](file:///root/ThSyr-Template/BOOTSTRAP.md) e iniciará o **Questionário de Calibração**:
+A IA lerá automaticamente o arquivo [BOOTSTRAP.md](BOOTSTRAP.md) e iniciará o **Questionário de Calibração**:
 1. **Nome e Papel:** Como o seu copiloto se chamará (ex: *Jarvis*, *Athena*, *Syr*, *Turing*, etc.).
 2. **Arquétipo de Tom:** Britânico sóbrio, Ultron crítico, Mentor acadêmico ou Engenheiro sênior.
 3. **Objetivos:** Seus focos de estudo, pesquisa e desenvolvimento.

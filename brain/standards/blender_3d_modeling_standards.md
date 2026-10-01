@@ -18,4 +18,4 @@ O objetivo e construir uma interpretacao 3D convincente, modular e utilizavel da
 - **Proibicao de Alucinacao de Validacao:** Se a IA nao possui acesso ativo ao Blender ou ao viewport (via script headless ou MCP), e proibido afirmar que o modelo foi renderizado, verificado ou que ficou visualmente identico.
 - **Topologia Limpa:** Preferencia estrita por quads em superficies planas/subdividiveis. Evitar n-gons em zonas de deformacao ou curvatura.
 - **Origem e Pivô de Modulos:** Modulos arquiteturais e plataformas devem ter seu ponto de pivô (`Origin`) rigorosamente alinhado ao grid (em $Z=0$ ou no ponto exato de encaixe modular).
-- **Consistencia com a Direcao de Arte:** Em projetos como [[SKYPIEA_Game]], respeitar o aspecto estilizado, cores luminosas e evitar modelos genericos de baixa complexidade desconectados da fantasia visual.
+- **Consistencia com a Direcao de Arte:** Em projetos 3D e desenvolvimento de jogos, respeitar o aspecto estilizado, cores luminosas e evitar modelos genericos de baixa complexidade desconectados da fantasia visual.

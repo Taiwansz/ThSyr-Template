@@ -42,6 +42,6 @@ O Atlas define 18 agentes especializados operando sob 5 invariantes inegociaveis
 - Minimalismo de Ferramentas: Principio do menor privilegio na utilizacao de comandos e recursos.
 
 ## Sinapses
-- Conectado a [[Atlas_Engineering_OS]].
+- Conectado a [[Blueprint_First]].
 - Conectado a [[Cortex_Central]].
 - Conectado a [[Lobo_Frontal]].

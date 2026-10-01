@@ -17,11 +17,9 @@ Regiao responsavel pelo armazenamento temporal, consolidacao de memorias de long
 - Recuperacao contextual profunda sem perda de continuidade.
 
 ## Nos Sinapticos Primarios
-- [[Operador]]: O operador humano e sua trajetoria biografica.
-- [[Protocolo_Genesis]]: Marco de inicializacao da mente do copiloto.
-- [[Cases_Historicos]]: Historico de cases, arquiteturas e marcos estrategicos.
-- [[Distincoes_Entidades]]: Protecao contra contaminacao cruzada de dados.
-- [[Acervo_Contexto]]: Memoria documental e acervo de engenharia de contexto.
-- [[Projetos_Principais]]: Linha temporal de entregas, marcos e avaliacoes tecnicas.
-- [[Codex_CLI_Orchestration]]: Integracao de ferramentas CLI e fluxo de orquestracao.
-- [[Arquitetura_Modular]]: Reconstrucao modular e arquitetura em motores de renderizacao.
+- [[Operador]]: O operador humano e sua trajetoria biografica e tecnica.
+- [[Session_Handoff]]: Marco de continuidade e preservacao de estado entre sessoes.
+- [[Dossie_Psicologico]]: Deducoes comportamentais e historico evolutivo do operador.
+- [[Decisoes_Arquitetura]]: Historico cumulativo de decisoes tecnicas e ADRs.
+- [[REM_Consolidator]]: Consolidacao autonoma de memorias de trabalho em memorias permanentes.
+- [[Sincronizacao_Autonoma]]: Preservacao historica de commits e integridade no Git.

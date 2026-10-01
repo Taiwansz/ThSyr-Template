@@ -5,6 +5,8 @@ tags: [ia, machine-learning, python, scikit-learn, numpy, parietal]
 lobe: parietal
 ---
 
+# Inteligência Artificial e Machine Learning
+
 ## Conceito Central
 
 Machine Learning aplicado com Python. Treinamento de modelos supervisionados e não-supervisionados, análise de dados estruturados e visão computacional.

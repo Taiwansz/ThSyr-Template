@@ -5,6 +5,8 @@ tags: [banco-de-dados, sql, mysql, modelagem, relacional, parietal]
 lobe: parietal
 ---
 
+# Banco de Dados e SQL
+
 ## Conceito Central
 
 Modelagem relacional, SQL e persistência de dados estruturados, cobrindo fundamentos de modelagem relacional e SQL avançado para aplicações corporativas.
@@ -24,5 +26,5 @@ Modelagem relacional, SQL e persistência de dados estruturados, cobrindo fundam
 
 ## Referências
 
-- [[Supabase_Stack]]
-- [[saas-multi-tenant-rbac]]
+- [[Padroes_Engenharia]]
+- [[Teoria_de_Sistemas_Distribuidos_Consenso_e_Tolerancia_a_Falhas]]

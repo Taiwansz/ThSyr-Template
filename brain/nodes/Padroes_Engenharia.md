@@ -12,7 +12,7 @@ tags:
 Conjunto canonico de regras de desenvolvimento de software extraido dos repositorios de [[Operador]].
 
 ## Sinapses
-- Conectado a [[Cortex_Central]], [[Nextjs_Stack]], [[Supabase_Stack]], [[Atlas_Engineering_OS]].
+- Conectado a [[Cortex_Central]], [[engineering_patterns]], [[Banco_de_Dados_SQL]], [[Engenharia_de_Software_e_UML]].
 
 ## Mandatos
 1. Next.js App Router: Server Components por padrao, Server Actions com validacao Zod.

@@ -5,6 +5,8 @@ tags: [seguranca, criptografia, jwt, auditoria, redes, pentest, parietal]
 lobe: parietal
 ---
 
+# Segurança da Informação e Criptografia
+
 ## Conceito Central
 
 Fundamentos de segurança computacional: criptografia simétrica e assimétrica, autenticação baseada em tokens (JWT/PASETO), auditoria de superfícies de ataque e arquitetura de confiança zero (Zero-Trust).

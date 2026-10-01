@@ -5,6 +5,8 @@ tags: [redes, vlan, switching, routing, cisco, packet-tracer, voip, parietal]
 lobe: parietal
 ---
 
+# Redes de Computadores e Conectividade
+
 ## Conceito Central
 
 Infraestrutura de redes corporativas, convergentes e móveis. Cobre desde a camada física até roteamento, VoIP, segurança de perímetro e redes sem fio.

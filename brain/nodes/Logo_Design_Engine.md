@@ -14,8 +14,8 @@ tags:
 Sistema computacional integrado ao Lobo Occipital para concepcao, auditoria vetorial e exportacao industrial de marcas graficas e logotipos.
 
 ## Sinapses
-- Conectado a [[Lobo_Occipital]], [[Cortex_Central]] e [[Operacao_Venda_Landing_Pages]].
-- Relacionado a [[Design_System_Editorial]], [[Design_System_Industrial_Pop]], [[Agibank_Organic_Shapes]] e [[Copywriting_Anti_Slop]].
+- Conectado a [[Lobo_Occipital]], [[Cortex_Central]] e [[Frontend_Craft_e_Apple_Design_Protocol]].
+- Relacionado a [[Design_System_Editorial]], [[Design_System_Industrial_Pop]], [[design_excellence_benchmark]] e [[Copywriting_Anti_Slop]].
 
 ## Principio Axiomatico
 Um logotipo e um **identificador, nao uma explicacao**: uma marca simples, distintiva e relevante que opera com legibilidade impecavel tanto a 16 pixels (favicon) quanto na fachada monumental de um edificio, em uma unica cor, por decadas.

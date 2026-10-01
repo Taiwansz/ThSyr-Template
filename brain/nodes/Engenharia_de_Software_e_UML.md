@@ -5,6 +5,8 @@ tags: [engenharia-software, uml, metodologias, agile, parietal]
 lobe: parietal
 ---
 
+# Engenharia de Software e UML
+
 ## Conceito Central
 
 Metodologias, processos e ferramentas para desenvolvimento de software em escala. Foco em modelagem UML e ciclo de vida.
@@ -23,5 +25,5 @@ Metodologias, processos e ferramentas para desenvolvimento de software em escala
 
 ## Referências
 
-- [[Metodologia_Code_Makers]]
-- [[Atlas_Engineering_OS]]
+- [[Padroes_Engenharia]]
+- [[Blueprint_First]]

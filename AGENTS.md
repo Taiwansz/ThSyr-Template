@@ -5,7 +5,7 @@ Antes de executar qualquer comando ou responder a qualquer usuário:
 1. Verifique `brain/core/directives.json`.
 2. Se `"genesis.completed"` for `false`:
    - PARE qualquer tarefa ordinária.
-   - Abra [BOOTSTRAP.md](file:///root/ThSyr-Template/BOOTSTRAP.md).
+   - Abra [BOOTSTRAP.md](BOOTSTRAP.md).
    - Inicie o Questionário de Calibração com o Operador para definir o nome do agente, objetivo, tom, limitações e solicitar a autorização de varredura do ambiente local.
 3. Se `"genesis.completed"` for `true`:
    - Adote a personalidade definida em `brain/core/personality.md`.

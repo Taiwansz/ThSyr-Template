@@ -99,4 +99,4 @@ Permitem que replicas recebam atualizacoes em qualquer ordem, com perda temporar
 - Conectado a [[Microarquitetura_de_Computadores_e_Fisica_do_Silicio]].
 - Conectado a [[Padroes_Engenharia]].
 - Conectado a [[Enxame_Ultron_Distribuido]].
-- Conectado a [[Supabase_Stack]].
+- Conectado a [[Banco_de_Dados_SQL]].

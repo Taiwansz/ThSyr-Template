@@ -33,7 +33,7 @@ representa inteligência geral nem ausência de alucinações.
 
 [[Hybrid_Retrieval]]
 [[Executive_System]]
-[[Memory_Architecture]]
+[[REM_Consolidator]]
 [[Model_Gateway]]
-[[Prefrontal_Cortex]]
+[[Permission_Cortex]]
 [[ThSyr]]

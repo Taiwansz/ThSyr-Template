@@ -87,6 +87,6 @@ Nenhum arquivo HTML pode burlar a camada de auditoria do subagente.
 
 ## Sinapses
 - Conectado a [[Lobo_Parietal]].
-- Conectado a [[Operacao_Venda_Landing_Pages]].
+- Conectado a [[Design_System_Industrial_Pop]].
 - Conectado a [[Enxame_Ultron_Distribuido]].
 - Conectado a [[Operador]].
