@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 190" width="100%" height="100%">
+  <defs>
+    <filter id="stampGlow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Moldura Chanfrada Industrial Dupla -->
+  <rect x="8" y="8" width="604" height="174" rx="14" fill="rgba(16, 185, 129, 0.08)" stroke="#10B981" stroke-width="3" filter="url(#stampGlow)"/>
+  <rect x="18" y="18" width="584" height="154" rx="10" fill="none" stroke="#10B981" stroke-width="1" stroke-dasharray="6 4"/>
+
+  <!-- Título Principal do Selo -->
+  <text x="310" y="78" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-weight="900" font-size="36" letter-spacing="5px" fill="#10B981">
+    GROUND TRUTH: VERIFIED
+  </text>
+
+  <!-- Subtítulo e Invariantes -->
+  <text x="310" y="112" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="12" letter-spacing="2px" fill="#A7F3D0">
+    ZERO HALLUCINATION • ZERO SYCOPHANCY • 100% DETERMINISTIC
+  </text>
+
+  <!-- Rodapé Técnico com Hash -->
+  <text x="310" y="145" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="1.5px" fill="#6EE7B7">
+    KERNEL HASH: 7F83B1657FF1FC53B92DC18148A1D65DFC2D4B1F
+  </text>
+</svg>

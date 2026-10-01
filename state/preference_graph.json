@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "nodes": {},
+  "timeline": [],
+  "metrics": {
+    "updates": 0,
+    "semantic_queries": 0,
+    "scope_blocks": 0,
+    "operator_bootstrap_version": 1
+  }
+}

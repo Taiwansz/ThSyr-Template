@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <!-- Anel Orbital Externo -->
+  <circle cx="256" cy="256" r="216" fill="none" stroke="#04060A" stroke-width="2" stroke-dasharray="70 270" stroke-linecap="round"/>
+  <!-- Vértices -->
+  <circle cx="256" cy="40" r="3.5" fill="#04060A"/>
+  <circle cx="461" cy="189" r="3.5" fill="#04060A"/>
+  <circle cx="383" cy="431" r="3.5" fill="#04060A"/>
+  <circle cx="129" cy="431" r="3.5" fill="#04060A"/>
+  <circle cx="51" cy="189" r="3.5" fill="#04060A"/>
+  <!-- Asa Superior -->
+  <path d="M 128 176 C 128 123 171 80 224 80 L 320 80 C 373 80 416 123 416 176 C 416 220 386 257 346 268 L 256 296 C 216 308 192 344 192 384 L 192 392 L 144 392 L 144 384 C 144 320 180 264 238 246 L 328 218 C 352 210 368 188 368 162 C 368 135 347 114 320 114 L 224 114 C 197 114 176 135 176 162 L 176 176 Z" fill="#04060A"/>
+  <!-- Asa Inferior -->
+  <path d="M 384 336 C 384 389 341 432 288 432 L 192 432 C 139 432 96 389 96 336 C 96 292 126 255 166 244 L 256 216 C 296 204 320 168 320 128 L 320 120 L 368 120 L 368 128 C 368 192 332 248 274 266 L 184 294 C 160 302 144 324 144 350 C 144 377 165 398 192 398 L 288 398 C 315 398 336 377 336 350 L 336 336 Z" fill="#04060A"/>
+  <!-- Núcleo Central -->
+  <g transform="translate(256, 256) rotate(45)">
+    <rect x="-18" y="-18" width="36" height="36" rx="6" fill="none" stroke="#04060A" stroke-width="2.5"/>
+    <circle cx="0" cy="0" r="5" fill="#04060A"/>
+  </g>
+</svg>

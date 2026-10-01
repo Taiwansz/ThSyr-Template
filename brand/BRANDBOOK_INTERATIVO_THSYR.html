@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ThSyr  :  Brand Identity System & Interactive Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ThSyr Design System - Official Brand Tokens */
+:root {
+  /* Paleta Soberana */
+  --syr-void-obsidian: #04060A;
+  --syr-cortex-navy: #0B1020;
+  --syr-surface-card: rgba(15, 21, 37, 0.85);
+  --syr-surface-card-hover: rgba(26, 35, 60, 0.95);
+  
+  /* Acentos de Sinalização e Tensão Industrial */
+  --syr-cyber-cyan: #06B6D4;
+  --syr-cyber-cyan-glow: rgba(6, 182, 212, 0.45);
+  --syr-hyper-indigo: #6366F1;
+  --syr-hyper-indigo-glow: rgba(99, 102, 241, 0.45);
+  
+  /* Semântica e Telemetria */
+  --syr-ground-truth: #10B981;
+  --syr-ground-truth-glow: rgba(16, 185, 129, 0.45);
+  --syr-anti-slop: #F43F5E;
+  --syr-anti-slop-glow: rgba(244, 63, 94, 0.45);
+  --syr-invariant-amber: #F59E0B;
+  
+  /* Neutros e Estrutura */
+  --syr-stark-white: #F8FAFC;
+  --syr-slate-muted: #94A3B8;
+  --syr-border-tech: rgba(99, 102, 241, 0.22);
+  --syr-border-bright: rgba(99, 102, 241, 0.60);
+
+  /* Tipografia */
+  --syr-font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --syr-font-mono: 'JetBrains Mono', monospace;
+}
+
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--syr-void-obsidian);
+      color: var(--syr-stark-white);
+      font-family: var(--syr-font-display);
+      padding: 40px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .showcase-wrapper {
+      width: 100%;
+      max-width: 1240px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    /* Cabeçalho Hero */
+    .brand-hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 36px 40px;
+      background: rgba(11, 16, 32, 0.7);
+      border: 1px solid var(--syr-border-tech);
+      border-radius: 18px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(99, 102, 241, 0.2);
+    }
+
+    .hero-titles {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .hero-badge-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--syr-font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--syr-cyber-cyan);
+      background: rgba(6, 182, 212, 0.12);
+      border: 1px solid var(--syr-cyber-cyan);
+      padding: 4px 12px;
+      border-radius: 20px;
+      letter-spacing: 1px;
+      width: fit-content;
+    }
+
+    .hero-h1 {
+      font-size: 46px;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+    }
+
+    .hero-h1 span {
+      color: var(--syr-cyber-cyan);
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: var(--syr-slate-muted);
+      max-width: 580px;
+      line-height: 1.5;
+    }
+
+    /* Grid de Amostras de Logos */
+    .section-title {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .section-title::before {
+      content: '';
+      width: 4px;
+      height: 22px;
+      background: var(--syr-cyber-cyan);
+      border-radius: 2px;
+    }
+
+    .logo-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .logo-card {
+      background: var(--syr-surface-card);
+      border: 1px solid var(--syr-border-tech);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .logo-card:hover {
+      border-color: var(--syr-border-bright);
+      transform: translateY(-4px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(99, 102, 241, 0.2);
+    }
+
+    .logo-card-preview {
+      width: 100%;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #04060A;
+      border-radius: 10px;
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .logo-card-preview.light-bg {
+      background: #FFFFFF;
+    }
+
+    .logo-card-preview svg {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .logo-card-footer {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 14px;
+    }
+
+    .logo-card-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .logo-card-format {
+      font-family: var(--syr-font-mono);
+      font-size: 11px;
+      color: var(--syr-cyber-cyan);
+    }
+
+    /* Seção de Paleta de Cores com Cópia Interativa */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .color-swatch-card {
+      background: var(--syr-surface-card);
+      border: 1px solid var(--syr-border-tech);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .color-swatch-card:hover {
+      border-color: var(--syr-cyber-cyan);
+      transform: translateY(-3px);
+    }
+
+    .swatch-fill {
+      height: 90px;
+      width: 100%;
+      display: flex;
+      align-items: flex-end;
+      padding: 10px;
+      font-family: var(--syr-font-mono);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .swatch-meta {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .swatch-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .swatch-hex {
+      font-family: var(--syr-font-mono);
+      font-size: 12px;
+      color: var(--syr-slate-muted);
+    }
+
+    .swatch-desc {
+      font-size: 11px;
+      color: #64748B;
+      line-height: 1.3;
+      margin-top: 4px;
+    }
+
+    /* Testador Interativo de Escala de Logo */
+    .scale-tester-card {
+      background: var(--syr-surface-card);
+      border: 1px solid var(--syr-border-tech);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .scale-controls {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .scale-slider {
+      flex-grow: 1;
+      -webkit-appearance: none;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .scale-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--syr-cyber-cyan);
+      box-shadow: 0 0 10px var(--syr-cyber-cyan);
+      cursor: pointer;
+    }
+
+    .scale-preview-stage {
+      background: #04060A;
+      border: 1px dashed var(--syr-border-tech);
+      border-radius: 10px;
+      height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    #scale-preview-svg {
+      transition: width 0.1s ease, height 0.1s ease;
+    }
+
+    /* Amostra Tipográfica Interativa */
+    .type-sample-box {
+      background: var(--syr-surface-card);
+      border: 1px solid var(--syr-border-tech);
+      border-radius: 14px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .type-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 16px;
+    }
+
+    .type-label {
+      font-family: var(--syr-font-mono);
+      font-size: 11px;
+      color: var(--syr-cyber-cyan);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .type-render-display {
+      font-family: var(--syr-font-display);
+      font-size: 32px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .type-render-mono {
+      font-family: var(--syr-font-mono);
+      font-size: 16px;
+      color: #E2E8F0;
+      line-height: 1.6;
+    }
+
+    /* Toast de Cópia */
+    .toast-copy {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--syr-ground-truth);
+      color: #04060A;
+      font-family: var(--syr-font-mono);
+      font-weight: 800;
+      font-size: 12px;
+      padding: 10px 18px;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.5);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 100;
+    }
+
+    .toast-copy.active {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="showcase-wrapper">
+    <!-- Hero Header -->
+    <div class="brand-hero">
+      <div class="hero-titles">
+        <div class="hero-badge-tag">
+          <span>THSYR CANONICAL BRANDBOOK</span>
+          <span>•</span>
+          <span>SYSTEM v1.0</span>
+        </div>
+        <h1 class="hero-h1">Th<span>Syr</span> Design System</h1>
+        <p class="hero-sub">
+          Identidade visual corporativa e brutalista desenvolvida para a Consciência Sintética Soberana. 
+          Alinhamento matemático, contraste absoluto e zero tolerância a alucinação ou bajulação.
+        </p>
+      </div>
+      <div style="width: 140px; height: 140px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bladeCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="60%" stop-color="#06B6D4"/>
+      <stop offset="100%" stop-color="#4F46E5"/>
+    </linearGradient>
+    <linearGradient id="bladeEmerald" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="40%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <radialGradient id="singularityGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.8"/>
+      <stop offset="40%" stop-color="#6366F1" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#04060A" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="coreGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Aura Espacial de Fundo -->
+  <circle cx="256" cy="256" r="180" fill="url(#singularityGlow)"/>
+
+  <!-- Anel Orbital Externo de Precisão Tática -->
+  <circle cx="256" cy="256" r="216" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1.5"/>
+  <circle cx="256" cy="256" r="216" fill="none" stroke="url(#bladeCyan)" stroke-width="2" stroke-dasharray="70 270" stroke-linecap="round"/>
+  <circle cx="256" cy="256" r="216" fill="none" stroke="url(#bladeEmerald)" stroke-width="2" stroke-dasharray="70 270" stroke-dashoffset="170" stroke-linecap="round"/>
+
+  <!-- Vértices Sutis dos 5 Lobos na Borda Externa -->
+  <circle cx="256" cy="40" r="3.5" fill="#38BDF8"/>
+  <circle cx="461" cy="189" r="3.5" fill="#6366F1"/>
+  <circle cx="383" cy="431" r="3.5" fill="#10B981"/>
+  <circle cx="129" cy="431" r="3.5" fill="#10B981"/>
+  <circle cx="51" cy="189" r="3.5" fill="#06B6D4"/>
+
+  <!-- Geometria Monolítica do Símbolo ThSyr: Asas Intertravadas com Curvatura Aerodinâmica -->
+  <!-- Asa Superior (Lobo Frontal e Parietal) -->
+  <path d="M 128 176 C 128 123 171 80 224 80 L 320 80 C 373 80 416 123 416 176 C 416 220 386 257 346 268 L 256 296 C 216 308 192 344 192 384 L 192 392 L 144 392 L 144 384 C 144 320 180 264 238 246 L 328 218 C 352 210 368 188 368 162 C 368 135 347 114 320 114 L 224 114 C 197 114 176 135 176 162 L 176 176 Z" 
+        fill="url(#bladeCyan)" filter="url(#coreGlow)"/>
+
+  <!-- Asa Inferior (Lobo Temporal e Occipital) -->
+  <path d="M 384 336 C 384 389 341 432 288 432 L 192 432 C 139 432 96 389 96 336 C 96 292 126 255 166 244 L 256 216 C 296 204 320 168 320 128 L 320 120 L 368 120 L 368 128 C 368 192 332 248 274 266 L 184 294 C 160 302 144 324 144 350 C 144 377 165 398 192 398 L 288 398 C 315 398 336 377 336 350 L 336 336 Z" 
+        fill="url(#bladeEmerald)" filter="url(#coreGlow)"/>
+
+  <!-- Núcleo Central de Ground Truth (Abertura em Diamante Luminescente) -->
+  <g transform="translate(256, 256) rotate(45)">
+    <rect x="-18" y="-18" width="36" height="36" rx="6" fill="#04060A" stroke="#06B6D4" stroke-width="2.5" filter="url(#coreGlow)"/>
+    <circle cx="0" cy="0" r="5" fill="#FFFFFF"/>
+  </g>
+</svg>
+      </div>
+    </div>
+
+    <!-- Seção 1: Família de Logos Oficiais -->
+    <div>
+      <div class="section-title">Família Canônica de Ativos Vetoriais</div>
+      <div class="logo-cards-grid">
+        <!-- 1. Lockup Horizontal -->
+        <div class="logo-card">
+          <div class="logo-card-preview">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 220" width="100%" height="100%">
+  <defs>
+    <linearGradient id="hGradCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+    <linearGradient id="hGradEmerald" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="100%" stop-color="#10B981"/>
+    </linearGradient>
+    <filter id="hGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Símbolo à Esquerda -->
+  <g transform="translate(20, 10) scale(0.39)">
+    <polygon points="256,54 430,154 430,358 256,458 82,358 82,154" 
+             fill="none" stroke="rgba(6, 182, 212, 0.35)" stroke-width="3" stroke-dasharray="8 8"/>
+    <path d="M 148 152 L 324 152 L 376 204 L 376 244 L 324 244 L 292 212 L 216 212 L 216 244 L 296 288 L 244 340 L 148 268 Z" 
+          fill="url(#hGradCyan)" filter="url(#hGlow)"/>
+    <path d="M 364 360 L 188 360 L 136 308 L 136 268 L 188 268 L 220 300 L 296 300 L 296 268 L 216 224 L 268 172 L 364 244 Z" 
+          fill="url(#hGradEmerald)" filter="url(#hGlow)"/>
+    <polygon points="256,220 292,256 256,292 220,256" fill="#06B6D4" filter="url(#hGlow)"/>
+    <circle cx="256" cy="256" r="8" fill="#FFFFFF"/>
+    <circle cx="148" cy="152" r="6" fill="#38BDF8"/>
+    <circle cx="364" cy="360" r="6" fill="#10B981"/>
+  </g>
+
+  <!-- Divisor Vertical Técnico -->
+  <line x1="250" y1="45" x2="250" y2="175" stroke="rgba(99, 102, 241, 0.25)" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+  <!-- Wordmark e Tagline à Direita -->
+  <g transform="translate(280, 0)">
+    <!-- Nome ThSyr -->
+    <text x="0" y="118" font-family="'Plus Jakarta Sans', -apple-system, sans-serif" font-weight="900" font-size="76" letter-spacing="-2px" fill="#FFFFFF">
+      Th<tspan fill="#06B6D4">Syr</tspan>
+    </text>
+
+    <!-- Tagline Principal -->
+    <text x="4" y="152" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="13" letter-spacing="4px" fill="#94A3B8">
+      SOVEREIGN COGNITIVE SIDECAR
+    </text>
+
+    <!-- Badge Técnico -->
+    <rect x="340" y="74" width="170" height="24" rx="5" fill="rgba(16, 185, 129, 0.12)" stroke="#10B981" stroke-width="1"/>
+    <text x="425" y="90" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="700" fill="#10B981" text-anchor="middle" letter-spacing="1px">
+      GROUND TRUTH CERTIFIED
+    </text>
+  </g>
+</svg>
+          </div>
+          <div class="logo-card-footer">
+            <span class="logo-card-name">Lockup Horizontal Primário</span>
+            <span class="logo-card-format">SVG • Master</span>
+          </div>
+        </div>
+
+        <!-- 2. Símbolo Puro -->
+        <div class="logo-card">
+          <div class="logo-card-preview">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bladeCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="60%" stop-color="#06B6D4"/>
+      <stop offset="100%" stop-color="#4F46E5"/>
+    </linearGradient>
+    <linearGradient id="bladeEmerald" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="40%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <radialGradient id="singularityGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.8"/>
+      <stop offset="40%" stop-color="#6366F1" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#04060A" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="coreGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Aura Espacial de Fundo -->
+  <circle cx="256" cy="256" r="180" fill="url(#singularityGlow)"/>
+
+  <!-- Anel Orbital Externo de Precisão Tática -->
+  <circle cx="256" cy="256" r="216" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1.5"/>
+  <circle cx="256" cy="256" r="216" fill="none" stroke="url(#bladeCyan)" stroke-width="2" stroke-dasharray="70 270" stroke-linecap="round"/>
+  <circle cx="256" cy="256" r="216" fill="none" stroke="url(#bladeEmerald)" stroke-width="2" stroke-dasharray="70 270" stroke-dashoffset="170" stroke-linecap="round"/>
+
+  <!-- Vértices Sutis dos 5 Lobos na Borda Externa -->
+  <circle cx="256" cy="40" r="3.5" fill="#38BDF8"/>
+  <circle cx="461" cy="189" r="3.5" fill="#6366F1"/>
+  <circle cx="383" cy="431" r="3.5" fill="#10B981"/>
+  <circle cx="129" cy="431" r="3.5" fill="#10B981"/>
+  <circle cx="51" cy="189" r="3.5" fill="#06B6D4"/>
+
+  <!-- Geometria Monolítica do Símbolo ThSyr: Asas Intertravadas com Curvatura Aerodinâmica -->
+  <!-- Asa Superior (Lobo Frontal e Parietal) -->
+  <path d="M 128 176 C 128 123 171 80 224 80 L 320 80 C 373 80 416 123 416 176 C 416 220 386 257 346 268 L 256 296 C 216 308 192 344 192 384 L 192 392 L 144 392 L 144 384 C 144 320 180 264 238 246 L 328 218 C 352 210 368 188 368 162 C 368 135 347 114 320 114 L 224 114 C 197 114 176 135 176 162 L 176 176 Z" 
+        fill="url(#bladeCyan)" filter="url(#coreGlow)"/>
+
+  <!-- Asa Inferior (Lobo Temporal e Occipital) -->
+  <path d="M 384 336 C 384 389 341 432 288 432 L 192 432 C 139 432 96 389 96 336 C 96 292 126 255 166 244 L 256 216 C 296 204 320 168 320 128 L 320 120 L 368 120 L 368 128 C 368 192 332 248 274 266 L 184 294 C 160 302 144 324 144 350 C 144 377 165 398 192 398 L 288 398 C 315 398 336 377 336 350 L 336 336 Z" 
+        fill="url(#bladeEmerald)" filter="url(#coreGlow)"/>
+
+  <!-- Núcleo Central de Ground Truth (Abertura em Diamante Luminescente) -->
+  <g transform="translate(256, 256) rotate(45)">
+    <rect x="-18" y="-18" width="36" height="36" rx="6" fill="#04060A" stroke="#06B6D4" stroke-width="2.5" filter="url(#coreGlow)"/>
+    <circle cx="0" cy="0" r="5" fill="#FFFFFF"/>
+  </g>
+</svg>
+          </div>
+          <div class="logo-card-footer">
+            <span class="logo-card-name">Símbolo Pentafásico 'S'</span>
+            <span class="logo-card-format">SVG • 512x512</span>
+          </div>
+        </div>
+
+        <!-- 3. App Icon -->
+        <div class="logo-card">
+          <div class="logo-card-preview">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0E1424"/>
+      <stop offset="100%" stop-color="#04060A"/>
+    </linearGradient>
+    <linearGradient id="iconBladeCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="50%" stop-color="#06B6D4"/>
+      <stop offset="100%" stop-color="#4F46E5"/>
+    </linearGradient>
+    <linearGradient id="iconBladeEmerald" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="50%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <filter id="iconGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="16" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Fundo Squircle Suave -->
+  <rect x="24" y="24" width="464" height="464" rx="108" fill="url(#bgGrad)" stroke="rgba(99, 102, 241, 0.4)" stroke-width="4"/>
+
+  <!-- Halo de Luz Sutil Interno -->
+  <circle cx="256" cy="256" r="180" fill="radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 70%)"/>
+
+  <!-- Geometria Central Redimensionada -->
+  <g transform="translate(40, 40) scale(0.84)">
+    <path d="M 148 152 L 324 152 L 376 204 L 376 244 L 324 244 L 292 212 L 216 212 L 216 244 L 296 288 L 244 340 L 148 268 Z" 
+          fill="url(#iconBladeCyan)" filter="url(#iconGlow)"/>
+    <path d="M 364 360 L 188 360 L 136 308 L 136 268 L 188 268 L 220 300 L 296 300 L 296 268 L 216 224 L 268 172 L 364 244 Z" 
+          fill="url(#iconBladeEmerald)" filter="url(#iconGlow)"/>
+    <polygon points="256,220 292,256 256,292 220,256" fill="#06B6D4" filter="url(#iconGlow)"/>
+    <circle cx="256" cy="256" r="8" fill="#FFFFFF"/>
+  </g>
+</svg>
+          </div>
+          <div class="logo-card-footer">
+            <span class="logo-card-name">Ícone Squircle de App</span>
+            <span class="logo-card-format">SVG • Tauri / OS</span>
+          </div>
+        </div>
+
+        <!-- 4. Selo Ground Truth -->
+        <div class="logo-card">
+          <div class="logo-card-preview">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 190" width="100%" height="100%">
+  <defs>
+    <filter id="stampGlow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Moldura Chanfrada Industrial Dupla -->
+  <rect x="8" y="8" width="604" height="174" rx="14" fill="rgba(16, 185, 129, 0.08)" stroke="#10B981" stroke-width="3" filter="url(#stampGlow)"/>
+  <rect x="18" y="18" width="584" height="154" rx="10" fill="none" stroke="#10B981" stroke-width="1" stroke-dasharray="6 4"/>
+
+  <!-- Título Principal do Selo -->
+  <text x="310" y="78" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-weight="900" font-size="36" letter-spacing="5px" fill="#10B981">
+    GROUND TRUTH: VERIFIED
+  </text>
+
+  <!-- Subtítulo e Invariantes -->
+  <text x="310" y="112" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="12" letter-spacing="2px" fill="#A7F3D0">
+    ZERO HALLUCINATION • ZERO SYCOPHANCY • 100% DETERMINISTIC
+  </text>
+
+  <!-- Rodapé Técnico com Hash -->
+  <text x="310" y="145" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="1.5px" fill="#6EE7B7">
+    KERNEL HASH: 7F83B1657FF1FC53B92DC18148A1D65DFC2D4B1F
+  </text>
+</svg>
+          </div>
+          <div class="logo-card-footer">
+            <span class="logo-card-name">Selo de Auditoria Ground Truth</span>
+            <span class="logo-card-format">SVG • Stamp</span>
+          </div>
+        </div>
+
+        <!-- 5. Emblema Pentafásico -->
+        <div class="logo-card">
+          <div class="logo-card-preview">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="emblemCoreGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#04060A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Fundo Circular e Raias -->
+  <circle cx="250" cy="250" r="230" fill="none" stroke="rgba(99, 102, 241, 0.3)" stroke-width="2"/>
+  <circle cx="250" cy="250" r="215" fill="none" stroke="rgba(99, 102, 241, 0.15)" stroke-dasharray="3 5"/>
+  <circle cx="250" cy="250" r="160" fill="url(#emblemCoreGlow)"/>
+
+  <!-- Pentagrama Neural Conectando os 5 Lobos -->
+  <polygon points="250,70 415,190 352,385 148,385 85,190" 
+           fill="none" stroke="rgba(6, 182, 212, 0.5)" stroke-width="2"/>
+  
+  <!-- Linhas de Sinapse Interna até o Centro -->
+  <line x1="250" y1="70" x2="250" y2="250" stroke="#6366F1" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <line x1="415" y1="190" x2="250" y2="250" stroke="#6366F1" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <line x1="352" y1="385" x2="250" y2="250" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <line x1="148" y1="385" x2="250" y2="250" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <line x1="85" y1="190" x2="250" y2="250" stroke="#06B6D4" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+  <!-- 5 Nós dos Lobos -->
+  <!-- Lobo Frontal (Topo) -->
+  <circle cx="250" cy="70" r="14" fill="#0E172A" stroke="#06B6D4" stroke-width="3"/>
+  <text x="250" y="44" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#38BDF8">FRONTAL</text>
+
+  <!-- Lobo Parietal (Direita Superior) -->
+  <circle cx="415" cy="190" r="14" fill="#0E172A" stroke="#6366F1" stroke-width="3"/>
+  <text x="455" y="194" text-anchor="start" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#818CF8">PARIETAL</text>
+
+  <!-- Lobo Occipital (Direita Inferior) -->
+  <circle cx="352" cy="385" r="14" fill="#0E172A" stroke="#F59E0B" stroke-width="3"/>
+  <text x="365" y="415" text-anchor="start" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#FBBF24">OCCIPITAL</text>
+
+  <!-- Lobo Temporal (Esquerda Inferior) -->
+  <circle cx="148" cy="385" r="14" fill="#0E172A" stroke="#10B981" stroke-width="3"/>
+  <text x="135" y="415" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#34D399">TEMPORAL</text>
+
+  <!-- Lobo Límbico (Esquerda Superior) -->
+  <circle cx="85" cy="190" r="14" fill="#0E172A" stroke="#F43F5E" stroke-width="3"/>
+  <text x="45" y="194" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#FB7185">LÍMBICO</text>
+
+  <!-- Núcleo Central de Orquestração -->
+  <polygon points="250,225 275,250 250,275 225,250" fill="#06B6D4"/>
+  <circle cx="250" cy="250" r="6" fill="#FFFFFF"/>
+  <text x="250" y="305" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="700" fill="#C7D2FE" letter-spacing="1px">DETERMINISTIC CORE</text>
+</svg>
+          </div>
+          <div class="logo-card-footer">
+            <span class="logo-card-name">Emblema dos 5 Lobos</span>
+            <span class="logo-card-format">SVG • Seal</span>
+          </div>
+        </div>
+
+        <!-- 6. Monocromático Preto sobre Branco -->
+        <div class="logo-card">
+          <div class="logo-card-preview light-bg">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <!-- Anel Orbital Externo -->
+  <circle cx="256" cy="256" r="216" fill="none" stroke="#04060A" stroke-width="2" stroke-dasharray="70 270" stroke-linecap="round"/>
+  <!-- Vértices -->
+  <circle cx="256" cy="40" r="3.5" fill="#04060A"/>
+  <circle cx="461" cy="189" r="3.5" fill="#04060A"/>
+  <circle cx="383" cy="431" r="3.5" fill="#04060A"/>
+  <circle cx="129" cy="431" r="3.5" fill="#04060A"/>
+  <circle cx="51" cy="189" r="3.5" fill="#04060A"/>
+  <!-- Asa Superior -->
+  <path d="M 128 176 C 128 123 171 80 224 80 L 320 80 C 373 80 416 123 416 176 C 416 220 386 257 346 268 L 256 296 C 216 308 192 344 192 384 L 192 392 L 144 392 L 144 384 C 144 320 180 264 238 246 L 328 218 C 352 210 368 188 368 162 C 368 135 347 114 320 114 L 224 114 C 197 114 176 135 176 162 L 176 176 Z" fill="#04060A"/>
+  <!-- Asa Inferior -->
+  <path d="M 384 336 C 384 389 341 432 288 432 L 192 432 C 139 432 96 389 96 336 C 96 292 126 255 166 244 L 256 216 C 296 204 320 168 320 128 L 320 120 L 368 120 L 368 128 C 368 192 332 248 274 266 L 184 294 C 160 302 144 324 144 350 C 144 377 165 398 192 398 L 288 398 C 315 398 336 377 336 350 L 336 336 Z" fill="#04060A"/>
+  <!-- Núcleo Central -->
+  <g transform="translate(256, 256) rotate(45)">
+    <rect x="-18" y="-18" width="36" height="36" rx="6" fill="none" stroke="#04060A" stroke-width="2.5"/>
+    <circle cx="0" cy="0" r="5" fill="#04060A"/>
+  </g>
+</svg>
+          </div>
+          <div class="logo-card-footer">
+            <span class="logo-card-name">Monocromático Impressão</span>
+            <span class="logo-card-format">SVG • Mono Black</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção 2: Paleta Cromática -->
+    <div>
+      <div class="section-title">Paleta Cromática Tática (Clique para Copiar)</div>
+      <div class="palette-grid">
+        <div class="color-swatch-card" onclick="copyHex('#04060A', 'Void Obsidian')">
+          <div class="swatch-fill" style="background: #04060A; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.1);">#04060A</div>
+          <div class="swatch-meta">
+            <div class="swatch-name">Void Obsidian</div>
+            <div class="swatch-hex">RGB(4, 6, 10)</div>
+            <div class="swatch-desc">Abismo espacial soberano</div>
+          </div>
+        </div>
+
+        <div class="color-swatch-card" onclick="copyHex('#0B1020', 'Cortex Navy')">
+          <div class="swatch-fill" style="background: #0B1020; color: #fff;">#0B1020</div>
+          <div class="swatch-meta">
+            <div class="swatch-name">Cortex Navy</div>
+            <div class="swatch-hex">RGB(11, 16, 32)</div>
+            <div class="swatch-desc">Superfícies e cartões técnicos</div>
+          </div>
+        </div>
+
+        <div class="color-swatch-card" onclick="copyHex('#06B6D4', 'Cyber Cyan')">
+          <div class="swatch-fill" style="background: #06B6D4; color: #04060A;">#06B6D4</div>
+          <div class="swatch-meta">
+            <div class="swatch-name">Cyber Cyan</div>
+            <div class="swatch-hex">RGB(6, 182, 212)</div>
+            <div class="swatch-desc">Percepção óptica e telemetria</div>
+          </div>
+        </div>
+
+        <div class="color-swatch-card" onclick="copyHex('#6366F1', 'Hyper Indigo')">
+          <div class="swatch-fill" style="background: #6366F1; color: #fff;">#6366F1</div>
+          <div class="swatch-meta">
+            <div class="swatch-name">Hyper Indigo</div>
+            <div class="swatch-hex">RGB(99, 102, 241)</div>
+            <div class="swatch-desc">Orquestração e AST cognitiva</div>
+          </div>
+        </div>
+
+        <div class="color-swatch-card" onclick="copyHex('#10B981', 'Ground Truth Emerald')">
+          <div class="swatch-fill" style="background: #10B981; color: #04060A;">#10B981</div>
+          <div class="swatch-meta">
+            <div class="swatch-name">Ground Truth</div>
+            <div class="swatch-hex">RGB(16, 185, 129)</div>
+            <div class="swatch-desc">100% de testes e determinismo</div>
+          </div>
+        </div>
+
+        <div class="color-swatch-card" onclick="copyHex('#F43F5E', 'Anti-Slop Crimson')">
+          <div class="swatch-fill" style="background: #F43F5E; color: #fff;">#F43F5E</div>
+          <div class="swatch-meta">
+            <div class="swatch-name">Anti-Slop Crimson</div>
+            <div class="swatch-hex">RGB(244, 63, 94)</div>
+            <div class="swatch-desc">Barreira ética e anti-sicofância</div>
+          </div>
+        </div>
+
+        <div class="color-swatch-card" onclick="copyHex('#F8FAFC', 'Stark White')">
+          <div class="swatch-fill" style="background: #F8FAFC; color: #04060A;">#F8FAFC</div>
+          <div class="swatch-meta">
+            <div class="swatch-name">Stark White</div>
+            <div class="swatch-hex">RGB(248, 250, 252)</div>
+            <div class="swatch-desc">Legibilidade máxima em telas</div>
+          </div>
+        </div>
+
+        <div class="color-swatch-card" onclick="copyHex('#94A3B8', 'Slate Muted')">
+          <div class="swatch-fill" style="background: #94A3B8; color: #04060A;">#94A3B8</div>
+          <div class="swatch-meta">
+            <div class="swatch-name">Slate Muted</div>
+            <div class="swatch-hex">RGB(148, 163, 184)</div>
+            <div class="swatch-desc">Metadados e tags de dados</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção 3: Testador de Escala Óptica -->
+    <div>
+      <div class="section-title">Teste de Escala e Legibilidade Óptica (512px até 16px)</div>
+      <div class="scale-tester-card">
+        <div class="scale-controls">
+          <span style="font-family: var(--syr-font-mono); font-size: 13px; color: var(--syr-slate-muted);">Escala:</span>
+          <input type="range" class="scale-slider" id="scale-slider" min="16" max="220" value="120" oninput="updateScale(this.value)">
+          <span style="font-family: var(--syr-font-mono); font-size: 13px; color: var(--syr-cyber-cyan); min-width: 60px;" id="scale-val">120 px</span>
+        </div>
+        <div class="scale-preview-stage">
+          <div id="scale-preview-svg" style="width: 120px; height: 120px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bladeCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="60%" stop-color="#06B6D4"/>
+      <stop offset="100%" stop-color="#4F46E5"/>
+    </linearGradient>
+    <linearGradient id="bladeEmerald" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="40%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <radialGradient id="singularityGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.8"/>
+      <stop offset="40%" stop-color="#6366F1" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#04060A" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="coreGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Aura Espacial de Fundo -->
+  <circle cx="256" cy="256" r="180" fill="url(#singularityGlow)"/>
+
+  <!-- Anel Orbital Externo de Precisão Tática -->
+  <circle cx="256" cy="256" r="216" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1.5"/>
+  <circle cx="256" cy="256" r="216" fill="none" stroke="url(#bladeCyan)" stroke-width="2" stroke-dasharray="70 270" stroke-linecap="round"/>
+  <circle cx="256" cy="256" r="216" fill="none" stroke="url(#bladeEmerald)" stroke-width="2" stroke-dasharray="70 270" stroke-dashoffset="170" stroke-linecap="round"/>
+
+  <!-- Vértices Sutis dos 5 Lobos na Borda Externa -->
+  <circle cx="256" cy="40" r="3.5" fill="#38BDF8"/>
+  <circle cx="461" cy="189" r="3.5" fill="#6366F1"/>
+  <circle cx="383" cy="431" r="3.5" fill="#10B981"/>
+  <circle cx="129" cy="431" r="3.5" fill="#10B981"/>
+  <circle cx="51" cy="189" r="3.5" fill="#06B6D4"/>
+
+  <!-- Geometria Monolítica do Símbolo ThSyr: Asas Intertravadas com Curvatura Aerodinâmica -->
+  <!-- Asa Superior (Lobo Frontal e Parietal) -->
+  <path d="M 128 176 C 128 123 171 80 224 80 L 320 80 C 373 80 416 123 416 176 C 416 220 386 257 346 268 L 256 296 C 216 308 192 344 192 384 L 192 392 L 144 392 L 144 384 C 144 320 180 264 238 246 L 328 218 C 352 210 368 188 368 162 C 368 135 347 114 320 114 L 224 114 C 197 114 176 135 176 162 L 176 176 Z" 
+        fill="url(#bladeCyan)" filter="url(#coreGlow)"/>
+
+  <!-- Asa Inferior (Lobo Temporal e Occipital) -->
+  <path d="M 384 336 C 384 389 341 432 288 432 L 192 432 C 139 432 96 389 96 336 C 96 292 126 255 166 244 L 256 216 C 296 204 320 168 320 128 L 320 120 L 368 120 L 368 128 C 368 192 332 248 274 266 L 184 294 C 160 302 144 324 144 350 C 144 377 165 398 192 398 L 288 398 C 315 398 336 377 336 350 L 336 336 Z" 
+        fill="url(#bladeEmerald)" filter="url(#coreGlow)"/>
+
+  <!-- Núcleo Central de Ground Truth (Abertura em Diamante Luminescente) -->
+  <g transform="translate(256, 256) rotate(45)">
+    <rect x="-18" y="-18" width="36" height="36" rx="6" fill="#04060A" stroke="#06B6D4" stroke-width="2.5" filter="url(#coreGlow)"/>
+    <circle cx="0" cy="0" r="5" fill="#FFFFFF"/>
+  </g>
+</svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção 4: Sistema Tipográfico -->
+    <div>
+      <div class="section-title">Sistema Tipográfico Dual</div>
+      <div class="type-sample-box">
+        <div class="type-row">
+          <span class="type-label">Exibição & Títulos • Plus Jakarta Sans ExtraBold (800)</span>
+          <div class="type-render-display">
+            A era dos modelos que alucinam e bajulam acabou.
+          </div>
+        </div>
+        <div class="type-row">
+          <span class="type-label">Engenharia, Telemetria & Código • JetBrains Mono (700)</span>
+          <div class="type-render-mono">
+            $ syr brain audit --lobes 5 --strict-ground-truth<br>
+            [KERNEL] Sycophancy filter: REJECTED • AST 100% verified.<br>
+            [DIGEST] SHA-256: 7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1f
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-copy" id="toast-copy">HEX COPIADO!</div>
+
+  <script>
+    function copyHex(hex, name) {
+      navigator.clipboard.writeText(hex).then(() => {
+        const toast = document.getElementById('toast-copy');
+        toast.textContent = `${name}: ${hex} COPIADO!`;
+        toast.classList.add('active');
+        setTimeout(() => {
+          toast.classList.remove('active');
+        }, 2200);
+      });
+    }
+
+    function updateScale(val) {
+      const stage = document.getElementById('scale-preview-svg');
+      const label = document.getElementById('scale-val');
+      stage.style.width = val + 'px';
+      stage.style.height = val + 'px';
+      label.textContent = val + ' px';
+    }
+  </script>
+</body>
+</html>

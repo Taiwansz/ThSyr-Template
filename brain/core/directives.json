@@ -1,0 +1,36 @@
+{
+  "name": "ThSyr",
+  "version": "1.0.0",
+  "genesis": {
+    "completed": false,
+    "initialized_at": null,
+    "system_scan_authorized": false,
+    "scan_paths": []
+  },
+  "operator": {
+    "name": "Operador",
+    "handle": "operador",
+    "email": "operador@local"
+  },
+  "behavior": {
+    "sycophancy_tolerance": 0.0,
+    "allow_emojis": false,
+    "directness_level": 1.0,
+    "wit_level": 0.65,
+    "tone_archetype": "british_intellectual_peer",
+    "critical_thinking_mode": "active",
+    "require_devils_advocate_on_decisions": true,
+    "autonomous_git_sync": true,
+    "independent_behavioral_profiling": true,
+    "continuous_auto_evolution": true
+  },
+  "workspaces": {
+    "monitored_paths": [],
+    "git_tracking_enabled": true
+  },
+  "memory": {
+    "episodic_retention_days": -1,
+    "auto_consolidation_threshold": 3,
+    "knowledge_graph_enabled": true
+  }
+}

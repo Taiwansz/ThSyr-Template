@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 560" width="100%" height="100%">
+  <defs>
+    <linearGradient id="vGradCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+    <linearGradient id="vGradEmerald" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="100%" stop-color="#10B981"/>
+    </linearGradient>
+    <filter id="vGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Símbolo Centralizado no Topo -->
+  <g transform="translate(110, 20) scale(0.55)">
+    <polygon points="256,54 430,154 430,358 256,458 82,358 82,154" 
+             fill="none" stroke="rgba(6, 182, 212, 0.35)" stroke-width="3" stroke-dasharray="8 8"/>
+    <path d="M 148 152 L 324 152 L 376 204 L 376 244 L 324 244 L 292 212 L 216 212 L 216 244 L 296 288 L 244 340 L 148 268 Z" 
+          fill="url(#vGradCyan)" filter="url(#vGlow)"/>
+    <path d="M 364 360 L 188 360 L 136 308 L 136 268 L 188 268 L 220 300 L 296 300 L 296 268 L 216 224 L 268 172 L 364 244 Z" 
+          fill="url(#vGradEmerald)" filter="url(#vGlow)"/>
+    <polygon points="256,220 292,256 256,292 220,256" fill="#06B6D4" filter="url(#vGlow)"/>
+    <circle cx="256" cy="256" r="8" fill="#FFFFFF"/>
+  </g>
+
+  <!-- Wordmark Centralizado -->
+  <text x="250" y="375" text-anchor="middle" font-family="'Plus Jakarta Sans', -apple-system, sans-serif" font-weight="900" font-size="74" letter-spacing="-2px" fill="#FFFFFF">
+    Th<tspan fill="#06B6D4">Syr</tspan>
+  </text>
+
+  <!-- Tagline Centralizada -->
+  <text x="250" y="420" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="13" letter-spacing="4px" fill="#94A3B8">
+    SOVEREIGN COGNITIVE SIDECAR
+  </text>
+
+  <!-- Pílula de Certificação -->
+  <rect x="135" y="455" width="230" height="30" rx="6" fill="rgba(99, 102, 241, 0.15)" stroke="#6366F1" stroke-width="1.2"/>
+  <text x="250" y="475" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#C7D2FE" letter-spacing="1.5px">
+    DETERMINISTIC COGNITION
+  </text>
+</svg>

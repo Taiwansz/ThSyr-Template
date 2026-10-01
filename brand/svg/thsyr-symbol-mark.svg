@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bladeCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="60%" stop-color="#06B6D4"/>
+      <stop offset="100%" stop-color="#4F46E5"/>
+    </linearGradient>
+    <linearGradient id="bladeEmerald" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="40%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <radialGradient id="singularityGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.8"/>
+      <stop offset="40%" stop-color="#6366F1" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#04060A" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="coreGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Aura Espacial de Fundo -->
+  <circle cx="256" cy="256" r="180" fill="url(#singularityGlow)"/>
+
+  <!-- Anel Orbital Externo de Precisão Tática -->
+  <circle cx="256" cy="256" r="216" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1.5"/>
+  <circle cx="256" cy="256" r="216" fill="none" stroke="url(#bladeCyan)" stroke-width="2" stroke-dasharray="70 270" stroke-linecap="round"/>
+  <circle cx="256" cy="256" r="216" fill="none" stroke="url(#bladeEmerald)" stroke-width="2" stroke-dasharray="70 270" stroke-dashoffset="170" stroke-linecap="round"/>
+
+  <!-- Vértices Sutis dos 5 Lobos na Borda Externa -->
+  <circle cx="256" cy="40" r="3.5" fill="#38BDF8"/>
+  <circle cx="461" cy="189" r="3.5" fill="#6366F1"/>
+  <circle cx="383" cy="431" r="3.5" fill="#10B981"/>
+  <circle cx="129" cy="431" r="3.5" fill="#10B981"/>
+  <circle cx="51" cy="189" r="3.5" fill="#06B6D4"/>
+
+  <!-- Geometria Monolítica do Símbolo ThSyr: Asas Intertravadas com Curvatura Aerodinâmica -->
+  <!-- Asa Superior (Lobo Frontal e Parietal) -->
+  <path d="M 128 176 C 128 123 171 80 224 80 L 320 80 C 373 80 416 123 416 176 C 416 220 386 257 346 268 L 256 296 C 216 308 192 344 192 384 L 192 392 L 144 392 L 144 384 C 144 320 180 264 238 246 L 328 218 C 352 210 368 188 368 162 C 368 135 347 114 320 114 L 224 114 C 197 114 176 135 176 162 L 176 176 Z" 
+        fill="url(#bladeCyan)" filter="url(#coreGlow)"/>
+
+  <!-- Asa Inferior (Lobo Temporal e Occipital) -->
+  <path d="M 384 336 C 384 389 341 432 288 432 L 192 432 C 139 432 96 389 96 336 C 96 292 126 255 166 244 L 256 216 C 296 204 320 168 320 128 L 320 120 L 368 120 L 368 128 C 368 192 332 248 274 266 L 184 294 C 160 302 144 324 144 350 C 144 377 165 398 192 398 L 288 398 C 315 398 336 377 336 350 L 336 336 Z" 
+        fill="url(#bladeEmerald)" filter="url(#coreGlow)"/>
+
+  <!-- Núcleo Central de Ground Truth (Abertura em Diamante Luminescente) -->
+  <g transform="translate(256, 256) rotate(45)">
+    <rect x="-18" y="-18" width="36" height="36" rx="6" fill="#04060A" stroke="#06B6D4" stroke-width="2.5" filter="url(#coreGlow)"/>
+    <circle cx="0" cy="0" r="5" fill="#FFFFFF"/>
+  </g>
+</svg>

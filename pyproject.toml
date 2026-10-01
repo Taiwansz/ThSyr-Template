@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "thsyr"
+version = "0.4.0"
+description = "ThSyr - Cognitive Copilot and Continuous JARVIS-Level Agent Runtime"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "ThSyr Community", email = "thsyr@local" }
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
+    "httpx>=0.24.0",
+]
+desktop = [
+    "fastapi>=0.100.0",
+    "uvicorn>=0.23.0",
+    "websockets>=11.0",
+]
+embeddings = [
+    "sentence-transformers>=3.0.0",
+]
+visual = [
+    "playwright>=1.40.0",
+]
+
+[project.scripts]
+thsyr = "thsyr:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+explicit_package_bases = true
+warn_unused_configs = true
+
+[tool.setuptools]
+py-modules = ["thsyr"]
+
+[tool.setuptools.packages.find]
+include = ["engine*"]

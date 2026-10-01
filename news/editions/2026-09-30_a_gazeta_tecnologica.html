@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Gazeta Tecnológica Global — Quarta-feira, 30 de Setembro de 2026</title>
+  
+  <!-- Tipografia Autentica de Imprensa Historica (Fraktur / Blackletter + Serifas Classicas) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700;1,900&family=UnifrakturMaguntia&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================================
+       ARQUITETURA GRAFICA: BROADSHEET DE IMPRENSA HISTORICA
+       Zero Elementos de Interface Digital — Exclusivamente Papel e Tinta
+       ========================================================================= */
+    :root {
+      --newsprint-base: #f3ede2;
+      --newsprint-aged: #eae0d0;
+      --newsprint-shadow: #dfd4c1;
+      --ink-primary: #121110;
+      --ink-secondary: #262422;
+      --ink-muted: #4a4642;
+      --rule-solid: #121110;
+      --accent-crimson: #6e1410;
+      
+      --font-masthead: 'UnifrakturMaguntia', 'Old English Text MT', serif;
+      --font-headline: 'Playfair Display', Georgia, serif;
+      --font-body: 'Old Standard TT', 'Times New Roman', serif;
+      --font-subhead: 'Cinzel', serif;
+      --font-teletype: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #151311;
+      color: var(--ink-primary);
+      font-family: var(--font-body);
+      line-height: 1.34;
+      padding: 48px 20px 96px 20px;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        radial-gradient(rgba(0, 0, 0, 0.4) 1px, #151311 1px);
+      background-size: 32px 32px;
+      background-position: 0 0, 16px 16px;
+    }
+
+    .newspaper-broadsheet {
+      width: 100%;
+      max-width: 1440px;
+      background-color: var(--newsprint-base);
+      background-image: 
+        radial-gradient(#e4dac7 0.75px, transparent 0.75px),
+        linear-gradient(to right, rgba(0,0,0,0.012) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0,0,0,0.012) 1px, transparent 1px);
+      background-size: 24px 24px, 18px 18px, 18px 18px;
+      box-shadow: 
+        0 2px 8px rgba(0,0,0,0.4),
+        0 18px 40px rgba(0,0,0,0.55),
+        0 35px 85px rgba(0,0,0,0.7);
+      padding: 46px 54px 60px 54px;
+      position: relative;
+      border: 1px solid #c9bfae;
+    }
+
+    .newspaper-broadsheet::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.11) 8%, rgba(0,0,0,0.11) 92%, transparent);
+      box-shadow: 0 0 16px rgba(0,0,0,0.09);
+      pointer-events: none;
+    }
+
+    .masthead-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      border-bottom: 3px double var(--rule-solid);
+      padding-bottom: 12px;
+      margin-bottom: 8px;
+    }
+
+    .masthead-ears-grid {
+      display: grid;
+      grid-template-columns: 260px 1fr 260px;
+      width: 100%;
+      align-items: end;
+      margin-bottom: 10px;
+    }
+
+    .ear-box {
+      border: 1px solid var(--rule-solid);
+      padding: 7px 10px;
+      font-family: var(--font-body);
+      font-size: 11px;
+      line-height: 1.25;
+      text-align: center;
+      background: rgba(0,0,0,0.025);
+    }
+
+    .ear-box strong {
+      display: block;
+      font-family: var(--font-subhead);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .masthead-title-text {
+      font-family: var(--font-masthead);
+      font-size: 68px;
+      font-weight: 400;
+      line-height: 1.02;
+      letter-spacing: -0.01em;
+      color: var(--ink-primary);
+      margin: 4px 0 6px 0;
+      text-shadow: 0.5px 0.5px 0px rgba(0,0,0,0.25);
+    }
+
+    .masthead-subtitle {
+      font-family: var(--font-headline);
+      font-style: italic;
+      font-size: 13.5px;
+      letter-spacing: 0.04em;
+      color: var(--ink-secondary);
+      margin-bottom: 4px;
+    }
+
+    .date-dateline-bar {
+      border-top: 1px solid var(--rule-solid);
+      border-bottom: 2px solid var(--rule-solid);
+      padding: 5px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-subhead);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .date-center-stamp {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+    }
+
+    .broadsheet-main-grid {
+      display: grid;
+      grid-template-columns: 5.2fr 3.6fr 2.8fr;
+      gap: 24px;
+    }
+
+    .column-with-divider {
+      border-right: 1px solid rgba(18, 17, 16, 0.35);
+      padding-right: 22px;
+    }
+
+    .lead-kicker {
+      font-family: var(--font-subhead);
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent-crimson);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .lead-headline-giant {
+      font-family: var(--font-headline);
+      font-size: 32px;
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -0.015em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      color: var(--ink-primary);
+    }
+
+    .lead-subheadline {
+      font-family: var(--font-headline);
+      font-style: italic;
+      font-size: 15.5px;
+      line-height: 1.35;
+      color: var(--ink-secondary);
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(18, 17, 16, 0.25);
+    }
+
+    .byline-dateline-strip {
+      font-family: var(--font-subhead);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dotted rgba(18, 17, 16, 0.35);
+      padding-bottom: 6px;
+    }
+
+    .lead-body-columns {
+      column-count: 3;
+      column-gap: 18px;
+      column-rule: 1px solid rgba(18, 17, 16, 0.22);
+      text-align: justify;
+      text-justify: inter-word;
+      font-size: 13.5px;
+      line-height: 1.44;
+      hyphens: auto;
+    }
+
+    .story-paragraph {
+      margin-bottom: 14px;
+      text-indent: 1.4em;
+    }
+
+    .drop-cap {
+      float: left;
+      font-family: var(--font-headline);
+      font-size: 58px;
+      line-height: 0.82;
+      padding-top: 4px;
+      padding-right: 8px;
+      padding-bottom: 0px;
+      color: var(--ink-primary);
+      font-weight: 900;
+    }
+
+    .pull-quote-box {
+      border-top: 2px solid var(--rule-solid);
+      border-bottom: 2px solid var(--rule-solid);
+      padding: 12px 10px;
+      margin: 16px 0;
+      font-family: var(--font-headline);
+      font-style: italic;
+      font-size: 14px;
+      line-height: 1.35;
+      text-align: center;
+      color: var(--accent-crimson);
+      break-inside: avoid;
+    }
+
+    .secondary-headline {
+      font-family: var(--font-headline);
+      font-size: 21px;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 8px;
+      color: var(--ink-primary);
+    }
+
+    .secondary-subhead {
+      font-family: var(--font-headline);
+      font-style: italic;
+      font-size: 13.5px;
+      line-height: 1.35;
+      color: var(--ink-secondary);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px dotted rgba(18, 17, 16, 0.3);
+    }
+
+    .feature-card {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(18, 17, 16, 0.3);
+    }
+
+    .feature-card:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .secondary-body-text {
+      font-size: 13px;
+      line-height: 1.42;
+      text-align: justify;
+      text-justify: inter-word;
+    }
+
+    .dispatch-wire-card {
+      border: 1px solid var(--rule-solid);
+      padding: 14px;
+      background: rgba(0, 0, 0, 0.02);
+      margin-bottom: 20px;
+    }
+
+    .wire-header-title {
+      font-family: var(--font-subhead);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--rule-solid);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .wire-item {
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px dotted rgba(18, 17, 16, 0.3);
+    }
+
+    .wire-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .wire-timestamp {
+      font-family: var(--font-teletype);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--accent-crimson);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .wire-item-title {
+      font-family: var(--font-headline);
+      font-size: 13.5px;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .wire-item-desc {
+      font-size: 12px;
+      line-height: 1.36;
+      color: var(--ink-secondary);
+    }
+
+    .market-ticker-box {
+      border: 2px solid var(--rule-solid);
+      padding: 12px;
+      background: #eee6d8;
+      margin-bottom: 20px;
+      font-family: var(--font-teletype);
+      font-size: 11px;
+    }
+
+    .ticker-row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dotted rgba(18, 17, 16, 0.3);
+      padding: 4px 0;
+    }
+
+    .ticker-row:last-child {
+      border-bottom: none;
+    }
+
+    .broadsheet-footer {
+      border-top: 2px solid var(--rule-solid);
+      margin-top: 36px;
+      padding-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-subhead);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+
+    @media (max-width: 1080px) {
+      .broadsheet-main-grid {
+        grid-template-columns: 1fr;
+      }
+      .column-with-divider {
+        border-right: none;
+        border-bottom: 1px solid rgba(18, 17, 16, 0.35);
+        padding-right: 0;
+        padding-bottom: 24px;
+        margin-bottom: 24px;
+      }
+      .lead-body-columns {
+        column-count: 2;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .lead-body-columns {
+        column-count: 1;
+      }
+      .masthead-ears-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .masthead-title-text {
+        font-size: 44px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <article class="newspaper-broadsheet">
+    
+    <!-- 1. MASTHEAD HISTORICO -->
+    <header class="masthead-container">
+      
+      <div class="masthead-ears-grid">
+        <div class="ear-box">
+          <strong>REGULACAO GLOBAL</strong>
+          Departamentos de justica intensificam auditoria sobre acordos de exclusividade de capacidade computacional.
+        </div>
+        
+        <div><!-- Espaco central acima do titulo --></div>
+
+        <div class="ear-box">
+          <strong>SISTEMAS AUTONOMOS</strong>
+          Arquiteturas multi-agentes corporativas reduzem em 80% o tempo de engenharia em refatoracao de codigo legado.
+        </div>
+      </div>
+
+      <h1 class="masthead-title-text">A Gazeta Tecnológica Global</h1>
+      <p class="masthead-subtitle">O Periódico Canônico de Infraestrutura, Semicondutores, Inteligência Sintética e Mercados Mundiais</p>
+
+    </header>
+
+    <!-- 2. TARJA DE DATA, LOCAL E PRECO -->
+    <div class="date-dateline-bar">
+      <span>EDIÇÃO INTERNACIONAL &bull; DISTRIBUIÇÃO CONJUNTA</span>
+      <span class="date-center-stamp">QUARTA-FEIRA, 30 DE SETEMBRO DE 2026</span>
+      <span>CIRCULAÇÃO Nº 60.831 &bull; VALOR 25 CENTAVOS</span>
+    </div>
+
+    <!-- 3. GRADE EDITORIAL PRINCIPAL -->
+    <main class="broadsheet-main-grid">
+
+      <!-- COLUNA 1: MANCHETE PRINCIPAL & IMPACTO DE INFRAESTRUTURA -->
+      <!-- ======================================================= -->
+      <section class="column-with-divider">
+        <div>
+          <span class="lead-kicker">// GOVERNANCA E INFRAESTRUTURA SOBERANA</span>
+          <h2 class="lead-headline-giant">TRIBUNAIS ANTITRUSTE HOMOLOGAM DIRETRIZES DE ACESSO ISONOMICO A GIGA-CLUSTERS DE TREINAMENTO</h2>
+          <p class="lead-subheadline">Acordos bilaterais entre hiperscalers e desenvolvedores de modelos de fundacao passam a exigir segregacao contabil e auditoria de alocacao de silicio.</p>
+          <div class="byline-dateline-strip"><span>POR BUREAU DE REGULACAO TECNOLOGICA & MERCADOS</span><span>BRUXELAS & WASHINGTON</span><span>30 DE SETEMBRO DE 2026</span></div>
+          <div class="lead-body-columns">
+            <p class="story-paragraph" style="text-indent: 0;"><span class="drop-cap">B</span>RUXELAS — Autoridades antitruste da Comissao Europeia e do Departamento de Justica dos Estados Unidos publicaram nesta data o marco regulatorio conjunto que estabelece criterios objetivos para evitar o fechamento vertical de mercado no acesso a giga-clusters de processamento neural. O regulamento estabelece que provedores de infraestrutura com capacidade instalada superior a 100 megawatts devem manter condicoes transparentes e isonomicas de precificacao e acesso a terceiros.</p>
+            <p class="story-paragraph">O texto e fruto de dois anos de investigacoes sobre participacoes cruzadas entre operadoras de nuvem soberana e desenvolvedores de modelos proprietarios de linguagem. Ficou vedada a celebracao de contratos com clausulas de bloqueio tecnologico de rede ou descontos discriminatorios baseados no fornecimento de acoes ou direitos societarios em substituicao a contraprestacao financeira pura.</p>
+            <div class="pull-quote-box">"A capacidade computacional de ponta transcendeu a definicao de produto comercial para se consagrar como infraestrutura essencial de interesse publico."</div>
+            <p class="story-paragraph">A reacao dos mercados financeiros foi imediata, com valorizacao de operadoras independentes de data centers colocation e provedores neutros de processamento de silicio. Executivos do setor apontam que a descentralizacao imposta pelas cortes acelerara a dispersao geografica de investimentos, beneficiando polos energeticos antes considerados secundarios.</p>
+            <p class="story-paragraph">A jurisprudencia internacional consolida a tese de que a computacao de altissima densidade representa a infraestrutura critica essencial da economia contemporanea, equiparada em deveres fiduciarios as redes eletricas e sistemas ferroviarios historicos.</p>
+          </div>
+          <p style="font-size:11px;margin-top:12px;"><strong>Fonte:</strong> <a href="#">Diretoria Geral de Concorrencia da UE / DOJ. Classificacao: Decisao regulatoria formal e jurisprudencia homologada.</a></p>
+        </div>
+
+        <div style="margin-top:28px;padding-top:20px;border-top:1px solid rgba(18,17,16,.3);">
+          <span class="lead-kicker">// ARQUITETURAS DE SOFTWARE</span>
+          <h3 class="secondary-headline">MODELOS DE RACIOCINIO LOGICO EM TEMPO REAL TRANSFORMAM FLUXOS DE COMPILACAO DISTRIBUIDA</h3>
+          <p class="secondary-subhead">Inferencia continua aplicada a grafos de dependencia mitiga em 90% falhas de integracao em grandes bases de codigo C++ e Rust.</p>
+          <div style="column-count:2;column-gap:20px;text-align:justify;font-size:13px;line-height:1.46;">
+            <p style="margin-bottom:12px;text-indent:1.2em;">Grandes organizacoes de engenharia comecaram a implantar orquestradores cognitivos operando diretamente sobre o ciclo de compilacao e teste de sistemas de missao critica. Os modelos analisam arvore sintatica abstrata e historicos de mutacao semantica em tempo real.</p>
+            <p style="margin-bottom:12px;text-indent:1.2em;">Essa mudanca de paradigma substitui testes unitarios puramente estatisticos por verificacao formal sintetizada autonomamente, garantindo que vulnerabilidades de vazamento de memoria e corrida de threads sejam erradicadas na pre-gravacao dos repositorios.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- COLUNA 2: LITOGRAFIA, EDA & FABRICAÇÃO DE FRONTEIRA -->
+      <!-- ================================================= -->
+      <section class="column-with-divider">
+        <div class="feature-card">
+          <span class="lead-kicker">// ENERGIA DE FUSAO</span>
+          <h3 class="secondary-headline">
+            STARTUPS DE ENERGIA DE FUSAO ALCANCAM PRIMEIRO GANHO LIQUIDO COMUNITARIO DE POTENCIA
+          </h3>
+          <p class="secondary-subhead">
+            Sistemas de confinamento magnetico com supercondutores de alta temperatura sustentam queima de plasma por 15 minutos consecutivos.
+          </p>
+          <div class="secondary-body-text">
+            <p class="story-paragraph">OXFORD — Consorcio de fusao nuclear comercial anunciou a obtencao estavel do fator Q superior a 2,2 em reatores de confinamento esferico utilizando bobinas supercondutoras de oxido de bario, cobre e terras raras (REBCO). O feito abre caminho para construcao das primeiras usinas geradoras dedicadas a alimentar clusters de computacao sem emissoes de carbono.</p>
+            <p class="story-paragraph">A demonstracao fisica comprova que o confinamento de alta densidade permite compactar reatores a uma decima parte do volume exigido por projetos estatais historicos, viabilizando instalacoes industriais adjacentes a parques de servidores.</p>
+            <p class="story-paragraph">Contratos preliminares de fornecimento de energia de fusao para a decada de 2030 ja foram subscritos pelos maiores operadores globais de computacao em nuvem, sinalizando seguranca a longo prazo para o setor.</p>
+          </div>
+        </div>
+
+        <div class="feature-card" style="border-bottom: none; margin-bottom: 0; padding-bottom: 0;">
+          <span class="lead-kicker">// HARDWARE QUÂNTICO</span>
+          <h3 class="secondary-headline">
+            PROCESSADORES NEUTROS DE ATOMOS NEUTROS DEMONSTRAM CORRECAO DE ERRO EM LOGICA DE 100 QUBITS
+          </h3>
+          <p class="secondary-subhead">
+            Pinças opticas holograficas preservam coerencia quantica e pavimentam rota para computacao tolerante a falhas antes de 2028.
+          </p>
+          <div class="secondary-body-text">
+            <p class="story-paragraph">BOSTON — Avancos na manipulacao de atomos neutros em matrizes bidimensionais permitiram executar algoritmos de correcao de erro de superficie com fidelidade de porta logica acima de 99,8%. O resultado estabelece a rota tecnologica de atomos neutros como a principal candidata para quebra de complexidade criptografica e simulacao molecular avancada.</p>
+            <p class="story-paragraph">A eliminacao de refrigeradores criogenicos de diluicao para alguns dos subsistemas reduz substancialmente a complexidade operacional e os custos de manutencao dos sistemas quanticos hibridos.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================== -->
+      <!-- COLUNA 3: O TELÉGRAFO DE NOTÍCIAS & PAINEL DE MERCADOS          -->
+      <!-- =============================================================== -->
+      <aside>
+
+        <!-- O TELEGRAFO DE NOTICIAS -->
+        <div class="dispatch-wire-card">
+          <div class="wire-header-title">
+            <span>O TELÉGRAFO DE NOTÍCIAS</span>
+            <span>BUREAU GLOBAL</span>
+          </div>
+
+          <div class="wire-item">
+            <span class="wire-timestamp">[17:30 GMT] GENEBRA // PADRONIZACAO TECNICA</span>
+            <h4 class="wire-item-title">ISO e IEEE publicam norma unificada para seguranca de execucao em chips RISC-V</h4>
+            <p class="wire-item-desc">Padrao ISO/IEC 29119 define requisitos formais para isolamento de enclaves confidenciais em processadores abertos.</p>
+          </div>
+
+          <div class="wire-item">
+            <span class="wire-timestamp">[15:10 GMT] REIKIAVIK // DATA CENTERS GEOTERMICOS</span>
+            <h4 class="wire-item-title">Islandia atrai investimento de US$ 14 bilhoes para mega-complexos computacionais</h4>
+            <p class="wire-item-desc">Abundancia de energia geotermica e refrigeracao natural consolidam o pais nordico como centro europeu de inferencia.</p>
+          </div>
+
+          <div class="wire-item">
+            <span class="wire-timestamp">[11:45 GMT] CINGAPURA // COMUNICACAO SUBMARINA</span>
+            <h4 class="wire-item-title">Novo cabo submarino transpacifico de 500 Tbps entra em operacao comercial</h4>
+            <p class="wire-item-desc">Consorcio de telecomunicacoes conclui lancamento de fibra de baixa latencia ligando Sudeste Asiatico a costa oeste dos EUA.</p>
+          </div>
+
+          <div class="wire-item">
+            <span class="wire-timestamp">[08:20 GMT] SEUL // MATERIAIS DE DISPERSAO</span>
+            <h4 class="wire-item-title">Samsung Electronics inicia aplicacao de pasta termica de metal liquido em embalagens HBM</h4>
+            <p class="wire-item-desc">Tecnologia proprietaria eleva condutividade na interface termica em 40%, reduzindo riscos de hotspots em cargas continuas.</p>
+          </div>
+        </div>
+
+        <!-- PAINEL DE TELEMETRIA FINANCEIRA & COMMODITIES -->
+        <div class="market-ticker-box">
+          <div style="font-family: var(--font-subhead); font-size: 10px; font-weight: 700; border-bottom: 1px solid rgba(18, 17, 16, 0.3); padding-bottom: 4px; margin-bottom: 6px; text-transform: uppercase;">
+            COTAÇÕES GLOBAIS DE TECNOLOGIA
+          </div>
+          <div class="ticker-row">
+            <span>MICROSOFT (MSFT)</span>
+            <strong>US$ 448,50 <span style="color:#1b6335;">+1,4%</span></strong>
+          </div>
+          <div class="ticker-row">
+            <span>ALPHABET (GOOGL)</span>
+            <strong>US$ 184,20 <span style="color:#1b6335;">+1,8%</span></strong>
+          </div>
+          <div class="ticker-row">
+            <span>AMAZON (AMZN)</span>
+            <strong>US$ 192,10 <span style="color:#1b6335;">+2,2%</span></strong>
+          </div>
+          <div class="ticker-row">
+            <span>NVIDIA (NVDA)</span>
+            <strong>US$ 124,00 <span style="color:#1b6335;">+1,6%</span></strong>
+          </div>
+          <div class="ticker-row">
+            <span>TSMC (TSM)</span>
+            <strong>US$ 181,30 <span style="color:#1b6335;">+2,1%</span></strong>
+          </div>
+          <div class="ticker-row">
+            <span>EQUINIX (EQIX)</span>
+            <strong>US$ 890,00 <span style="color:#1b6335;">+3,5%</span></strong>
+          </div>
+          <div class="ticker-row">
+            <span>DIGITAL REALTY (DLR)</span>
+            <strong>US$ 164,50 <span style="color:#1b6335;">+2,8%</span></strong>
+          </div>
+          <div class="ticker-row">
+            <span>BITCOIN (BTC/USD)</span>
+            <strong>US$ 66.850 <span style="color:#1b6335;">+2,4%</span></strong>
+          </div>
+          <div class="ticker-row">
+            <span>BRENT CRUDE (BBL)</span>
+            <strong>US$ 73,40 <span style="color:var(--accent-crimson);">-1,2%</span></strong>
+          </div>
+        </div>
+
+        <!-- NOTA EDITORIAL DE REGISTRO HISTORICO -->
+        <div style="border: 1px solid var(--rule-solid); padding: 14px; background: rgba(0,0,0,0.025); text-align: justify; font-size: 11.5px; line-height: 1.4;">
+          <strong style="display: block; font-family: var(--font-subhead); font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; color: var(--accent-crimson);">
+            NOTA DE REGISTRO EDITORIAL
+          </strong>
+          A Gazeta Tecnologica Global e impressa diariamente a partir de despachos telegraficos transmitidos pelos bureaux de Toquio, Hsinchu, Veldhoven, Santa Clara e Washington. Todas as informacoes publicadas atendem a rigorosos padroes de verificacao tecnica, custodia criptografica de fontes e independencia factual absoluta.
+        </div>
+
+      </aside>
+
+    </main>
+
+    <!-- 4. RODAPE DO BROADSHEET -->
+    <footer class="broadsheet-footer">
+      <span>A GAZETA TECNOLÓGICA GLOBAL &bull; IMPRESSÃO SIMULTÂNEA EM TÓQUIO, HSINCHU, VELDHOVEN, SANTA CLARA E WASHINGTON</span>
+      <span>COMPOSIÇÃO EM TIPOGRAFIA CLÁSSICA DE BROADSHEET</span>
+      <span>VOLUME CLXXV &bull; NÚMERO 60.831 &bull; QUARTA-FEIRA, 30 DE SETEMBRO DE 2026</span>
+    </footer>
+
+  </article>
+
+</body>
+</html>

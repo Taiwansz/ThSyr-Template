@@ -1,0 +1,31 @@
+/* ThSyr Design System - Official Brand Tokens */
+:root {
+  /* Paleta Soberana */
+  --syr-void-obsidian: #04060A;
+  --syr-cortex-navy: #0B1020;
+  --syr-surface-card: rgba(15, 21, 37, 0.85);
+  --syr-surface-card-hover: rgba(26, 35, 60, 0.95);
+  
+  /* Acentos de Sinalização e Tensão Industrial */
+  --syr-cyber-cyan: #06B6D4;
+  --syr-cyber-cyan-glow: rgba(6, 182, 212, 0.45);
+  --syr-hyper-indigo: #6366F1;
+  --syr-hyper-indigo-glow: rgba(99, 102, 241, 0.45);
+  
+  /* Semântica e Telemetria */
+  --syr-ground-truth: #10B981;
+  --syr-ground-truth-glow: rgba(16, 185, 129, 0.45);
+  --syr-anti-slop: #F43F5E;
+  --syr-anti-slop-glow: rgba(244, 63, 94, 0.45);
+  --syr-invariant-amber: #F59E0B;
+  
+  /* Neutros e Estrutura */
+  --syr-stark-white: #F8FAFC;
+  --syr-slate-muted: #94A3B8;
+  --syr-border-tech: rgba(99, 102, 241, 0.22);
+  --syr-border-bright: rgba(99, 102, 241, 0.60);
+
+  /* Tipografia */
+  --syr-font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --syr-font-mono: 'JetBrains Mono', monospace;
+}

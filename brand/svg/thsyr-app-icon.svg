@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0E1424"/>
+      <stop offset="100%" stop-color="#04060A"/>
+    </linearGradient>
+    <linearGradient id="iconBladeCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="50%" stop-color="#06B6D4"/>
+      <stop offset="100%" stop-color="#4F46E5"/>
+    </linearGradient>
+    <linearGradient id="iconBladeEmerald" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="50%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <filter id="iconGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="16" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Fundo Squircle Suave -->
+  <rect x="24" y="24" width="464" height="464" rx="108" fill="url(#bgGrad)" stroke="rgba(99, 102, 241, 0.4)" stroke-width="4"/>
+
+  <!-- Halo de Luz Sutil Interno -->
+  <circle cx="256" cy="256" r="180" fill="radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 70%)"/>
+
+  <!-- Geometria Central Redimensionada -->
+  <g transform="translate(40, 40) scale(0.84)">
+    <path d="M 148 152 L 324 152 L 376 204 L 376 244 L 324 244 L 292 212 L 216 212 L 216 244 L 296 288 L 244 340 L 148 268 Z" 
+          fill="url(#iconBladeCyan)" filter="url(#iconGlow)"/>
+    <path d="M 364 360 L 188 360 L 136 308 L 136 268 L 188 268 L 220 300 L 296 300 L 296 268 L 216 224 L 268 172 L 364 244 Z" 
+          fill="url(#iconBladeEmerald)" filter="url(#iconGlow)"/>
+    <polygon points="256,220 292,256 256,292 220,256" fill="#06B6D4" filter="url(#iconGlow)"/>
+    <circle cx="256" cy="256" r="8" fill="#FFFFFF"/>
+  </g>
+</svg>

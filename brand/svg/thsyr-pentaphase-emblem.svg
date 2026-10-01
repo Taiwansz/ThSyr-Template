@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="emblemCoreGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#04060A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Fundo Circular e Raias -->
+  <circle cx="250" cy="250" r="230" fill="none" stroke="rgba(99, 102, 241, 0.3)" stroke-width="2"/>
+  <circle cx="250" cy="250" r="215" fill="none" stroke="rgba(99, 102, 241, 0.15)" stroke-dasharray="3 5"/>
+  <circle cx="250" cy="250" r="160" fill="url(#emblemCoreGlow)"/>
+
+  <!-- Pentagrama Neural Conectando os 5 Lobos -->
+  <polygon points="250,70 415,190 352,385 148,385 85,190" 
+           fill="none" stroke="rgba(6, 182, 212, 0.5)" stroke-width="2"/>
+  
+  <!-- Linhas de Sinapse Interna até o Centro -->
+  <line x1="250" y1="70" x2="250" y2="250" stroke="#6366F1" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <line x1="415" y1="190" x2="250" y2="250" stroke="#6366F1" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <line x1="352" y1="385" x2="250" y2="250" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <line x1="148" y1="385" x2="250" y2="250" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <line x1="85" y1="190" x2="250" y2="250" stroke="#06B6D4" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+  <!-- 5 Nós dos Lobos -->
+  <!-- Lobo Frontal (Topo) -->
+  <circle cx="250" cy="70" r="14" fill="#0E172A" stroke="#06B6D4" stroke-width="3"/>
+  <text x="250" y="44" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#38BDF8">FRONTAL</text>
+
+  <!-- Lobo Parietal (Direita Superior) -->
+  <circle cx="415" cy="190" r="14" fill="#0E172A" stroke="#6366F1" stroke-width="3"/>
+  <text x="455" y="194" text-anchor="start" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#818CF8">PARIETAL</text>
+
+  <!-- Lobo Occipital (Direita Inferior) -->
+  <circle cx="352" cy="385" r="14" fill="#0E172A" stroke="#F59E0B" stroke-width="3"/>
+  <text x="365" y="415" text-anchor="start" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#FBBF24">OCCIPITAL</text>
+
+  <!-- Lobo Temporal (Esquerda Inferior) -->
+  <circle cx="148" cy="385" r="14" fill="#0E172A" stroke="#10B981" stroke-width="3"/>
+  <text x="135" y="415" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#34D399">TEMPORAL</text>
+
+  <!-- Lobo Límbico (Esquerda Superior) -->
+  <circle cx="85" cy="190" r="14" fill="#0E172A" stroke="#F43F5E" stroke-width="3"/>
+  <text x="45" y="194" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#FB7185">LÍMBICO</text>
+
+  <!-- Núcleo Central de Orquestração -->
+  <polygon points="250,225 275,250 250,275 225,250" fill="#06B6D4"/>
+  <circle cx="250" cy="250" r="6" fill="#FFFFFF"/>
+  <text x="250" y="305" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="700" fill="#C7D2FE" letter-spacing="1px">DETERMINISTIC CORE</text>
+</svg>
