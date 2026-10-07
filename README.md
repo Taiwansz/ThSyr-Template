@@ -12,7 +12,7 @@ Ao contrário de assistentes descartáveis e chatbots sem memória, esta arquite
 1. **Memória Persistente Permanente:** Quatro camadas de memória (episódica, semântica, analítica e procedural) organizadas sob a estrutura anatômica de um cérebro (`brain/`).
 2. **Cérebro Neural 3D Interativo:** Visualização holográfica tridimensional em WebGL/Three.js de todos os nós semânticos, projetos e sinapses (`brain/neural_canvas_3d.html`).
 3. **Córtex Pré-Frontal Anti-Sicofância:** Auditoria inibitória em tempo real que veta respostas subservientes, bajulações e premissas fracas.
-4. **Skills Especializadas Embutidas:** Arsenal unificado com 28 habilidades de engenharia de software (`systematic-debugging`, `test-driven-development`, `verification-before-completion`, `using-git-worktrees`), excelência estética e frontend craft (`apple-design`, `editorial-canvas-3d`, `taste-skill`, `stitch-design-taste`, `logo-design`, `brandkit`, `industrial-brutalist-ui`, `minimalist-ui`), relatórios analíticos (`atlas-deep-reporting`) e automação de redes (`packet-tracer`).
+4. **Skills Especializadas Embutidas:** Arsenal unificado com 85 habilidades de engenharia de software, arquitetura de backend SaaS corporativo (RBAC multi-tenant, Supabase Postgres, pagamentos Pix, webhooks com idempotência), frontend craft e design editorial de alta fidelidade (Apple Design, Canvas 3D, Broadsheet, Stitch), suíte integral de SEO técnico/programático, economia de tokens Caveman, automação de redes e relatórios analíticos de alta precisão.
 5. **CLI Operacional Unificada:** Ferramenta de linha de comando (`python thsyr.py`) para ingestão de projetos, compilação de grafo, publicação editorial e auditorias.
 
 ### Cerebro Neural 3D
@@ -100,26 +100,20 @@ meu-copiloto/
 │   ├── code_graph/                # Análise AST e visualização de código
 │   ├── news/                      # Motor editorial da Gazeta Tecnológica
 │   └── runtime/                   # Supervisor de processos e continuous event loop
-├── skills/                        # Arsenal unificado de habilidades de engenharia, arquitetura e design
-│   ├── apple-design/              # Padrões de interfaces de altíssima fidelidade e física Apple
-│   ├── atlas-deep-reporting/      # Doutrina de relatórios técnicos e auditoria analítica quantitativa
-│   ├── editorial-canvas-3d/       # Motor espacial 3D em Canvas 2D nativo com mouse parallax
-│   ├── broadsheet-newspaper/      # Periódicos impressos históricos broadsheet em HTML puro (Universal)
-│   ├── taste-skill/               # Calibração estética contra designs genéricos (Anti-Slop)
-│   ├── stitch-design-taste/       # Design systems semânticos para Google Stitch
-│   ├── logo-design/               # Criação de identidades visuais e marcas em SVG
-│   ├── mobile-first-design-system/ # Design responsivo e ergonomia móvel rigorosa
-│   ├── brandkit/                  # Geração de brand-kits visuais e guidelines de marca
-│   ├── industrial-brutalist-ui/   # Interfaces industriais mecânicas e terminais de alta precisão
-│   ├── gpt-taste/                 # Engenharia avançada de animação GSAP e layout dinâmico
-│   ├── minimalist-ui/             # Interfaces minimalistas editoriais e bento grids
-│   ├── image-to-code/             # Conversão de referências visuais em código limpo
-│   ├── systematic-debugging/      # Investigação metodológica de causa raiz em 4 fases
-│   ├── test-driven-development/   # Ciclo disciplinar Red-Green-Refactor estrito
-│   ├── using-git-worktrees/       # Isolamento de branches paralelas no sistema de arquivos
-│   ├── verification-before-completion/ # Verificação empírica compulsória antes de conclusões
-│   ├── packet-tracer/             # Automação e simulação de topologias de redes via MCP
-│   └── ...                        # Utilitários de geração de imagem, code review e anti-truncamento
+├── skills/                        # Arsenal unificado com 85 habilidades especializadas
+│   ├── [Frontend Craft & UI/UX]   # apple-design, editorial-canvas-3d, taste-skill, stitch-design-taste, ui-ux-pro-max,
+│   │                              # minimalist-ui, industrial-brutalist-ui, gpt-taste, motion-design-system, ui-styling...
+│   ├── [Engenharia & Backend]     # saas-multi-tenant-rbac, supabase-postgres-pro, brazilian-payments-pix,
+│   │                              # saas-webhooks-idempotency, nextjs-app-router-expert, transactional-email-resend...
+│   ├── [Qualidade, TDD & Debug]   # systematic-debugging, test-driven-development, e2e-playwright-vitest-guardian,
+│   │                              # verification-before-completion, using-git-worktrees, review-agent, core-web-vitals-guardian...
+│   ├── [Suíte Completa de SEO]    # 26 skills modulares (seo, seo-audit, seo-technical, seo-programmatic, seo-schema,
+│   │                              # seo-cluster, seo-sxo, seo-geo, seo-dataforseo, seo-flow, seo-competitor-pages...)
+│   ├── [Economia de Tokens]       # Suíte Caveman (caveman, cavecrew, caveman-compress, caveman-review, full-output-enforcement...)
+│   ├── [Design Editorial Clássico]# broadsheet-newspaper (periódicos históricos impressos em HTML/CSS estrito)
+│   ├── [Branding & Conversão]     # brand, brandkit, logo-design, direct-response-copywriting, whatsapp-conversion-funnel, slides...
+│   ├── [Auditoria & Redes]        # atlas-deep-reporting (formalismo estatístico e LaTeX), packet-tracer (redes Cisco MCP)...
+│   └── [Orquestração de Agentes]  # agent-browser, agent-session-handoff, skill-creator, skill-installer, redesign-existing-projects
 ├── tests/                         # Suíte de testes automatizados herméticos
 └── state/                         # Estado operacional de sessões e checkpoints
 ```

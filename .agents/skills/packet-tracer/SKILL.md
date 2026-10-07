@@ -16,7 +16,7 @@ A Model Context Protocol server (`packet-tracer`) that drives **Cisco Packet Tra
 topology, validate it, generate IOS/PTBuilder artifacts, and **live-deploy** into a *running* PT
 over an HTTP bridge. The `pt_*` tools are your only interface — plus raw JS via `pt_send_raw`.
 
-## ⛔ Prime directive: DISCOVER, never invent
+## [PROIBIDO] Prime directive: DISCOVER, never invent
 
 The single biggest failure mode for a model driving this MCP is **guessing** — a model name, a
 port name, a slot id, a cable type, a module name, or a Script-Engine API method. Every one of
@@ -119,7 +119,7 @@ There is **no `pt_send_pdu`**: PT does not let an extension originate a packet t
   IPv6 is NOT settable via the PT API (`addIpv6Address` fails on HostPort) — SLAAC is the path.
 - **WiFi laptops:** `wireless_laptops=True` swaps each Laptop-PT NIC to `PT-LAPTOP-NM-1W` (slot `"0"`)
   → `Wireless0`, and adds **one `AccessPoint-PT` per LAN**, each wired to that LAN's own switch.
-  ⚠️ **Wireless addressing is NOT deterministic.** Laptops auto-associate on the default SSID and
+  [ALERTA]️ **Wireless addressing is NOT deterministic.** Laptops auto-associate on the default SSID and
   PT exposes **no SSID API** (verified: neither the AP nor its port has `setSsid`), so with more
   than one AP a laptop can associate to *any* of them and take a DHCP lease from **another LAN's
   pool**. Measured on PT 9.0.1: LT10, sitting right next to its own LAN's AP, still associated to
@@ -127,7 +127,7 @@ There is **no `pt_send_pdu`**: PT does not let an extension originate a packet t
   The planner now emits a `WIRELESS_AMBIGUOUS_ASSOCIATION` **warning** when ≥2 APs coexist.
   Always confirm with `pt_inspect_ports`; for deterministic addressing use `wireless_laptops=False`.
 
-## ⚠️ Verified PT Script-Engine API (for `pt_send_raw` / raw JS)
+## [ALERTA]️ Verified PT Script-Engine API (for `pt_send_raw` / raw JS)
 
 These are the **real** signatures (verified against the MCP's runtime patches and live testing).
 If a method is not here, do **not** assume it exists.
@@ -139,13 +139,13 @@ If a method is not here, do **not** assume it exists.
   To get the object, feed each name to `ipc.network().getDevice(name)`.
 - `allModuleTypes[name]` → module-type handle (passed to `addModule`)
 - `reportResult(data)` → exists **only when `wait_result=True`**; POSTs the result back
-- ❌ there is **no global `getDevice(...)`**; ❌ no `XMLHttpRequest` in the Script Engine
+- [ERRO] there is **no global `getDevice(...)`**; [ERRO] no `XMLHttpRequest` in the Script Engine
 
 **Network / device** — `var d = ipc.network().getDevice("R1");`  // ← correct singular lookup, may be null
 - `ipc.appWindow().getActiveWorkspace().getLogicalWorkspace()` → `lw`
   - `lw.addDevice(type, model, x, y)` → autoName · `lw.createLink(d1,p1,d2,p2,cableEnumInt)`
 - `d.getPorts()` → **Array of port-name strings** — use `.length`, `[i]`, `.join(",")`.
-  ❌ never `.size()`, `.at(i)`, `.getName()` on it (TypeError → modal → freeze).
+  [ERRO] never `.size()`, `.at(i)`, `.getName()` on it (TypeError → modal → freeze).
 - `d.getPort(name)` → Port | null · `d.getPower()/setPower(bool)/skipBoot()/setName(name)`
 - `d.moveToLocation(x, y)` → reposiciona en el canvas lógico. Es lo que usa `pt_move_device`;
   en un solo `pt_send_raw` podés reacomodar decenas de dispositivos sin una llamada por cada uno.
@@ -154,7 +154,7 @@ If a method is not here, do **not** assume it exists.
 - `d.getCommandLine()` → console handle with `getOutput()`, `enterCommand(cmd)`, `getPrompt()`.
   Use **this** for console work: `getCommandPrompt()` exists ONLY on hosts and throws
   `TypeError` on any router. PCs expose both, so `getCommandLine()` covers both worlds.
-  ⚠️ A router deployed by the MCP was never touched by console, so it sits at
+  [ALERTA]️ A router deployed by the MCP was never touched by console, so it sits at
   `Would you like to enter the initial configuration dialog? [yes/no]:` — a `ping` sent
   there is eaten as the yes/no answer. Prime it first: answer `no`, then send an empty
   command to clear `Press RETURN to get started.`
@@ -172,7 +172,7 @@ If a method is not here, do **not** assume it exists.
 phone 8104 · cable 8105 · serial 8106 · auto 8107 · console 8108 · wireless 8109 · coaxial 8110 ·
 octal 8111 · cellular 8112 · usb 8113 · custom_io 8114.
 
-### 🔒 ALWAYS wrap raw JS in try/catch
+###  ALWAYS wrap raw JS in try/catch
 ```js
 try { var d = ipc.network().getDevice("R1"); reportResult("ports="+d.getPorts().join(",")); }
 catch (e) { reportResult("ERR: " + e); }
@@ -242,7 +242,7 @@ it as extra CLI with `configureIosDevice(name, cli)`.
 
 ## Common mistakes → corrections (do not repeat these)
 
-| ❌ Wrong | ✅ Right | Why |
+| [ERRO] Wrong | [OK] Right | Why |
 |---|---|---|
 | `getDevice("R1")` | `ipc.network().getDevice("R1")` (or `getDevices("")` to list) | no global `getDevice` → ReferenceError → freeze |
 | `d.getPorts().size()` / `.at(i)` / `.getName()` | `d.getPorts()[i]` (string array) | getPorts returns strings |
@@ -263,7 +263,7 @@ it as extra CLI with `configureIosDevice(name, cli)`.
   2960/3560 `FastEthernet0/1..0/24` + `GigabitEthernet0/1..0/2`; PC/Laptop/Server `FastEthernet0`;
   HWIC-2T in `"0/x"` → `Serial0/x/0`,`Serial0/x/1`;
   **Cloud-PT has 8 ports**: `Serial0..3`, `Modem4`, `Modem5`, `Ethernet6`, `Coaxial7`.
-  ⚠️ A cloud only *forwards* over its serial ports once frame relay is configured, and the MCP has no
+  [ALERTA]️ A cloud only *forwards* over its serial ports once frame relay is configured, and the MCP has no
   tool for that. For a WAN core that actually passes traffic, link routers to each other with `/30`s and
   hang the cloud off `Ethernet6` as an external stub.
 - **IP plan** (`pt_plan_topology`): LANs `/24` from `192.168.0.0`, gateway `.1`, hosts from `.2`;
@@ -279,13 +279,13 @@ incompatible module up front** when the module declares `compatible_with` (HWIC/
 
 | Router family | Module type | Slot (string) | Ports added | Status |
 |---|---|---|---|---|
-| ISR G2 — 2911/2901 | HWIC (`HWIC-2T`, `HWIC-1GE-SFP`) | `"0/0".."0/3"` | `Serial0/x/0`,`Serial0/x/1` | ✅ verified 2911 |
-| ISR G2 — **1941** | HWIC | **only `"0/0"`, `"0/1"`** — it has 2 slots, not 4 | `Serial0/x/0`,`Serial0/x/1` | ✅ verified 1941 (PT 9.0.1) |
-| ISR 4000 — ISR4321/4331 | NIM (`NIM-2T`, `NIM-ES2-4`) | **`"0/1"`, `"0/2"`** | `Serial0/1/0`,`Serial0/1/1` | ✅ verified ISR4321 & ISR4331 |
-| 2811 / 2620XM / 2621XM | NM (`NM-4A/S`, `NM-2FE2W`,…) | **`"1"`** | `Serial1/0..1/3` | ✅ verified 2811 |
-| Router-PT (generic) | NM (`NM-*`, `PT-ROUTER-NM-*`) | `"1"` | ⚠️ non-standard ids (e.g. `Serial2/0`) | installs, odd port names |
+| ISR G2 — 2911/2901 | HWIC (`HWIC-2T`, `HWIC-1GE-SFP`) | `"0/0".."0/3"` | `Serial0/x/0`,`Serial0/x/1` | [OK] verified 2911 |
+| ISR G2 — **1941** | HWIC | **only `"0/0"`, `"0/1"`** — it has 2 slots, not 4 | `Serial0/x/0`,`Serial0/x/1` | [OK] verified 1941 (PT 9.0.1) |
+| ISR 4000 — ISR4321/4331 | NIM (`NIM-2T`, `NIM-ES2-4`) | **`"0/1"`, `"0/2"`** | `Serial0/1/0`,`Serial0/1/1` | [OK] verified ISR4321 & ISR4331 |
+| 2811 / 2620XM / 2621XM | NM (`NM-4A/S`, `NM-2FE2W`,…) | **`"1"`** | `Serial1/0..1/3` | [OK] verified 2811 |
+| Router-PT (generic) | NM (`NM-*`, `PT-ROUTER-NM-*`) | `"1"` | [ALERTA]️ non-standard ids (e.g. `Serial2/0`) | installs, odd port names |
 
-> ⚠️ The `pt_add_module` docstring/SERVER_INSTRUCTIONS say NIM slots are `"0"`/`"1"` — **that is
+> [ALERTA]️ The `pt_add_module` docstring/SERVER_INSTRUCTIONS say NIM slots are `"0"`/`"1"` — **that is
 > wrong**; the working slot is **`"0/1"`** (chassis/subslot). HWIC = `"0/x"`, NM = `"1"`, NIM = `"0/1"`.
 > The install *mechanism* (`addModule`) is identical across routers — only the **slot string** differs
 > by family. Always confirm the result with `pt_query_topology`.
@@ -300,7 +300,7 @@ power-cycle the device and can exceed the wait window (and often report a timeou
 - **`pt_add_module` (single) can report a timeout but still succeed** — verify ports, don't blindly retry.
   (`pt_install_modules_batch` no longer guesses: it reports `installed` per module, see round 2 below.)
 - **`three_router_triangle` closes the ring (R3↔R1)** and `hub_spoke` wires R1→every spoke — the
-  orchestrator honors the template shape (was a flat chain before). ⚠️ **`hub_spoke` is limited by the
+  orchestrator honors the template shape (was a flat chain before). [ALERTA]️ **`hub_spoke` is limited by the
   hub's port count**: a 2911 has 3 Gigabit ports, so it cannot serve 5 spokes plus its own LAN. Asking
   for more no longer fails silently — the plan comes back with `TOPOLOGY_DISCONNECTED`. Pick a router
   with more ports, add a module, or use `multi_lan` (a chain needs only 3 ports per router).
@@ -311,7 +311,7 @@ power-cycle the device and can exceed the wait window (and often report a timeou
   embedded `errors[]` — always check `plan.errors` before deploying.
 - A harmless phantom `Power Distribution Device` can appear after deploy (off-canvas).
 
-### ☠️ Never iterate a native PT object with `for...in`
+### [PERIGO]️ Never iterate a native PT object with `for...in`
 
 ```js
 var d = lw.getEllipseItemData(id);

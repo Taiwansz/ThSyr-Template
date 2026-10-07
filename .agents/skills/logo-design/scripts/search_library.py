@@ -186,9 +186,9 @@ def main():
         for r in shown:
             print(os.path.join(svglib.LIBRARY_SVG_DIR, r["file"]))
     else:
-        print(f"{len(rows)} match, showing {len(shown)}  (★ = exemplary; files in {svglib.LIBRARY_SVG_DIR})")
+        print(f"{len(rows)} match, showing {len(shown)}  (* = exemplary; files in {svglib.LIBRARY_SVG_DIR})")
         for r in shown:
-            star = "★" if r.get("exemplary") else " "
+            star = "*" if r.get("exemplary") else " "
             kind = r.get("mark_type") or "?"
             if r.get("symbol_type"):
                 kind += "/" + r["symbol_type"]

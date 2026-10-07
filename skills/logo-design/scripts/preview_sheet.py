@@ -133,7 +133,7 @@ def concept_block(name, uri, aspect, brand, idx):
     # contexts
     out.append("<h3>Contexts</h3><div class='row'>")
     out.append(f"<div class='cell'><div class='tab'>{img(uri)}<span>{html.escape(name)} — Home</span>"
-               f"<span style='margin-left:auto'>✕</span></div><div class='cap'>browser tab (16 px favicon)</div></div>")
+               f"<span style='margin-left:auto'>x</span></div><div class='cap'>browser tab (16 px favicon)</div></div>")
     icon = (f"<div class='ico' style='background:{brand};display:flex;align-items:center;justify-content:center'>"
             f"{img(uri, h=28, w=30, cls='mono-white')}</div>")
     apps = "".join("<div class='app'><div class='ico'></div>app</div>" for _ in range(6))

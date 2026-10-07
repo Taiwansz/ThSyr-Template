@@ -249,7 +249,7 @@ def mock_html(kind, c):
                 '<span class="lbl">Payment card</span></div>')
     if kind == "favicon-tab":
         return (f'<div class="m" style="background:#eceff1"><div class="tabbar"><div class="tab"><img class="{cls}" src="{av}" style="width:16px;height:16px;object-fit:contain">'
-                f'{n} — Home<span style="margin-left:auto">✕</span></div><div class="addr">https://{handle}.com</div></div><span class="lbl">Browser tab</span></div>')
+                f'{n} — Home<span style="margin-left:auto">x</span></div><div class="addr">https://{handle}.com</div></div><span class="lbl">Browser tab</span></div>')
     raise KeyError(kind)
 
 

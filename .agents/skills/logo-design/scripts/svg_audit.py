@@ -226,9 +226,9 @@ def print_report(info):
         print(f"margins L{m['left']} R{m['right']} T{m['top']} B{m['bottom']} · bbox fill {info.get('bbox_fill_ratio')}")
     order = {"FAIL": 0, "WARN": 1, "INFO": 2}
     if not info["findings"]:
-        print("✔ no issues found")
+        print("[OK] no issues found")
     for f in sorted(info["findings"], key=lambda f: order[f["level"]]):
-        icon = {"FAIL": "✖", "WARN": "▲", "INFO": "·"}[f["level"]]
+        icon = {"FAIL": "[ERRO]", "WARN": "▲", "INFO": "·"}[f["level"]]
         print(f"{icon} {f['level']:4s} [{f['code']}] {f['message']}")
     print(f"production-readiness score: {info['score']}/100 (heuristic)")
 
@@ -251,7 +251,7 @@ def main():
     else:
         for r in results:
             if "error" in r:
-                print(f"\n=== {r['file']}\n✖ could not parse: {r['error']}")
+                print(f"\n=== {r['file']}\n[ERRO] could not parse: {r['error']}")
             else:
                 print_report(r)
     return rc
