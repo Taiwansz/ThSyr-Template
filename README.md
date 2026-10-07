@@ -12,7 +12,7 @@ Ao contrário de assistentes descartáveis e chatbots sem memória, esta arquite
 1. **Memória Persistente Permanente:** Quatro camadas de memória (episódica, semântica, analítica e procedural) organizadas sob a estrutura anatômica de um cérebro (`brain/`).
 2. **Cérebro Neural 3D Interativo:** Visualização holográfica tridimensional em WebGL/Three.js de todos os nós semânticos, projetos e sinapses (`brain/neural_canvas_3d.html`).
 3. **Córtex Pré-Frontal Anti-Sicofância:** Auditoria inibitória em tempo real que veta respostas subservientes, bajulações e premissas fracas.
-4. **Skills Especializadas Embutidas:** Bibliotecas de excelência estética e arquitetural (`apple-design`, `taste-skill`, `logo-design`, `mobile-first-design-system`, `broadsheet-newspaper`, `brag`).
+4. **Skills Especializadas Embutidas:** Arsenal unificado com 28 habilidades de engenharia de software (`systematic-debugging`, `test-driven-development`, `verification-before-completion`, `using-git-worktrees`), excelência estética e frontend craft (`apple-design`, `editorial-canvas-3d`, `taste-skill`, `stitch-design-taste`, `logo-design`, `brandkit`, `industrial-brutalist-ui`, `minimalist-ui`), relatórios analíticos (`atlas-deep-reporting`) e automação de redes (`packet-tracer`).
 5. **CLI Operacional Unificada:** Ferramenta de linha de comando (`python thsyr.py`) para ingestão de projetos, compilação de grafo, publicação editorial e auditorias.
 
 ### Cerebro Neural 3D
