@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-archetype="classic">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{NEWSPAPER_TITLE}} — {{EDITION_DATE}}</title>
+  
+  <!-- Tipografia de Imprensa Historica (Blackletter + Serifas de Linotipia + Monospace Mecanico) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700;1,900&family=UnifrakturMaguntia&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================================
+       ARQUITETURA BROADSHEET DE IMPRENSA HISTORICA (UNIVERSAL & ANTI-SLOP)
+       Folha Fisica de Papel e Tinta Mineral — Zero Elementos Digitais
+       ========================================================================= */
+
+    :root {
+      /* Archetype: Classic (Padrao) */
+      --newsprint-base: #f3ede2;
+      --newsprint-aged: #eae0d0;
+      --newsprint-shadow: #dfd4c1;
+      --paper-border: #c9bfae;
+      --ink-primary: #121110;
+      --ink-secondary: #262422;
+      --ink-muted: #4a4642;
+      --rule-solid: #121110;
+      --rule-light: #bfb5a3;
+      --accent-tint: #6e1410;
+
+      --font-masthead: 'UnifrakturMaguntia', 'Old English Text MT', serif;
+      --font-headline: 'Playfair Display', Georgia, serif;
+      --font-body: 'Old Standard TT', 'Times New Roman', serif;
+      --font-subhead: 'Cinzel', serif;
+      --font-teletype: 'JetBrains Mono', monospace;
+    }
+
+    /* Archetype 2: Financial (Folha Salmao) */
+    html[data-archetype="financial"] {
+      --newsprint-base: #f7e6d2;
+      --newsprint-aged: #ebd5be;
+      --newsprint-shadow: #dec4aa;
+      --paper-border: #cbb49b;
+      --ink-primary: #181513;
+      --ink-secondary: #2c2723;
+      --ink-muted: #544c45;
+      --rule-solid: #181513;
+      --rule-light: #caa788;
+      --accent-tint: #1a324a;
+    }
+
+    /* Archetype 3: Scientific (Pergaminho Botanico) */
+    html[data-archetype="scientific"] {
+      --newsprint-base: #f5f0e6;
+      --newsprint-aged: #e9e2d5;
+      --newsprint-shadow: #ddd4c4;
+      --paper-border: #c8bead;
+      --ink-primary: #141615;
+      --ink-secondary: #272a28;
+      --ink-muted: #484d49;
+      --rule-solid: #141615;
+      --rule-light: #b8b1a2;
+      --accent-tint: #1f3b2b;
+    }
+
+    /* Archetype 4: Cultural (Algodao Cru) */
+    html[data-archetype="cultural"] {
+      --newsprint-base: #f9f6f0;
+      --newsprint-aged: #ede8df;
+      --newsprint-shadow: #e0d8cb;
+      --paper-border: #cdc4b4;
+      --ink-primary: #1c1816;
+      --ink-secondary: #302b28;
+      --ink-muted: #574e49;
+      --rule-solid: #1c1816;
+      --rule-light: #c2b8a7;
+      --accent-tint: #7c3a27;
+    }
+
+    /* Archetype 5: Tech & Industrial (Cinza Ardosia) */
+    html[data-archetype="tech"] {
+      --newsprint-base: #ece9e2;
+      --newsprint-aged: #dfdbd2;
+      --newsprint-shadow: #cecac0;
+      --paper-border: #b8b3a7;
+      --ink-primary: #0f1011;
+      --ink-secondary: #222325;
+      --ink-muted: #47494c;
+      --rule-solid: #0f1011;
+      --rule-light: #aaa59a;
+      --accent-tint: #5c4028;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #151311;
+      color: var(--ink-primary);
+      font-family: var(--font-body);
+      line-height: 1.34;
+      padding: 44px 18px 88px 18px;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        radial-gradient(rgba(0, 0, 0, 0.4) 1px, #151311 1px);
+      background-size: 32px 32px;
+      background-position: 0 0, 16px 16px;
+    }
+
+    /* A FOLHA FISICA BROADSHEET */
+    .newspaper-broadsheet {
+      width: 100%;
+      max-width: 1440px;
+      background-color: var(--newsprint-base);
+      background-image: 
+        radial-gradient(var(--newsprint-aged) 0.8px, transparent 0.8px),
+        linear-gradient(to right, rgba(0, 0, 0, 0.012) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.012) 1px, transparent 1px);
+      background-size: 22px 22px, 16px 16px, 16px 16px;
+      box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.4),
+        0 18px 40px rgba(0, 0, 0, 0.55),
+        0 35px 85px rgba(0, 0, 0, 0.7);
+      padding: 42px 48px 56px 48px;
+      position: relative;
+      border: 1px solid var(--paper-border);
+    }
+
+    /* O VINCO VERTICAL CENTRAL DA DOBRA */
+    .newspaper-broadsheet::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 1px;
+      background: linear-gradient(
+        to bottom, 
+        transparent, 
+        rgba(0, 0, 0, 0.12) 7%, 
+        rgba(0, 0, 0, 0.12) 93%, 
+        transparent
+      );
+      box-shadow: 0 0 16px rgba(0, 0, 0, 0.08);
+      pointer-events: none;
+    }
+
+    /* =========================================================================
+       O MASTHEAD E ORELHAS SUPERIORES
+       ========================================================================= */
+
+    .masthead-wrapper {
+      border-bottom: 3px double var(--rule-solid);
+      padding-bottom: 12px;
+      margin-bottom: 8px;
+    }
+
+    .top-ears-bar {
+      display: grid;
+      grid-template-columns: 280px 1fr 280px;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .ear-box {
+      border: 1px solid var(--rule-solid);
+      padding: 6px 10px;
+      font-size: 11px;
+      line-height: 1.25;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    .ear-box strong {
+      display: block;
+      font-family: var(--font-subhead);
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      margin-bottom: 2px;
+      color: var(--accent-tint);
+    }
+
+    .center-motto-proverb {
+      text-align: center;
+      font-family: var(--font-subhead);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      border-top: 1px solid var(--rule-light);
+      border-bottom: 1px solid var(--rule-light);
+      padding: 4px 0;
+    }
+
+    .masthead-title {
+      font-family: var(--font-masthead);
+      font-size: 78px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      text-align: center;
+      line-height: 1.05;
+      margin: 8px 0 4px 0;
+      color: var(--ink-primary);
+      text-shadow: 0.5px 0.5px 0px rgba(0,0,0,0.15);
+    }
+
+    .sub-masthead-motto {
+      font-family: var(--font-subhead);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-align: center;
+      color: var(--ink-secondary);
+      margin-top: 4px;
+    }
+
+    /* BARRA DE DATA E FOLIO */
+    .date-bar {
+      border-top: 1px solid var(--rule-solid);
+      border-bottom: 1px solid var(--rule-solid);
+      padding: 5px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-subhead);
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      color: var(--ink-primary);
+    }
+
+    /* =========================================================================
+       GRADE PRINCIPAL DA PRIMEIRA PAGINA (BROADSHEET GRID)
+       ========================================================================= */
+
+    .broadsheet-grid {
+      display: grid;
+      grid-template-columns: 290px 1fr 310px;
+      gap: 26px;
+      position: relative;
+    }
+
+    /* LINHAS SEPARADORAS ENTRE COLUNAS */
+    .column-wire {
+      border-right: 1px solid var(--rule-light);
+      padding-right: 20px;
+    }
+
+    .column-main {
+      padding: 0 4px;
+    }
+
+    .column-side {
+      border-left: 1px solid var(--rule-light);
+      padding-left: 20px;
+    }
+
+    /* SECOES DA MATERIA PRINCIPAL (LEAD STORY) */
+    .lead-story-header {
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--rule-light);
+      padding-bottom: 12px;
+    }
+
+    .kicker {
+      font-family: var(--font-subhead);
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent-tint);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .lead-headline {
+      font-family: var(--font-headline);
+      font-size: 46px;
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -0.015em;
+      color: var(--ink-primary);
+      margin-bottom: 10px;
+    }
+
+    .lead-deck {
+      font-family: var(--font-subhead);
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.32;
+      letter-spacing: 0.05em;
+      color: var(--ink-secondary);
+      text-align: justify;
+    }
+
+    .lead-body-columns {
+      column-count: 3;
+      column-gap: 22px;
+      column-rule: 1px solid var(--rule-light);
+      text-align: justify;
+      hyphens: auto;
+      font-size: 13px;
+      line-height: 1.38;
+      color: var(--ink-primary);
+    }
+
+    .lead-body-columns p {
+      text-indent: 1.3em;
+      margin-bottom: 0;
+    }
+
+    .lead-body-columns p:first-of-type {
+      text-indent: 0;
+    }
+
+    .dateline {
+      font-family: var(--font-subhead);
+      font-weight: 800;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--ink-primary);
+    }
+
+    /* CAPITULAR HISTORICA (DROP CAP) */
+    .lead-body-columns p:first-of-type::first-letter {
+      float: left;
+      font-family: var(--font-headline);
+      font-size: 54px;
+      line-height: 44px;
+      padding-top: 5px;
+      padding-right: 9px;
+      padding-bottom: 2px;
+      font-weight: 900;
+      color: var(--ink-primary);
+    }
+
+    /* MATERIAS SECUNDARIAS */
+    .secondary-story {
+      margin-top: 24px;
+      border-top: 2px solid var(--rule-solid);
+      padding-top: 14px;
+    }
+
+    .secondary-headline {
+      font-family: var(--font-headline);
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+
+    .secondary-body {
+      column-count: 2;
+      column-gap: 18px;
+      column-rule: 1px solid var(--rule-light);
+      text-align: justify;
+      hyphens: auto;
+      font-size: 12.5px;
+      line-height: 1.36;
+    }
+
+    .secondary-body p {
+      text-indent: 1.2em;
+    }
+
+    /* COLUNA DO TELEGRAFO (WIRE DISPATCHES) */
+    .section-title-box {
+      border-top: 2px solid var(--rule-solid);
+      border-bottom: 1px solid var(--rule-solid);
+      padding: 4px 0;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .section-title-box h3 {
+      font-family: var(--font-subhead);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink-primary);
+    }
+
+    .wire-item {
+      margin-bottom: 14px;
+      border-bottom: 1px dotted var(--rule-light);
+      padding-bottom: 10px;
+      font-size: 12px;
+      line-height: 1.32;
+      text-align: justify;
+      hyphens: auto;
+    }
+
+    .wire-item h4 {
+      font-family: var(--font-subhead);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+      color: var(--accent-tint);
+    }
+
+    /* TABELA DE DADOS & COTACOES */
+    .market-table-container {
+      margin-top: 18px;
+      border: 1px solid var(--rule-solid);
+      padding: 8px;
+      background: rgba(0, 0, 0, 0.015);
+    }
+
+    .market-table-title {
+      font-family: var(--font-subhead);
+      font-size: 9.5px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      text-align: center;
+      border-bottom: 1px solid var(--rule-solid);
+      padding-bottom: 4px;
+      margin-bottom: 6px;
+    }
+
+    .market-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-teletype);
+      font-size: 10.5px;
+    }
+
+    .market-table th {
+      text-align: left;
+      border-bottom: 1px solid var(--rule-solid);
+      padding: 3px 2px;
+      font-size: 9.5px;
+      letter-spacing: 0.05em;
+    }
+
+    .market-table td {
+      padding: 3.5px 2px;
+      border-bottom: 1px dotted var(--rule-light);
+    }
+
+    .market-table td.num {
+      text-align: right;
+    }
+
+    /* COLUNA LATERAL DIREITA: ENSAIOS & CRONICAS */
+    .feature-card {
+      border: 1px solid var(--rule-solid);
+      padding: 12px;
+      margin-bottom: 18px;
+      background: rgba(0,0,0,0.015);
+    }
+
+    .feature-card h3 {
+      font-family: var(--font-headline);
+      font-size: 21px;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 6px;
+    }
+
+    .feature-card p {
+      font-size: 12px;
+      line-height: 1.34;
+      text-align: justify;
+      hyphens: auto;
+      text-indent: 1.2em;
+    }
+
+    .feature-card p:first-of-type {
+      text-indent: 0;
+    }
+
+    .woodcut-frame {
+      border: 1px solid var(--rule-solid);
+      padding: 3px;
+      margin: 10px 0;
+      text-align: center;
+      background: #000;
+      color: #fff;
+      font-family: var(--font-subhead);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      padding: 20px 10px;
+    }
+
+    /* =========================================================================
+       O EXPEDIENTE DA OFICINA MECANICA (RODAPE COLOFAO)
+       ========================================================================= */
+
+    .broadsheet-footer {
+      margin-top: 32px;
+      border-top: 3px double var(--rule-solid);
+      padding-top: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      font-size: 10px;
+      line-height: 1.3;
+      color: var(--ink-muted);
+      text-align: justify;
+      font-family: var(--font-body);
+    }
+
+    .footer-col strong {
+      display: block;
+      font-family: var(--font-subhead);
+      font-size: 9.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-primary);
+      margin-bottom: 2px;
+    }
+
+    /* RESPONSIVIDADE DEGRADADA COM GRACA (TABLET / MOBILE) */
+    @media (max-width: 1100px) {
+      .newspaper-broadsheet {
+        padding: 24px 20px;
+      }
+      .masthead-title {
+        font-size: 52px;
+      }
+      .top-ears-bar {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .broadsheet-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .column-wire, .column-side {
+        border-right: none;
+        border-left: none;
+        padding: 0;
+      }
+      .lead-body-columns {
+        column-count: 2;
+      }
+      .broadsheet-footer {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .masthead-title {
+        font-size: 38px;
+      }
+      .lead-headline {
+        font-size: 32px;
+      }
+      .lead-body-columns, .secondary-body {
+        column-count: 1;
+      }
+      .date-bar {
+        flex-direction: column;
+        gap: 4px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- FOLHA BROADSHEET CLASSICA -->
+  <article class="newspaper-broadsheet">
+
+    <!-- MASTHEAD & CABECALHO -->
+    <header class="masthead-wrapper">
+      
+      <!-- ORELHAS E LEMA CENTRAL -->
+      <div class="top-ears-bar">
+        <div class="ear-box">
+          <strong>OBSERVATORIO METEOROLOGICO</strong>
+          {{WEATHER_REPORT}}
+        </div>
+
+        <div class="center-motto-proverb">
+          {{LATIN_MOTTO}}
+        </div>
+
+        <div class="ear-box">
+          <strong>AVISO DA REDACAO</strong>
+          {{CIRCULATION_NOTICE}}
+        </div>
+      </div>
+
+      <!-- TITULO PRINCIPAL EM BLACKLETTER -->
+      <h1 class="masthead-title">{{NEWSPAPER_TITLE}}</h1>
+
+      <!-- SUB-MASTHEAD / MISSAO -->
+      <div class="sub-masthead-motto">{{NEWSPAPER_SUBTITLE}}</div>
+    </header>
+
+    <!-- BARRA DE DATA E FOLIO -->
+    <nav class="date-bar" aria-label="Informações da Edição">
+      <div>{{PUBLICATION_LOCATION}}</div>
+      <div>{{EDITION_DATE}}</div>
+      <div>VOL. {{VOLUME_NUMBER}} &mdash; N&ordm; {{EDITION_NUMBER}}</div>
+      <div>PRECO: {{ISSUE_PRICE}}</div>
+    </nav>
+
+    <!-- GRADE BROADSHEET EM COLUNAS MECANICAS -->
+    <div class="broadsheet-grid">
+
+      <!-- COLUNA 1: DESPACHOS DO TELEGRAFO E TABELA -->
+      <aside class="column-wire">
+        <div class="section-title-box">
+          <h3>Ultimas do Telegrafo</h3>
+        </div>
+
+        <div class="wire-item">
+          <h4>{{WIRE_1_TITLE}}</h4>
+          <p><span class="dateline">{{WIRE_1_ORIGIN}} &mdash;</span> {{WIRE_1_BODY}}</p>
+        </div>
+
+        <div class="wire-item">
+          <h4>{{WIRE_2_TITLE}}</h4>
+          <p><span class="dateline">{{WIRE_2_ORIGIN}} &mdash;</span> {{WIRE_2_BODY}}</p>
+        </div>
+
+        <div class="wire-item">
+          <h4>{{WIRE_3_TITLE}}</h4>
+          <p><span class="dateline">{{WIRE_3_ORIGIN}} &mdash;</span> {{WIRE_3_BODY}}</p>
+        </div>
+
+        <!-- TABELA DE INDICADORES / MERCADOS -->
+        <div class="market-table-container">
+          <div class="market-table-title">{{TABLE_TITLE}}</div>
+          <table class="market-table">
+            <thead>
+              <tr>
+                <th>{{TABLE_COL_1}}</th>
+                <th>{{TABLE_COL_2}}</th>
+                <th style="text-align: right;">{{TABLE_COL_3}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{TABLE_ROWS}}
+            </tbody>
+          </table>
+        </div>
+      </aside>
+
+      <!-- COLUNA 2, 3, 4: MANCHETE PRINCIPAL E SEGUNDA REPORTAGEM -->
+      <main class="column-main">
+        
+        <!-- LEAD STORY -->
+        <section class="lead-story">
+          <div class="lead-story-header">
+            <span class="kicker">{{LEAD_KICKER}}</span>
+            <h2 class="lead-headline">{{LEAD_HEADLINE}}</h2>
+            <div class="lead-deck">{{LEAD_DECK}}</div>
+          </div>
+
+          <div class="lead-body-columns">
+            <p><span class="dateline">{{LEAD_ORIGIN}} &mdash;</span> {{LEAD_PARAGRAPH_1}}</p>
+            <p>{{LEAD_PARAGRAPH_2}}</p>
+            <p>{{LEAD_PARAGRAPH_3}}</p>
+            <p>{{LEAD_PARAGRAPH_4}}</p>
+          </div>
+        </section>
+
+        <!-- SEGUNDA MATERIA DE BANCADA -->
+        <section class="secondary-story">
+          <span class="kicker">{{SECONDARY_KICKER}}</span>
+          <h3 class="secondary-headline">{{SECONDARY_HEADLINE}}</h3>
+          <div class="secondary-body">
+            <p><span class="dateline">{{SECONDARY_ORIGIN}} &mdash;</span> {{SECONDARY_PARAGRAPH_1}}</p>
+            <p>{{SECONDARY_PARAGRAPH_2}}</p>
+            <p>{{SECONDARY_PARAGRAPH_3}}</p>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- COLUNA 5 E 6: ENSAIOS, GRAVURA E CRONICAS -->
+      <aside class="column-side">
+        <div class="section-title-box">
+          <h3>Tribuna &amp; Ensaio</h3>
+        </div>
+
+        <div class="feature-card">
+          <span class="kicker">{{ESSAY_KICKER}}</span>
+          <h3>{{ESSAY_TITLE}}</h3>
+          <p>{{ESSAY_PARAGRAPH_1}}</p>
+          <p>{{ESSAY_PARAGRAPH_2}}</p>
+        </div>
+
+        <!-- RECORTE / NOTA ESPECIAL -->
+        <div class="feature-card" style="border-style: double; border-width: 3px;">
+          <span class="kicker">{{CHRONICLE_KICKER}}</span>
+          <h3>{{CHRONICLE_TITLE}}</h3>
+          <p>{{CHRONICLE_PARAGRAPH}}</p>
+        </div>
+      </aside>
+
+    </div>
+
+    <!-- EXPEDIENTE DA OFICINA MECANICA (COLOFAO) -->
+    <footer class="broadsheet-footer">
+      <div class="footer-col">
+        <strong>Redacao &amp; Administracao</strong>
+        Oficinas centrais situadas no largo principal. Edicoes diarias matutinas impressas em prensas rotativas de linotipia. Correspondencias direcionadas a secao editorial.
+      </div>
+      <div class="footer-col">
+        <strong>Corpo de Redatores</strong>
+        Redator-Chefe, Conselho Editorial de Letras e Ciencias, Correspondentes nos Portos e Capitais de Provincia. Tipografia mecanica em liga mineral de chumbo e antimonio.
+      </div>
+      <div class="footer-col">
+        <strong>Tiragem &amp; Assinaturas</strong>
+        Tiragem autenticada de 25.000 exemplares. Assinaturas anuais e semestrais remetidas pelo correio federal. Exemplar avulso conservado sob arquivamento perpetuo.
+      </div>
+    </footer>
+
+  </article>
+
+</body>
+</html>

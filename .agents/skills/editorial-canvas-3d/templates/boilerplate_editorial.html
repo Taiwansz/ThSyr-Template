@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITULO_DA_APRESENTACAO}} · Editorial Canvas 3D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Schibsted+Grotesk:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#FFFFFF; --ink:#141310; --ink-2:#4E4A42; --ink-3:#7E7A70;
+  --red:#B3392C; --blue:#1F5FA8; --yellow:#8A6A00; --bone:#3A3630;
+  --emerald:#1B7A4B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--void); color:var(--ink);
+  font-family:'Schibsted Grotesk',system-ui,-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+code{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.88em;color:var(--bone);background:rgba(20,19,16,.05);padding:2px 5px;border-radius:2px}
+
+#stage{position:fixed;inset:0;z-index:0}
+#c{display:block;width:100%;height:100%}
+#vig{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse 80% 64% at 50% 50%,transparent 0%,rgba(255,255,255,.55) 74%,rgba(255,255,255,.94) 100%)}
+
+/* trilho de rolagem continuo */
+#rail{position:relative;z-index:2}
+.panel{min-height:100vh;display:flex;align-items:center;padding:0 6vw;pointer-events:none}
+.panel .box{max-width:460px;opacity:0;transform:translateY(16px);pointer-events:auto;transition:transform .2s cubic-bezier(0.16,1,0.3,1),opacity .2s ease}
+.panel.right{justify-content:flex-end}
+.panel.mid{justify-content:center;text-align:center}
+.panel.mid .box{max-width:680px}
+.panel.mid .box.wide{max-width:820px}
+
+.tag{display:inline-flex;align-items:center;gap:9px;font:800 10.5px/1 'JetBrains Mono',ui-monospace,monospace;
+  letter-spacing:.22em;color:var(--ink-2);margin-bottom:20px;cursor:default;user-select:none;transition:transform .12s cubic-bezier(0.16,1,0.3,1)}
+.tag:active{transform:scale(0.97)}
+.tag i{width:8px;height:8px;background:var(--red);display:block}
+.tag i.b{background:var(--blue)} .tag i.y{background:var(--yellow)} .tag i.n{background:var(--bone);border-radius:50%} .tag i.g{background:var(--emerald)}
+
+h1{font-size:clamp(38px,6.6vw,78px);line-height:.96;letter-spacing:-.04em;font-weight:900}
+h2{font-size:clamp(27px,3.7vw,45px);line-height:1.02;letter-spacing:-.035em;font-weight:800;margin-bottom:18px}
+.n{font-size:clamp(44px,7vw,86px);line-height:1;letter-spacing:-.05em;font-weight:900;
+  font-variant-numeric:tabular-nums;margin-bottom:6px;white-space:nowrap}
+.unit{font:700 11px/1 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.2em;color:var(--ink-2);margin-bottom:16px}
+p{font-size:16.5px;line-height:1.62;color:var(--ink-2);max-width:44ch}
+p+p{margin-top:13px}
+p b{color:var(--ink);font-weight:800}
+.hint{margin-top:34px;font:700 11px/1 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.2em;color:var(--ink-3);transition:transform .15s ease}
+.hint:active{transform:scale(0.96)}
+
+.facts{margin-top:24px;border-top:1px solid rgba(20,19,16,.16)}
+.facts div{display:flex;justify-content:space-between;gap:18px;padding:11px 0;
+  border-bottom:1px solid rgba(20,19,16,.11);font-size:14.5px;transition:background .2s,transform .12s cubic-bezier(0.16,1,0.3,1)}
+.facts div:active{transform:scale(0.985)}
+.facts .k{color:var(--ink-3)}
+.facts .v{font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink)}
+
+/* HUD continuo de navegacao */
+#hud{position:fixed;left:0;right:0;bottom:0;z-index:3;padding:18px 6vw;
+  display:flex;justify-content:space-between;align-items:flex-end;gap:20px;pointer-events:none;
+  font:700 10.5px/1.5 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.14em;color:var(--ink-3)}
+#hud .set{color:var(--ink-2)}
+#hudKeys{font-size:9.5px;letter-spacing:.18em;color:var(--ink-3);opacity:0.75}
+#ticks{display:flex;gap:5px;align-items:center}
+#ticks b{width:22px;height:2px;background:rgba(20,19,16,.20);display:block;transition:background .35s ease}
+#ticks b.on{background:var(--red)}
+
+#load{position:fixed;inset:0;z-index:9;background:var(--void);display:flex;align-items:center;justify-content:center;
+  font:700 11px/1 ui-monospace,monospace;letter-spacing:.24em;color:var(--ink-3);transition:opacity .6s ease}
+#load.off{opacity:0;pointer-events:none}
+
+@media (max-width:760px){
+  .panel{padding:0 5vw} .panel.right{justify-content:flex-start} p{font-size:15px}
+  .panel .box{background:rgba(255,255,255,.90);padding:22px 18px;
+    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(20,19,16,.08)}
+  #hud .set, #hudKeys{display:none} #hud{justify-content:flex-end;padding:16px 5vw}
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition-duration:0.01ms !important;animation-duration:0.01ms !important;scroll-behavior:auto !important}
+}
+</style>
+</head>
+<body>
+<div id="load">COMPILANDO MODELO MATEMÁTICO · {{DATA}}</div>
+<div id="stage"><canvas id="c"></canvas></div>
+<div id="vig"></div>
+<div id="hud">
+  <div>
+    <div class="set" id="hudSet">—</div>
+    <div id="hudKeys">[ TECLADO: ↑ / ↓ / ESPAÇO · F: TELA CHEIA ]</div>
+  </div>
+  <div id="ticks"></div>
+</div>
+
+<div id="rail">
+  <!-- S0: Hero com Abertura Central -->
+  <section class="panel mid" data-s="0">
+    <div class="box">
+      <div class="tag"><i class="n"></i>{{AUTOR_OU_DISCIPLINA}} · {{DATA}}</div>
+      <h1>{{TITULO_MONUMENTAL_LINHA1}}<br>{{TITULO_MONUMENTAL_LINHA2}}</h1>
+      <p style="margin:22px auto 0">{{SUBTITULO_EXPOSITIVO}}</p>
+      <div class="hint">ROLE OU USE O TECLADO PARA INICIAR</div>
+    </div>
+  </section>
+
+  <!-- S1: Topologia de Grafo Direcionado -->
+  <section class="panel" data-s="1">
+    <div class="box">
+      <div class="tag"><i class="b"></i>FASE 01 · TOPOLOGIA E DEPENDÊNCIAS</div>
+      <div class="n">{{METRICA_FASE_1}}</div>
+      <div class="unit">{{SUBMETRICA_FASE_1}}</div>
+      <h2>{{TITULO_FASE_1}}</h2>
+      <p>{{DESCRICAO_FASE_1}}</p>
+      <div class="facts">
+        <div><span class="k">Complexidade Espacial</span><span class="v">O(V + E)</span></div>
+        <div><span class="k">Roteamento de Nós</span><span class="v">Arestas Vetoriais 3D</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S2: Cubo Dimensional / Star Schema -->
+  <section class="panel right" data-s="2">
+    <div class="box">
+      <div class="tag"><i class="y"></i>FASE 02 · MODELAGEM MULTIDIMENSIONAL</div>
+      <div class="n">{{METRICA_FASE_2}}</div>
+      <div class="unit">{{SUBMETRICA_FASE_2}}</div>
+      <h2>{{TITULO_FASE_2}}</h2>
+      <p>{{DESCRICAO_FASE_2}}</p>
+      <div class="facts">
+        <div><span class="k">Núcleo Central</span><span class="v">Tabela de Fatos</span></div>
+        <div><span class="k">Satélites Orbitais</span><span class="v">Dimensões Normalizadas</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S3: Matriz Relacional / Estrutura Colunar -->
+  <section class="panel" data-s="3">
+    <div class="box">
+      <div class="tag"><i></i>FASE 03 · ARQUITETURA COLUNAR</div>
+      <div class="n">{{METRICA_FASE_3}}</div>
+      <div class="unit">{{SUBMETRICA_FASE_3}}</div>
+      <h2>{{TITULO_FASE_3}}</h2>
+      <p>{{DESCRICAO_FASE_3}}</p>
+      <div class="facts">
+        <div><span class="k">Acesso a Registros</span><span class="v">Indexação Posicional</span></div>
+        <div><span class="k">Dispersão em Memória</span><span class="v">Particionamento Contíguo</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S4: Índice em Árvore Hierárquica -->
+  <section class="panel right" data-s="4">
+    <div class="box">
+      <div class="tag"><i class="b"></i>FASE 04 · ESTRUTURA HIERÁRQUICA E BUSCA</div>
+      <div class="n">{{METRICA_FASE_4}}</div>
+      <div class="unit">{{SUBMETRICA_FASE_4}}</div>
+      <h2>{{TITULO_FASE_4}}</h2>
+      <p>{{DESCRICAO_FASE_4}}</p>
+      <div class="facts">
+        <div><span class="k">Custo de Travessia</span><span class="v">O(log n)</span></div>
+        <div><span class="k">Profundidade da Árvore</span><span class="v">Balanceamento Rígido</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S5: Dispersão Estatística e Concorrência -->
+  <section class="panel" data-s="5">
+    <div class="box">
+      <div class="tag"><i class="y"></i>FASE 05 · VAZÃO E CARGA DINÂMICA</div>
+      <div class="n">{{METRICA_FASE_5}}</div>
+      <div class="unit">{{SUBMETRICA_FASE_5}}</div>
+      <h2>{{TITULO_FASE_5}}</h2>
+      <p>{{DESCRICAO_FASE_5}}</p>
+      <div class="facts">
+        <div><span class="k">Comportamento de Carga</span><span class="v">Distribuição Estocástica</span></div>
+        <div><span class="k">Limiar de Estabilidade</span><span class="v">Zona Crítica de Concorrência</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S6: Anel de Comunicação e Ciclo Distribuído -->
+  <section class="panel right" data-s="6">
+    <div class="box">
+      <div class="tag"><i class="g"></i>FASE 06 · PROTOCOLO DISTRIBUÍDO</div>
+      <div class="n">{{METRICA_FASE_6}}</div>
+      <div class="unit">{{SUBMETRICA_FASE_6}}</div>
+      <h2>{{TITULO_FASE_6}}</h2>
+      <p>{{DESCRICAO_FASE_6}}</p>
+      <div class="facts">
+        <div><span class="k">Topologia Física</span><span class="v">Anel Toroidal Contínuo</span></div>
+        <div><span class="k">Consenso e Tolerância</span><span class="v">Replicação Determinística</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S7: Veredito e Monólito Final -->
+  <section class="panel mid" data-s="7">
+    <div class="box wide">
+      <div class="tag"><i class="g"></i>FASE 07 · VEREDITO DE ARQUITETURA</div>
+      <div class="n">100%</div>
+      <div class="unit">SOBERANIA OPERACIONAL CONSOLIDADA</div>
+      <h2>{{TITULO_CONCLUSAO}}</h2>
+      <p style="margin:22px auto 0">{{SINTESE_CONCLUSAO}}</p>
+    </div>
+  </section>
+</div>
+
+<script>
+/* ─────────────────────────────────────────────────────────────
+   Motor 3D Vetorial Escultórico em Canvas 2D Puro. Zero Libs.
+   Doutrina Editorial Canvas 3D (ThSyr Version 2.0).
+   ───────────────────────────────────────────────────────────── */
+const cv = document.getElementById('c'), gx = cv.getContext('2d', {alpha: false});
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const MOB = innerWidth < 760;
+
+const CLUSTERS = 128, PER = MOB ? 24 : 48, N = CLUSTERS * PER; // 3.072 no mobile, 6.144 no desktop
+const STATES = 8;
+const px = new Float32Array(N * STATES), py = new Float32Array(N * STATES), pz = new Float32Array(N * STATES);
+const cx_ = new Float32Array(N), cy_ = new Float32Array(N), cz_ = new Float32Array(N);
+const kind = new Uint8Array(N); // 0 neutro, 1 azul, 2 vermelho, 3 amarelo, 4 esmeralda
+const seedA = new Float32Array(N), seedB = new Float32Array(N);
+
+let rnd = (s => () => ((s = s * 1664525 + 1013904223 | 0) >>> 8) / 16777216)(20261006);
+
+for(let i = 0; i < N; i++){
+  seedA[i] = rnd();
+  seedB[i] = rnd();
+  kind[i] = (i % 7 === 0) ? 1 : (i % 13 === 0) ? 2 : (i % 9 === 0) ? 3 : (i % 11 === 0 ? 4 : 0);
+}
+
+function set(s, i, x, y, z){
+  const k = s * N + i;
+  px[k] = x; py[k] = y; pz[k] = z;
+}
+
+const TAU = Math.PI * 2;
+function fib(i, n, R){
+  const y = 1 - (i / (n - 1)) * 2, r = Math.sqrt(Math.max(0, 1 - y * y)), th = Math.PI * (1 + Math.sqrt(5)) * i;
+  return [Math.cos(th) * r * R, y * R, Math.sin(th) * r * R];
+}
+
+/* ── Topologias Parametricas por Estado ──────────────────────── */
+
+// S0: Halo Orbital Periferico (Hero)
+for(let i = 0; i < N; i++){
+  const a = (i / N) * TAU * 8 + seedA[i] * 0.35;
+  const rad = 230 + seedA[i] * 90;
+  const y = (seedB[i] - 0.5) * 110 + Math.sin(a * 3) * 30;
+  set(0, i, Math.cos(a) * rad, y, Math.sin(a) * rad);
+}
+
+// S1: Grafo Direcionado (5 Nós Estruturais + Fluxo Linear)
+const S1_NODES = [
+  [-150, 0, 0],
+  [-75, -55, 20],
+  [0, 45, -20],
+  [75, -45, 15],
+  [150, 0, 0]
+];
+for(let i = 0; i < N; i++){
+  const nodeIdx = i % 5;
+  const center = S1_NODES[nodeIdx];
+  if(i < N * 0.65){
+    const [ox, oy, oz] = fib(i % 120, 120, 14 + seedA[i] * 8);
+    set(1, i, center[0] + ox, center[1] + oy, center[2] + oz);
+  } else {
+    const next = S1_NODES[(nodeIdx + 1) % 5];
+    const frac = seedA[i];
+    set(1, i, center[0] + (next[0] - center[0]) * frac, center[1] + (next[1] - center[1]) * frac, center[2] + (next[2] - center[2]) * frac);
+  }
+}
+
+// S2: Cubo Dimensional / Star Schema (Fato Central + 4 Satelites)
+const S2_FACT = [0, 0, 0];
+const S2_DIMS = [
+  [-130, -70, -30],
+  [130, -70, 30],
+  [-130, 70, 30],
+  [130, 70, -30]
+];
+for(let i = 0; i < N; i++){
+  if(i < N * 0.45){
+    // Tabela Fato (denso núcleo central)
+    const [ox, oy, oz] = fib(i, Math.floor(N * 0.45), 38 + seedA[i] * 12);
+    set(2, i, ox, oy, oz);
+  } else {
+    // 4 Satelites Dimensionais
+    const dimIdx = i % 4;
+    const dCenter = S2_DIMS[dimIdx];
+    const [ox, oy, oz] = fib(i % 80, 80, 16 + seedA[i] * 6);
+    set(2, i, dCenter[0] + ox, dCenter[1] + oy, dCenter[2] + oz);
+  }
+}
+
+// S3: Matriz Relacional / Estrutura Colunar
+const S3_COLS = 16, S3_ROWS = 18;
+for(let i = 0; i < N; i++){
+  const c = i % S3_COLS, r = (Math.floor(i / S3_COLS)) % S3_ROWS;
+  const x = (c - S3_COLS / 2 + 0.5) * 18 + (seedA[i] - 0.5) * 3;
+  const y = (r - S3_ROWS / 2 + 0.5) * 14 + (seedB[i] - 0.5) * 3;
+  const z = ((i % 5) - 2) * 18 + (seedA[i] - 0.5) * 10;
+  set(3, i, x, y, z);
+}
+
+// S4: Arvore Hierarquica / B-Tree
+const S4_NODES = [
+  [0, -120, 0],       // Raiz (Nivel 0)
+  [-90, -40, 10], [90, -40, -10], // Filhos (Nivel 1)
+  [-140, 45, 15], [-50, 45, -15], [50, 45, 15], [140, 45, -15], // Folhas (Nivel 2)
+  [-170, 120, 0], [-110, 120, 0], [-70, 120, 0], [-25, 120, 0], [25, 120, 0], [70, 120, 0], [110, 120, 0], [170, 120, 0]
+];
+for(let i = 0; i < N; i++){
+  const nodeIdx = i % S4_NODES.length;
+  const center = S4_NODES[nodeIdx];
+  const [ox, oy, oz] = fib(i % 60, 60, 12 + seedA[i] * 6);
+  set(4, i, center[0] + ox, center[1] + oy, center[2] + oz);
+}
+
+// S5: Dispersao Estatistica e Concorrencia
+for(let i = 0; i < N; i++){
+  const u = seedA[i], v = seedB[i];
+  const rad = Math.sqrt(-2 * Math.log(u || 0.001)) * 95;
+  const th = TAU * v;
+  const x = Math.cos(th) * rad;
+  const z = Math.sin(th) * rad;
+  const y = ((i / N) - 0.5) * 220 + (seedA[i] - 0.5) * 35;
+  set(5, i, x, y, z);
+}
+
+// S6: Anel Toroidal Distribuido
+for(let i = 0; i < N; i++){
+  const u = (i / N) * TAU;
+  const v = ((i % 64) / 64) * TAU;
+  const R_MAJ = 135, R_MIN = 34 + seedA[i] * 8;
+  const x = (R_MAJ + R_MIN * Math.cos(v)) * Math.cos(u);
+  const z = (R_MAJ + R_MIN * Math.cos(v)) * Math.sin(u);
+  const y = R_MIN * Math.sin(v) + (seedB[i] - 0.5) * 8;
+  set(6, i, x, y, z);
+}
+
+// S7: Monolito de Sintese Soberana
+for(let i = 0; i < N; i++){
+  const face = i % 8;
+  const fa = face * (TAU / 8);
+  const rad = 75 + (seedA[i] - 0.5) * 14;
+  const y = ((i / N) - 0.5) * 260;
+  set(7, i, Math.cos(fa) * rad, y, Math.sin(fa) * rad);
+}
+
+for(let i = 0; i < N; i++){
+  cx_[i] = px[i]; cy_[i] = py[i]; cz_[i] = pz[i];
+}
+
+/* ── Estado, Camera e Projecao ──────────────────────────────── */
+let P = 0, Pt = 0, rotY = 0, rotX = 0, W = 0, H = 0, DPR = 1;
+
+function resize(){
+  DPR = Math.min(devicePixelRatio || 1, 2);
+  W = innerWidth; H = innerHeight;
+  cv.width = W * DPR; cv.height = H * DPR;
+  gx.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+addEventListener('resize', resize);
+resize();
+
+const COL = {
+  0: '58,54,48',     // Carvao mineral neutro
+  1: '31,95,168',    // Azul cobalto
+  2: '179,57,44',    // Carmim tecnico
+  3: '138,106,0',    // Amarelo ocre
+  4: '27,122,75'     // Esmeralda soberano
+};
+
+const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+function project(x, y, z, ccx, ccy, FOV, SC, cosY, sinY, cosX, sinX){
+  let X = x * cosY - z * sinY, Z = x * sinY + z * cosY;
+  let Y = y * cosX - Z * sinX; Z = y * sinX + Z * cosX;
+  const d = Z + FOV * 1.55;
+  if(d < 40) return null;
+  const f = FOV / d;
+  return { sx: ccx + X * f * SC, sy: ccy + Y * f * SC, f: f, d: d };
+}
+
+/* ── Loop Grafico Unificado ─────────────────────────────────── */
+function frame(ts){
+  P += (Pt - P) * 0.075;
+  const s0 = Math.max(0, Math.min(STATES - 1, Math.floor(P)));
+  const s1 = Math.min(STATES - 1, s0 + 1);
+  const t = ease(Math.min(1, Math.max(0, P - s0)));
+
+  if(!RM){
+    rotY += 0.0017;
+    rotX = Math.sin(ts * 0.00012) * 0.11;
+  }
+  const cosY = Math.cos(rotY), sinY = Math.sin(rotY), cosX = Math.cos(rotX), sinX = Math.sin(rotX);
+
+  gx.fillStyle = '#FFFFFF';
+  gx.fillRect(0, 0, W, H);
+
+  // Compensacao de peso visual da camera (Off-Axis Offset)
+  const OFFS = [0, 1, -1, 1, -1, 1, -1, 0];
+  const off = (OFFS[s0] + (OFFS[s1] - OFFS[s0]) * t) * (MOB ? 0 : W * 0.20);
+  const ccx = W * 0.5 + off, ccy = H * 0.5, FOV = 520, SC = Math.min(W, H) / 270 * (MOB ? 0.62 : 1);
+
+  /* ── CAMADA 1: Arestas Vetoriais em 3D ─────────────────────── */
+
+  // Arestas do Grafo Direcionado (Estado 1)
+  const gGraph = Math.max(0, 1 - Math.abs(P - 1) * 1.8);
+  if(gGraph > 0.02){
+    gx.lineWidth = 1.2;
+    gx.strokeStyle = 'rgba(31,95,168,' + (0.44 * gGraph) + ')';
+    gx.beginPath();
+    for(let k = 0; k < 4; k++){
+      const p1 = project(S1_NODES[k][0], S1_NODES[k][1], S1_NODES[k][2], ccx, ccy, FOV, SC, cosY, sinY, cosX, sinX);
+      const p2 = project(S1_NODES[k + 1][0], S1_NODES[k + 1][1], S1_NODES[k + 1][2], ccx, ccy, FOV, SC, cosY, sinY, cosX, sinX);
+      if(p1 && p2){ gx.moveTo(p1.sx, p1.sy); gx.lineTo(p2.sx, p2.sy); }
+    }
+    gx.stroke();
+  }
+
+  // Arestas Radiais do Star Schema (Estado 2)
+  const gCube = Math.max(0, 1 - Math.abs(P - 2) * 1.8);
+  if(gCube > 0.02){
+    gx.lineWidth = 1.3;
+    gx.strokeStyle = 'rgba(138,106,0,' + (0.48 * gCube) + ')';
+    const pFact = project(S2_FACT[0], S2_FACT[1], S2_FACT[2], ccx, ccy, FOV, SC, cosY, sinY, cosX, sinX);
+    if(pFact){
+      gx.beginPath();
+      S2_DIMS.forEach(dm => {
+        const pDim = project(dm[0], dm[1], dm[2], ccx, ccy, FOV, SC, cosY, sinY, cosX, sinX);
+        if(pDim){ gx.moveTo(pFact.sx, pFact.sy); gx.lineTo(pDim.sx, pDim.sy); }
+      });
+      gx.stroke();
+    }
+  }
+
+  // Arestas da Arvore Hierarquica (Estado 4)
+  const gTree = Math.max(0, 1 - Math.abs(P - 4) * 1.8);
+  if(gTree > 0.02){
+    gx.lineWidth = 1.2;
+    gx.strokeStyle = 'rgba(31,95,168,' + (0.42 * gTree) + ')';
+    const TREE_EDGES = [
+      [0,1],[0,2], [1,3],[1,4],[2,5],[2,6],
+      [3,7],[3,8],[4,9],[4,10],[5,11],[5,12],[6,13],[6,14]
+    ];
+    gx.beginPath();
+    TREE_EDGES.forEach(([u, v]) => {
+      const p1 = project(S4_NODES[u][0], S4_NODES[u][1], S4_NODES[u][2], ccx, ccy, FOV, SC, cosY, sinY, cosX, sinX);
+      const p2 = project(S4_NODES[v][0], S4_NODES[v][1], S4_NODES[v][2], ccx, ccy, FOV, SC, cosY, sinY, cosX, sinX);
+      if(p1 && p2){ gx.moveTo(p1.sx, p1.sy); gx.lineTo(p2.sx, p2.sy); }
+    });
+    gx.stroke();
+  }
+
+  /* ── CAMADA 2: Particulas e Voxels Projetados ──────────────── */
+  const reveal = Math.min(1, Math.max(0, (P - 0.12) / 1.15));
+  const rpow = Math.pow(reveal, 2.4) + 0.008;
+  const bigEarly = 1 + 3.2 * Math.pow(1 - reveal, 1.4);
+
+  const proj = [];
+  for(let i = 0; i < N; i++){
+    if(reveal < 0.999 && seedA[i] > rpow) continue;
+    const a = s0 * N + i, b = s1 * N + i;
+    let x = px[a] + (px[b] - px[a]) * t;
+    let y = py[a] + (py[b] - py[a]) * t;
+    let z = pz[a] + (pz[b] - pz[a]) * t;
+    cx_[i] = x; cy_[i] = y; cz_[i] = z;
+
+    const pr = project(x, y, z, ccx, ccy, FOV, SC, cosY, sinY, cosX, sinX);
+    if(!pr) continue;
+    if(pr.sx < -30 || pr.sx > W + 30 || pr.sy < -30 || pr.sy > H + 30) continue;
+
+    let al = Math.min(1, Math.max(0, (pr.f - 0.15) * 3.1)) * (MOB ? 0.8 : 1);
+    let sz = Math.max(1.4, pr.f * (MOB ? 2.8 : 4.4) * bigEarly);
+    let k = kind[i];
+
+    // Modulacao semantica de cor
+    if(P >= 0.6 && P < 1.6){ k = (i % 5 === 4) ? 4 : 1; }
+    else if(P >= 1.6 && P < 2.6){ k = (i < N * 0.45) ? 3 : 1; }
+    else if(P >= 3.6 && P < 4.6){ k = (i % S4_NODES.length >= 7) ? 4 : 1; }
+    else if(P >= 6.6){ k = (i % 4 === 0) ? 1 : 4; }
+
+    if(al < 0.05) continue;
+    proj.push(pr.sx, pr.sy, sz, al, k);
+  }
+
+  for(let p = 0; p < proj.length; p += 5){
+    gx.fillStyle = 'rgba(' + COL[proj[p + 4]] + ',' + proj[p + 3].toFixed(3) + ')';
+    const s = proj[p + 2];
+    gx.fillRect(proj[p] - s * .5, proj[p + 1] - s * .5, s, s);
+  }
+
+  /* ── CAMADA 3: Rotulos Tipograficos 3D no Espaco ───────────── */
+  gx.font = '700 11px "JetBrains Mono", ui-monospace, monospace';
+
+  // Rotulos do Grafo (Estado 1)
+  if(gGraph > 0.08){
+    gx.fillStyle = 'rgba(31,95,168,' + (0.85 * gGraph) + ')';
+    const LABELS = ['v0 [INGRESSO]', 'v1 (PARSER)', 'v2 (MOTOR)', 'v3 (ROTEAMENTO)', 'v4 ((SAÍDA))'];
+    S1_NODES.forEach((n, idx) => {
+      const pr = project(n[0], n[1], n[2], ccx, ccy, FOV, SC, cosY, sinY, cosX, sinX);
+      if(pr) gx.fillText(LABELS[idx], pr.sx + 14, pr.sy + 4);
+    });
+  }
+
+  // Rotulos do Star Schema (Estado 2)
+  if(gCube > 0.08){
+    const prF = project(S2_FACT[0], S2_FACT[1], S2_FACT[2], ccx, ccy, FOV, SC, cosY, sinY, cosX, sinX);
+    if(prF){
+      gx.fillStyle = 'rgba(138,106,0,' + (0.9 * gCube) + ')';
+      gx.fillText('FATO: TRANSAÇÕES [FAT]', prF.sx - 65, prF.sy - 12);
+    }
+    const DIM_NAMES = ['DIM_TEMPO', 'DIM_AEROPORTO', 'DIM_AERONAVE', 'DIM_CLIENTE'];
+    S2_DIMS.forEach((dm, idx) => {
+      const prD = project(dm[0], dm[1], dm[2], ccx, ccy, FOV, SC, cosY, sinY, cosX, sinX);
+      if(prD){
+        gx.fillStyle = 'rgba(31,95,168,' + (0.85 * gCube) + ')';
+        gx.fillText(DIM_NAMES[idx], prD.sx + 12, prD.sy + 4);
+      }
+    });
+  }
+
+  // Rotulo do Monolito (Estado 7)
+  const gEnd = Math.max(0, 1 - Math.abs(P - 7) * 1.8);
+  if(gEnd > 0.08){
+    const prEnd = project(0, 0, 0, ccx, ccy, FOV, SC, cosY, sinY, cosX, sinX);
+    if(prEnd){
+      gx.fillStyle = 'rgba(27,122,75,' + (0.92 * gEnd) + ')';
+      gx.fillText('SISTEMA HOMOLOGADO EM SILÍCIO NATIVO', prEnd.sx - 110, prEnd.sy);
+    }
+  }
+
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* ── Scrollytelling e Navegacao de Bancada ───────────────────── */
+const panels = [...document.querySelectorAll('.panel')];
+const ticks = document.getElementById('ticks');
+panels.forEach(() => ticks.appendChild(document.createElement('b')));
+const tk = [...ticks.children];
+const NAMES = ['INTRODUÇÃO', 'FASE 01: GRAFO', 'FASE 02: STAR SCHEMA', 'FASE 03: COLUNAR', 'FASE 04: ÁRVORE', 'FASE 05: VAZÃO', 'FASE 06: DISTRIBUÍDO', 'VEREDITO'];
+const hudSet = document.getElementById('hudSet');
+
+function onScroll(){
+  const vh = innerHeight, mid = vh / 2;
+  let best = 0, bd = 1e9, cBest = 0;
+
+  panels.forEach((pn, i) => {
+    const r = pn.getBoundingClientRect();
+    const c = (r.top + r.height / 2) - mid;
+    if(Math.abs(c) < bd){
+      bd = Math.abs(c);
+      best = i;
+      cBest = c;
+    }
+  });
+
+  const nb = cBest > 0 ? best - 1 : best + 1;
+  let frac = 0;
+  if(nb >= 0 && nb < panels.length){
+    const rn = panels[nb].getBoundingClientRect();
+    const cn = (rn.top + rn.height / 2) - mid;
+    const span = Math.abs(cBest) + Math.abs(cn);
+    if(span > 1) frac = Math.abs(cBest) / span;
+  }
+
+  Pt = Math.max(0, Math.min(STATES - 1, best + (nb > best ? frac : -frac)));
+  const cur = Math.round(Pt);
+  hudSet.textContent = NAMES[cur] || '';
+  tk.forEach((b, i) => b.classList.toggle('on', i <= cur));
+
+  panels.forEach((pn, i) => {
+    const r = pn.getBoundingClientRect();
+    const c = (r.top + r.height / 2) / vh;
+    const v = Math.max(0, 1 - Math.abs(c - 0.5) * 2.35);
+    const bx = pn.querySelector('.box');
+    bx.style.opacity = v.toFixed(3);
+    bx.style.transform = 'translateY(' + ((1 - v) * 16).toFixed(1) + 'px)';
+  });
+}
+
+addEventListener('scroll', onScroll, {passive: true});
+addEventListener('resize', onScroll);
+setInterval(onScroll, 160);
+onScroll();
+setTimeout(() => document.getElementById('load').classList.add('off'), 380);
+
+/* ── Controle de Bancada (Teclado e Tela Cheia) ──────────────── */
+addEventListener('keydown', (e) => {
+  if(['ArrowDown', 'PageDown', 'j', ' '].includes(e.key)){
+    e.preventDefault();
+    const next = Math.min(panels.length - 1, Math.floor(Pt + 1.05));
+    panels[next].scrollIntoView({behavior: 'smooth'});
+  } else if(['ArrowUp', 'PageUp', 'k'].includes(e.key)){
+    e.preventDefault();
+    const prev = Math.max(0, Math.ceil(Pt - 1.05));
+    panels[prev].scrollIntoView({behavior: 'smooth'});
+  } else if(e.key === 'f' || e.key === 'F'){
+    if(!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen().catch(() => {});
+    }
+  } else if(e.key === 'Home'){
+    e.preventDefault();
+    panels[0].scrollIntoView({behavior: 'smooth'});
+  } else if(e.key === 'End'){
+    e.preventDefault();
+    panels[panels.length - 1].scrollIntoView({behavior: 'smooth'});
+  }
+});
+</script>
+</body>
+</html>

@@ -12,7 +12,7 @@ Ao contrário de assistentes descartáveis e chatbots sem memória, esta arquite
 1. **Memória Persistente Permanente:** Quatro camadas de memória (episódica, semântica, analítica e procedural) organizadas sob a estrutura anatômica de um cérebro (`brain/`).
 2. **Cérebro Neural 3D Interativo:** Visualização holográfica tridimensional em WebGL/Three.js de todos os nós semânticos, projetos e sinapses (`brain/neural_canvas_3d.html`).
 3. **Córtex Pré-Frontal Anti-Sicofância:** Auditoria inibitória em tempo real que veta respostas subservientes, bajulações e premissas fracas.
-4. **Skills Especializadas Embutidas:** Bibliotecas de excelência estética e arquitetural (`apple-design`, `taste-skill`, `logo-design`, `mobile-first-design-system`, `brag`).
+4. **Skills Especializadas Embutidas:** Bibliotecas de excelência estética e arquitetural (`apple-design`, `taste-skill`, `logo-design`, `mobile-first-design-system`, `broadsheet-newspaper`, `brag`).
 5. **CLI Operacional Unificada:** Ferramenta de linha de comando (`python thsyr.py`) para ingestão de projetos, compilação de grafo, publicação editorial e auditorias.
 
 ### Cerebro Neural 3D
@@ -100,11 +100,26 @@ meu-copiloto/
 │   ├── code_graph/                # Análise AST e visualização de código
 │   ├── news/                      # Motor editorial da Gazeta Tecnológica
 │   └── runtime/                   # Supervisor de processos e continuous event loop
-├── skills/                        # Habilidades especializadas de engenharia e design
-│   ├── apple-design/              # Padrões de interfaces de altíssima fidelidade
-│   ├── taste-skill/               # Calibração estética contra designs genéricos
+├── skills/                        # Arsenal unificado de habilidades de engenharia, arquitetura e design
+│   ├── apple-design/              # Padrões de interfaces de altíssima fidelidade e física Apple
+│   ├── atlas-deep-reporting/      # Doutrina de relatórios técnicos e auditoria analítica quantitativa
+│   ├── editorial-canvas-3d/       # Motor espacial 3D em Canvas 2D nativo com mouse parallax
+│   ├── broadsheet-newspaper/      # Periódicos impressos históricos broadsheet em HTML puro (Universal)
+│   ├── taste-skill/               # Calibração estética contra designs genéricos (Anti-Slop)
+│   ├── stitch-design-taste/       # Design systems semânticos para Google Stitch
 │   ├── logo-design/               # Criação de identidades visuais e marcas em SVG
-│   └── mobile-first-design-system/ # Design responsivo rigoroso
+│   ├── mobile-first-design-system/ # Design responsivo e ergonomia móvel rigorosa
+│   ├── brandkit/                  # Geração de brand-kits visuais e guidelines de marca
+│   ├── industrial-brutalist-ui/   # Interfaces industriais mecânicas e terminais de alta precisão
+│   ├── gpt-taste/                 # Engenharia avançada de animação GSAP e layout dinâmico
+│   ├── minimalist-ui/             # Interfaces minimalistas editoriais e bento grids
+│   ├── image-to-code/             # Conversão de referências visuais em código limpo
+│   ├── systematic-debugging/      # Investigação metodológica de causa raiz em 4 fases
+│   ├── test-driven-development/   # Ciclo disciplinar Red-Green-Refactor estrito
+│   ├── using-git-worktrees/       # Isolamento de branches paralelas no sistema de arquivos
+│   ├── verification-before-completion/ # Verificação empírica compulsória antes de conclusões
+│   ├── packet-tracer/             # Automação e simulação de topologias de redes via MCP
+│   └── ...                        # Utilitários de geração de imagem, code review e anti-truncamento
 ├── tests/                         # Suíte de testes automatizados herméticos
 └── state/                         # Estado operacional de sessões e checkpoints
 ```
