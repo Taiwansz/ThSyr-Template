@@ -1,8 +1,8 @@
 {
   "version": "2.0.0",
-  "updated_at": "2026-10-01T19:45:36.951487",
-  "total_nodes": 92,
-  "total_edges": 411,
+  "updated_at": "2026-11-05T20:36:10.567137",
+  "total_nodes": 94,
+  "total_edges": 421,
   "edges": [
     {
       "source": "Cortex_Central",
@@ -402,6 +402,31 @@
     {
       "source": "Compiladores",
       "target": "Engenharia_de_Compiladores_e_Representacoes_Intermediarias",
+      "weight": 1.0
+    },
+    {
+      "source": "Conselho_da_Alianca",
+      "target": "Sistema_Limbico",
+      "weight": 1.0
+    },
+    {
+      "source": "Conselho_da_Alianca",
+      "target": "Lobo_Frontal",
+      "weight": 1.0
+    },
+    {
+      "source": "Conselho_da_Alianca",
+      "target": "Operador",
+      "weight": 1.0
+    },
+    {
+      "source": "Conselho_da_Alianca",
+      "target": "Anti_Sicofancia",
+      "weight": 1.0
+    },
+    {
+      "source": "Conselho_da_Alianca",
+      "target": "Conselho_da_Alianca",
       "weight": 1.0
     },
     {
@@ -1560,6 +1585,26 @@
       "weight": 1.0
     },
     {
+      "source": "analise_quimica_relacional",
+      "target": "Conselho_da_Alianca",
+      "weight": 1.0
+    },
+    {
+      "source": "analise_quimica_relacional",
+      "target": "Sistema_Limbico",
+      "weight": 1.0
+    },
+    {
+      "source": "analise_quimica_relacional",
+      "target": "Lobo_Frontal",
+      "weight": 1.0
+    },
+    {
+      "source": "analise_quimica_relacional",
+      "target": "Operador",
+      "weight": 1.0
+    },
+    {
       "source": "atlas_governance",
       "target": "Blueprint_First",
       "weight": 1.0
@@ -1822,6 +1867,11 @@
     {
       "source": "Lobo_Frontal",
       "target": "Mecanica_de_Raciocinio_Sintetico_MCTS_e_Process_Reward_Models",
+      "weight": 1.0
+    },
+    {
+      "source": "Sistema_Limbico",
+      "target": "Conselho_da_Alianca",
       "weight": 1.0
     },
     {

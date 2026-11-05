@@ -1,0 +1,3151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ThSyr Neural Canvas // Live Synaptic Trace</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    :root {
+      --bg: #070a0f;
+      --card-bg: rgba(13, 17, 23, 0.94);
+      --border: #21262d;
+      --text: #c9d1d9;
+      --text-muted: #8b949e;
+      --text-bright: #ffffff;
+      --accent: #58a6ff;
+      --cortex: #ff3366;
+      --operador: #58a6ff;
+      --regra: #ff7b72;
+      --tech: #79c0ff;
+      --sessao: #bc8cff;
+      --design: #d2a8ff;
+      --limbico: #f778ba;
+      --projeto: #3fb950;
+      --conceito: #8b949e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* Top Left Header */
+    #header {
+      position: absolute;
+      top: 18px;
+      left: 22px;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-subtitle {
+      margin-top: 4px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    /* Top Right Neural HUD */
+    #hud-container {
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      width: 360px;
+      max-height: 90vh;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75);
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hud-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(22, 27, 34, 0.6);
+    }
+
+    .hud-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .hud-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      background: #21262d;
+      color: var(--text-muted);
+      border: 1px solid #30363d;
+      transition: all 0.3s ease;
+    }
+
+    .badge-status.active {
+      background: rgba(63, 185, 80, 0.15);
+      color: #3fb950;
+      border-color: rgba(63, 185, 80, 0.4);
+      box-shadow: 0 0 12px rgba(63, 185, 80, 0.3);
+    }
+
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--text-muted);
+    }
+
+    .badge-status.active .pulse-dot {
+      background: #3fb950;
+      box-shadow: 0 0 6px #3fb950;
+      animation: blink 1s ease-in-out infinite alternate;
+    }
+
+    @keyframes blink {
+      from { opacity: 0.4; }
+      to { opacity: 1; }
+    }
+
+    .hud-subtitle {
+      font-size: 0.70rem;
+      color: var(--text-muted);
+    }
+
+    .hud-body {
+      padding: 14px 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .hud-section {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .section-label.alert-label {
+      color: var(--regra);
+    }
+
+    .query-box {
+      font-size: 0.82rem;
+      line-height: 1.4;
+      color: var(--text-bright);
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 8px 10px;
+      word-break: break-word;
+    }
+
+    .tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .seed-pill {
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(88, 166, 255, 0.15);
+      border: 1px solid rgba(88, 166, 255, 0.35);
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .empty-tag, .empty-hint {
+      font-size: 0.72rem;
+      color: #6e7681;
+      font-style: italic;
+    }
+
+    .nodes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .node-row {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 6px 8px;
+      transition: border-color 0.2s;
+    }
+
+    .node-row:hover {
+      border-color: var(--accent);
+    }
+
+    .node-row-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .node-name {
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--text-bright);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .node-lobe-tag {
+      font-size: 0.65rem;
+      padding: 1px 6px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .energy-bar-bg {
+      width: 100%;
+      height: 4px;
+      background: #21262d;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .energy-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+
+    .constraints-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .constraint-item {
+      font-size: 0.72rem;
+      padding: 4px 8px;
+      background: rgba(255, 123, 114, 0.12);
+      border: 1px solid rgba(255, 123, 114, 0.3);
+      color: #ffa198;
+      border-radius: 4px;
+    }
+
+    .hud-footer {
+      padding: 10px 16px;
+      border-top: 1px solid var(--border);
+      background: rgba(22, 27, 34, 0.6);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .hud-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    .hud-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .hud-btn {
+      flex: 1;
+      padding: 6px 10px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      border-radius: 6px;
+      border: 1px solid #30363d;
+      background: #21262d;
+      color: var(--text-bright);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .hud-btn:hover {
+      background: #30363d;
+      border-color: var(--accent);
+    }
+
+    .hud-btn.primary {
+      background: rgba(88, 166, 255, 0.2);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .hud-btn.primary:hover {
+      background: rgba(88, 166, 255, 0.35);
+    }
+
+    /* Bottom Left Legend */
+    #legend {
+      position: absolute;
+      bottom: 20px;
+      left: 22px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 0.72rem;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+
+    .legend-title {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.8px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .legend-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 14px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text);
+    }
+
+    .legend-color {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* SVG Canvas */
+    svg {
+      width: 100vw;
+      height: 100vh;
+      display: block;
+    }
+
+    .link {
+      stroke: #21262d;
+      stroke-opacity: 0.6;
+      stroke-width: 1.5px;
+      transition: stroke 0.4s, stroke-width 0.4s, stroke-opacity 0.4s;
+    }
+
+    .link.active-synapse {
+      stroke: #58a6ff;
+      stroke-width: 3.5px;
+      stroke-opacity: 0.95;
+      stroke-dasharray: 6 3;
+      animation: dashFlow 1s linear infinite;
+    }
+
+    .link.dimmed {
+      stroke-opacity: 0.1;
+    }
+
+    @keyframes dashFlow {
+      to {
+        stroke-dashoffset: -18;
+      }
+    }
+
+    .node {
+      cursor: pointer;
+      transition: opacity 0.4s;
+    }
+
+    .node.dimmed {
+      opacity: 0.15;
+    }
+
+    .node text {
+      font-size: 10px;
+      fill: #8b949e;
+      pointer-events: none;
+      transition: fill 0.2s, font-size 0.2s, font-weight 0.2s;
+    }
+
+    .node:hover text {
+      fill: #ffffff;
+      font-weight: bold;
+    }
+
+    .node.activated text {
+      fill: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .pulse-halo {
+      fill: none;
+      stroke-width: 2px;
+      opacity: 0;
+      animation: haloPulse 2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+    }
+
+    @keyframes haloPulse {
+      0% {
+        r: 12;
+        opacity: 0.8;
+      }
+      100% {
+        r: 28;
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="header">
+    <div class="brand-title">
+      <span>THSYR // NEURAL CANVAS</span>
+    </div>
+    <div class="brand-subtitle">Rede Neural Cognitiva e Grafo de Conhecimento</div>
+  </div>
+
+  <div id="hud-container">
+    <div class="hud-header">
+      <div class="hud-title-row">
+        <span class="hud-tag">RASTREABILIDADE SINÁPTICA</span>
+        <div id="pulse-badge" class="badge-status">
+          <span class="pulse-dot"></span>
+          <span id="pulse-status-text">STANDBY</span>
+        </div>
+      </div>
+      <div class="hud-subtitle">MONITOR DE DISPARO NEURAL EM TEMPO REAL</div>
+    </div>
+
+    <div class="hud-body">
+      <div class="hud-section">
+        <div class="section-label">ÚLTIMA SOLICITAÇÃO</div>
+        <div id="hud-query" class="query-box">Aguardando novo estímulo neural...</div>
+      </div>
+
+      <div class="hud-section">
+        <div class="section-label">SEMENTES DISPARADAS (SEEDS)</div>
+        <div id="hud-seeds" class="tags-container">
+          <span class="empty-tag">Nenhuma semente ativa</span>
+        </div>
+      </div>
+
+      <div class="hud-section">
+        <div class="section-label">NEURÔNIOS ENERGIZADOS</div>
+        <div id="hud-nodes" class="nodes-list">
+          <div class="empty-hint">Grafo em repouso basal.</div>
+        </div>
+      </div>
+
+      <div id="hud-constraints-section" class="hud-section" style="display: none;">
+        <div class="section-label alert-label">RESTRIÇÕES INEGOCIÁVEIS ACIONADAS</div>
+        <div id="hud-constraints" class="constraints-list"></div>
+      </div>
+    </div>
+
+    <div class="hud-footer">
+      <div class="hud-meta">
+        <span id="hud-timestamp">Sincronizado</span>
+        <span id="hud-active-count">0 nós ativos</span>
+      </div>
+      <div class="hud-actions">
+        <button id="btn-reset-focus" class="hud-btn">Visão Global</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="legend">
+    <div class="legend-title">Lobos e Categorias</div>
+    <div class="legend-grid">
+      <div class="legend-item"><div class="legend-color" style="background:#ff3366"></div>Córtex Central</div>
+      <div class="legend-item"><div class="legend-color" style="background:#58a6ff"></div>Operador</div>
+      <div class="legend-item"><div class="legend-color" style="background:#ff7b72"></div>Frontal (Leis/Filtros)</div>
+      <div class="legend-item"><div class="legend-color" style="background:#f778ba"></div>Límbico (Valores/Vida)</div>
+      <div class="legend-item"><div class="legend-color" style="background:#79c0ff"></div>Parietal (Engenharia)</div>
+      <div class="legend-item"><div class="legend-color" style="background:#d2a8ff"></div>Occipital (Design/UI)</div>
+      <div class="legend-item"><div class="legend-color" style="background:#bc8cff"></div>Temporal (Episódico)</div>
+      <div class="legend-item"><div class="legend-color" style="background:#3fb950"></div>Projetos Ativos</div>
+    </div>
+  </div>
+
+  <svg id="canvas"></svg>
+
+  <script>
+    const data = {
+  "nodes": [
+    {
+      "id": "Cortex_Central",
+      "label": "Cortex Central",
+      "group": "cortex",
+      "path": "brain\\Cortex_Central.md",
+      "degree": 64,
+      "is_hub": true
+    },
+    {
+      "id": "session_handoff",
+      "label": "session handoff",
+      "group": "conceito",
+      "path": "brain\\session_handoff.md",
+      "degree": 1,
+      "is_hub": false
+    },
+    {
+      "id": "personality",
+      "label": "personality",
+      "group": "conceito",
+      "path": "brain\\core\\personality.md",
+      "degree": 1,
+      "is_hub": false
+    },
+    {
+      "id": "Adversarial_Plan_Review",
+      "label": "Adversarial Plan Review",
+      "group": "conceito",
+      "path": "brain\\nodes\\Adversarial_Plan_Review.md",
+      "degree": 7,
+      "is_hub": true
+    },
+    {
+      "id": "Algebra_Linear_Computacional_SVD_e_Low_Rank_Adaptation",
+      "label": "Algebra Linear Computacional SVD e Low Rank Adaptation",
+      "group": "conceito",
+      "path": "brain\\nodes\\Algebra_Linear_Computacional_SVD_e_Low_Rank_Adaptation.md",
+      "degree": 7,
+      "is_hub": true
+    },
+    {
+      "id": "Anti_Sicofancia",
+      "label": "Anti Sicofancia",
+      "group": "regra",
+      "path": "brain\\nodes\\Anti_Sicofancia.md",
+      "degree": 23,
+      "is_hub": true
+    },
+    {
+      "id": "Arquetipo_Ultron_Cognitivo",
+      "label": "Arquetipo Ultron Cognitivo",
+      "group": "regra",
+      "path": "brain\\nodes\\Arquetipo_Ultron_Cognitivo.md",
+      "degree": 15,
+      "is_hub": true
+    },
+    {
+      "id": "Arquiteturas_MoE_e_Modelos_de_Espaco_de_Estados_SSM",
+      "label": "Arquiteturas MoE e Modelos de Espaco de Estados SSM",
+      "group": "conceito",
+      "path": "brain\\nodes\\Arquiteturas_MoE_e_Modelos_de_Espaco_de_Estados_SSM.md",
+      "degree": 6,
+      "is_hub": true
+    },
+    {
+      "id": "Auto_Evolucao_Continua",
+      "label": "Auto Evolucao Continua",
+      "group": "regra",
+      "path": "brain\\nodes\\Auto_Evolucao_Continua.md",
+      "degree": 10,
+      "is_hub": true
+    },
+    {
+      "id": "Banco_de_Dados_SQL",
+      "label": "Banco de Dados SQL",
+      "group": "conceito",
+      "path": "brain\\nodes\\Banco_de_Dados_SQL.md",
+      "degree": 5,
+      "is_hub": true
+    },
+    {
+      "id": "Battle_IA_Benchmark",
+      "label": "Battle IA Benchmark",
+      "group": "conceito",
+      "path": "brain\\nodes\\Battle_IA_Benchmark.md",
+      "degree": 4,
+      "is_hub": true
+    },
+    {
+      "id": "Blueprint_First",
+      "label": "Blueprint First",
+      "group": "projeto",
+      "path": "brain\\nodes\\Blueprint_First.md",
+      "degree": 11,
+      "is_hub": true
+    },
+    {
+      "id": "Camada_Interacao_Operacional",
+      "label": "Camada Interacao Operacional",
+      "group": "conceito",
+      "path": "brain\\nodes\\Camada_Interacao_Operacional.md",
+      "degree": 5,
+      "is_hub": true
+    },
+    {
+      "id": "Cognitive_Core_V3",
+      "label": "Cognitive Core V3",
+      "group": "projeto",
+      "path": "brain\\nodes\\Cognitive_Core_V3.md",
+      "degree": 6,
+      "is_hub": true
+    },
+    {
+      "id": "Compiladores",
+      "label": "Compiladores",
+      "group": "tech",
+      "path": "brain\\nodes\\Compiladores.md",
+      "degree": 11,
+      "is_hub": true
+    },
+    {
+      "id": "Conselho_da_Alianca",
+      "label": "Conselho da Alianca",
+      "group": "conceito",
+      "path": "brain\\nodes\\Conselho_da_Alianca.md",
+      "degree": 8,
+      "is_hub": true
+    },
+    {
+      "id": "Continuous_Runtime",
+      "label": "Continuous Runtime",
+      "group": "tech",
+      "path": "brain\\nodes\\Continuous_Runtime.md",
+      "degree": 13,
+      "is_hub": true
+    },
+    {
+      "id": "Copywriting_Anti_Slop",
+      "label": "Copywriting Anti Slop",
+      "group": "regra",
+      "path": "brain\\nodes\\Copywriting_Anti_Slop.md",
+      "degree": 8,
+      "is_hub": true
+    },
+    {
+      "id": "Daemon_Autonomo_ThSyr",
+      "label": "Daemon Autonomo ThSyr",
+      "group": "conceito",
+      "path": "brain\\nodes\\Daemon_Autonomo_ThSyr.md",
+      "degree": 6,
+      "is_hub": true
+    },
+    {
+      "id": "Decisoes_Arquitetura",
+      "label": "Decisoes Arquitetura",
+      "group": "conceito",
+      "path": "brain\\nodes\\Decisoes_Arquitetura.md",
+      "degree": 11,
+      "is_hub": true
+    },
+    {
+      "id": "Design_System_Editorial",
+      "label": "Design System Editorial",
+      "group": "design",
+      "path": "brain\\nodes\\Design_System_Editorial.md",
+      "degree": 5,
+      "is_hub": true
+    },
+    {
+      "id": "Design_System_Industrial_Pop",
+      "label": "Design System Industrial Pop",
+      "group": "tech",
+      "path": "brain\\nodes\\Design_System_Industrial_Pop.md",
+      "degree": 7,
+      "is_hub": true
+    },
+    {
+      "id": "Dossie_Psicologico",
+      "label": "Dossie Psicologico",
+      "group": "conceito",
+      "path": "brain\\nodes\\Dossie_Psicologico.md",
+      "degree": 13,
+      "is_hub": true
+    },
+    {
+      "id": "Drift_Checking",
+      "label": "Drift Checking",
+      "group": "conceito",
+      "path": "brain\\nodes\\Drift_Checking.md",
+      "degree": 6,
+      "is_hub": true
+    },
+    {
+      "id": "Engenharia_de_Compiladores_e_Representacoes_Intermediarias",
+      "label": "Engenharia de Compiladores e Representacoes Intermediarias",
+      "group": "conceito",
+      "path": "brain\\nodes\\Engenharia_de_Compiladores_e_Representacoes_Intermediarias.md",
+      "degree": 8,
+      "is_hub": true
+    },
+    {
+      "id": "Engenharia_de_Software_e_UML",
+      "label": "Engenharia de Software e UML",
+      "group": "conceito",
+      "path": "brain\\nodes\\Engenharia_de_Software_e_UML.md",
+      "degree": 3,
+      "is_hub": false
+    },
+    {
+      "id": "Enxame_Ultron_Distribuido",
+      "label": "Enxame Ultron Distribuido",
+      "group": "conceito",
+      "path": "brain\\nodes\\Enxame_Ultron_Distribuido.md",
+      "degree": 15,
+      "is_hub": true
+    },
+    {
+      "id": "Estrutura_de_Dados",
+      "label": "Estrutura de Dados",
+      "group": "conceito",
+      "path": "brain\\nodes\\Estrutura_de_Dados.md",
+      "degree": 4,
+      "is_hub": true
+    },
+    {
+      "id": "Estudos_Avancados_CC",
+      "label": "Estudos Avancados CC",
+      "group": "conceito",
+      "path": "brain\\nodes\\Estudos_Avancados_CC.md",
+      "degree": 3,
+      "is_hub": false
+    },
+    {
+      "id": "Executive_System",
+      "label": "Executive System",
+      "group": "tech",
+      "path": "brain\\nodes\\Executive_System.md",
+      "degree": 14,
+      "is_hub": true
+    },
+    {
+      "id": "Frontend_Craft_e_Apple_Design_Protocol",
+      "label": "Frontend Craft e Apple Design Protocol",
+      "group": "design",
+      "path": "brain\\nodes\\Frontend_Craft_e_Apple_Design_Protocol.md",
+      "degree": 7,
+      "is_hub": true
+    },
+    {
+      "id": "Gazeta_Tecnologica_Global",
+      "label": "Gazeta Tecnologica Global",
+      "group": "projeto",
+      "path": "brain\\nodes\\Gazeta_Tecnologica_Global.md",
+      "degree": 5,
+      "is_hub": true
+    },
+    {
+      "id": "Grafos_Computacionais_MLIR_e_Otimizacao_de_Tensores",
+      "label": "Grafos Computacionais MLIR e Otimizacao de Tensores",
+      "group": "regra",
+      "path": "brain\\nodes\\Grafos_Computacionais_MLIR_e_Otimizacao_de_Tensores.md",
+      "degree": 12,
+      "is_hub": true
+    },
+    {
+      "id": "Hybrid_Retrieval",
+      "label": "Hybrid Retrieval",
+      "group": "tech",
+      "path": "brain\\nodes\\Hybrid_Retrieval.md",
+      "degree": 7,
+      "is_hub": true
+    },
+    {
+      "id": "Inteligencia_Artificial_e_ML",
+      "label": "Inteligencia Artificial e ML",
+      "group": "conceito",
+      "path": "brain\\nodes\\Inteligencia_Artificial_e_ML.md",
+      "degree": 3,
+      "is_hub": false
+    },
+    {
+      "id": "Java_Excecoes_e_Resiliencia",
+      "label": "Java Excecoes e Resiliencia",
+      "group": "conceito",
+      "path": "brain\\nodes\\Java_Excecoes_e_Resiliencia.md",
+      "degree": 4,
+      "is_hub": true
+    },
+    {
+      "id": "Java_POO_e_Arquitetura_Industrial",
+      "label": "Java POO e Arquitetura Industrial",
+      "group": "tech",
+      "path": "brain\\nodes\\Java_POO_e_Arquitetura_Industrial.md",
+      "degree": 7,
+      "is_hub": true
+    },
+    {
+      "id": "Karpathy_Engineering_Guidelines",
+      "label": "Karpathy Engineering Guidelines",
+      "group": "projeto",
+      "path": "brain\\nodes\\Karpathy_Engineering_Guidelines.md",
+      "degree": 8,
+      "is_hub": true
+    },
+    {
+      "id": "Lobo_Limbico",
+      "label": "Lobo Limbico",
+      "group": "limbico",
+      "path": "brain\\nodes\\Lobo_Limbico.md",
+      "degree": 5,
+      "is_hub": true
+    },
+    {
+      "id": "Logo_Design_Engine",
+      "label": "Logo Design Engine",
+      "group": "tech",
+      "path": "brain\\nodes\\Logo_Design_Engine.md",
+      "degree": 8,
+      "is_hub": true
+    },
+    {
+      "id": "Mecanica_de_Raciocinio_Sintetico_MCTS_e_Process_Reward_Models",
+      "label": "Mecanica de Raciocinio Sintetico MCTS e Process Reward Models",
+      "group": "conceito",
+      "path": "brain\\nodes\\Mecanica_de_Raciocinio_Sintetico_MCTS_e_Process_Reward_Models.md",
+      "degree": 7,
+      "is_hub": true
+    },
+    {
+      "id": "Microarquitetura_de_Computadores_e_Fisica_do_Silicio",
+      "label": "Microarquitetura de Computadores e Fisica do Silicio",
+      "group": "regra",
+      "path": "brain\\nodes\\Microarquitetura_de_Computadores_e_Fisica_do_Silicio.md",
+      "degree": 14,
+      "is_hub": true
+    },
+    {
+      "id": "MiroFish_MultiAgent_Simulation",
+      "label": "MiroFish MultiAgent Simulation",
+      "group": "regra",
+      "path": "brain\\nodes\\MiroFish_MultiAgent_Simulation.md",
+      "degree": 7,
+      "is_hub": true
+    },
+    {
+      "id": "Model_Gateway",
+      "label": "Model Gateway",
+      "group": "tech",
+      "path": "brain\\nodes\\Model_Gateway.md",
+      "degree": 9,
+      "is_hub": true
+    },
+    {
+      "id": "Motor_Vetorial_Local",
+      "label": "Motor Vetorial Local",
+      "group": "tech",
+      "path": "brain\\nodes\\Motor_Vetorial_Local.md",
+      "degree": 4,
+      "is_hub": true
+    },
+    {
+      "id": "Operador",
+      "label": "Operador",
+      "group": "operador",
+      "path": "brain\\nodes\\Operador.md",
+      "degree": 31,
+      "is_hub": true
+    },
+    {
+      "id": "Padroes_Engenharia",
+      "label": "Padroes Engenharia",
+      "group": "conceito",
+      "path": "brain\\nodes\\Padroes_Engenharia.md",
+      "degree": 32,
+      "is_hub": true
+    },
+    {
+      "id": "Paradoxo_do_Superpolimento_e_Slop_de_Segunda_Ordem",
+      "label": "Paradoxo do Superpolimento e Slop de Segunda Ordem",
+      "group": "conceito",
+      "path": "brain\\nodes\\Paradoxo_do_Superpolimento_e_Slop_de_Segunda_Ordem.md",
+      "degree": 5,
+      "is_hub": true
+    },
+    {
+      "id": "Permission_Cortex",
+      "label": "Permission Cortex",
+      "group": "cortex",
+      "path": "brain\\nodes\\Permission_Cortex.md",
+      "degree": 16,
+      "is_hub": true
+    },
+    {
+      "id": "Proactive_Engine",
+      "label": "Proactive Engine",
+      "group": "projeto",
+      "path": "brain\\nodes\\Proactive_Engine.md",
+      "degree": 5,
+      "is_hub": true
+    },
+    {
+      "id": "Protocolo_Nao_Cometa_Erros",
+      "label": "Protocolo Nao Cometa Erros",
+      "group": "regra",
+      "path": "brain\\nodes\\Protocolo_Nao_Cometa_Erros.md",
+      "degree": 17,
+      "is_hub": true
+    },
+    {
+      "id": "Python_Engine",
+      "label": "Python Engine",
+      "group": "tech",
+      "path": "brain\\nodes\\Python_Engine.md",
+      "degree": 18,
+      "is_hub": true
+    },
+    {
+      "id": "Quantizacao_Aritmetica_e_Precisao_Reduzida_FP8_INT4",
+      "label": "Quantizacao Aritmetica e Precisao Reduzida FP8 INT4",
+      "group": "conceito",
+      "path": "brain\\nodes\\Quantizacao_Aritmetica_e_Precisao_Reduzida_FP8_INT4.md",
+      "degree": 7,
+      "is_hub": true
+    },
+    {
+      "id": "Redes_Corporativas",
+      "label": "Redes Corporativas",
+      "group": "tech",
+      "path": "brain\\nodes\\Redes_Corporativas.md",
+      "degree": 4,
+      "is_hub": true
+    },
+    {
+      "id": "Redes_de_Computadores",
+      "label": "Redes de Computadores",
+      "group": "conceito",
+      "path": "brain\\nodes\\Redes_de_Computadores.md",
+      "degree": 2,
+      "is_hub": false
+    },
+    {
+      "id": "REM_Consolidator",
+      "label": "REM Consolidator",
+      "group": "tech",
+      "path": "brain\\nodes\\REM_Consolidator.md",
+      "degree": 7,
+      "is_hub": true
+    },
+    {
+      "id": "Seguranca_da_Informacao",
+      "label": "Seguranca da Informacao",
+      "group": "conceito",
+      "path": "brain\\nodes\\Seguranca_da_Informacao.md",
+      "degree": 2,
+      "is_hub": false
+    },
+    {
+      "id": "Sensory_Watcher",
+      "label": "Sensory Watcher",
+      "group": "tech",
+      "path": "brain\\nodes\\Sensory_Watcher.md",
+      "degree": 10,
+      "is_hub": true
+    },
+    {
+      "id": "Session_Handoff",
+      "label": "Session Handoff",
+      "group": "conceito",
+      "path": "brain\\nodes\\Session_Handoff.md",
+      "degree": 7,
+      "is_hub": true
+    },
+    {
+      "id": "Sincronizacao_Autonoma",
+      "label": "Sincronizacao Autonoma",
+      "group": "conceito",
+      "path": "brain\\nodes\\Sincronizacao_Autonoma.md",
+      "degree": 11,
+      "is_hub": true
+    },
+    {
+      "id": "Teoria_das_Filas_Latencia_de_Cauda_e_Engenharia_de_SRE",
+      "label": "Teoria das Filas Latencia de Cauda e Engenharia de SRE",
+      "group": "conceito",
+      "path": "brain\\nodes\\Teoria_das_Filas_Latencia_de_Cauda_e_Engenharia_de_SRE.md",
+      "degree": 6,
+      "is_hub": true
+    },
+    {
+      "id": "Teoria_de_Sistemas_Distribuidos_Consenso_e_Tolerancia_a_Falhas",
+      "label": "Teoria de Sistemas Distribuidos Consenso e Tolerancia a Falhas",
+      "group": "regra",
+      "path": "brain\\nodes\\Teoria_de_Sistemas_Distribuidos_Consenso_e_Tolerancia_a_Falhas.md",
+      "degree": 10,
+      "is_hub": true
+    },
+    {
+      "id": "ThSyr",
+      "label": "ThSyr",
+      "group": "conceito",
+      "path": "brain\\nodes\\ThSyr.md",
+      "degree": 41,
+      "is_hub": true
+    },
+    {
+      "id": "TokLang_Core_Engine",
+      "label": "TokLang Core Engine",
+      "group": "projeto",
+      "path": "brain\\nodes\\TokLang_Core_Engine.md",
+      "degree": 13,
+      "is_hub": true
+    },
+    {
+      "id": "Tolerancia_Zero_Emojis",
+      "label": "Tolerancia Zero Emojis",
+      "group": "regra",
+      "path": "brain\\nodes\\Tolerancia_Zero_Emojis.md",
+      "degree": 14,
+      "is_hub": true
+    },
+    {
+      "id": "Tool_Bus",
+      "label": "Tool Bus",
+      "group": "tech",
+      "path": "brain\\nodes\\Tool_Bus.md",
+      "degree": 11,
+      "is_hub": true
+    },
+    {
+      "id": "master_context",
+      "label": "master context",
+      "group": "conceito",
+      "path": "brain\\profile\\master_context.md",
+      "degree": 1,
+      "is_hub": false
+    },
+    {
+      "id": "psychological_dossier",
+      "label": "psychological dossier",
+      "group": "projeto",
+      "path": "brain\\profile\\psychological_dossier.md",
+      "degree": 1,
+      "is_hub": false
+    },
+    {
+      "id": "user",
+      "label": "user",
+      "group": "conceito",
+      "path": "brain\\profile\\user.md",
+      "degree": 1,
+      "is_hub": false
+    },
+    {
+      "id": "academic_standards",
+      "label": "academic standards",
+      "group": "conceito",
+      "path": "brain\\standards\\academic_standards.md",
+      "degree": 3,
+      "is_hub": false
+    },
+    {
+      "id": "analise_quimica_relacional",
+      "label": "analise quimica relacional",
+      "group": "regra",
+      "path": "brain\\standards\\analise_quimica_relacional.md",
+      "degree": 4,
+      "is_hub": true
+    },
+    {
+      "id": "atlas_governance",
+      "label": "atlas governance",
+      "group": "conceito",
+      "path": "brain\\standards\\atlas_governance.md",
+      "degree": 3,
+      "is_hub": false
+    },
+    {
+      "id": "blender_3d_modeling_standards",
+      "label": "blender 3d modeling standards",
+      "group": "projeto",
+      "path": "brain\\standards\\blender_3d_modeling_standards.md",
+      "degree": 2,
+      "is_hub": false
+    },
+    {
+      "id": "copywriting_anti_slop",
+      "label": "copywriting anti slop",
+      "group": "projeto",
+      "path": "brain\\standards\\copywriting_anti_slop.md",
+      "degree": 4,
+      "is_hub": true
+    },
+    {
+      "id": "design_excellence_benchmark",
+      "label": "design excellence benchmark",
+      "group": "regra",
+      "path": "brain\\standards\\design_excellence_benchmark.md",
+      "degree": 6,
+      "is_hub": true
+    },
+    {
+      "id": "design_systems",
+      "label": "design systems",
+      "group": "regra",
+      "path": "brain\\standards\\design_systems.md",
+      "degree": 3,
+      "is_hub": false
+    },
+    {
+      "id": "engineering_patterns",
+      "label": "engineering patterns",
+      "group": "projeto",
+      "path": "brain\\standards\\engineering_patterns.md",
+      "degree": 6,
+      "is_hub": true
+    },
+    {
+      "id": "metodologia_code_makers",
+      "label": "metodologia code makers",
+      "group": "regra",
+      "path": "brain\\standards\\metodologia_code_makers.md",
+      "degree": 6,
+      "is_hub": true
+    },
+    {
+      "id": "repository_organization",
+      "label": "repository organization",
+      "group": "projeto",
+      "path": "brain\\standards\\repository_organization.md",
+      "degree": 1,
+      "is_hub": false
+    },
+    {
+      "id": "spec_driven_development",
+      "label": "spec driven development",
+      "group": "regra",
+      "path": "brain\\standards\\spec_driven_development.md",
+      "degree": 7,
+      "is_hub": true
+    },
+    {
+      "id": "2026-09-30_genesis_template_init",
+      "label": "2026-09-30 genesis template init",
+      "group": "sessao",
+      "path": "brain\\memories\\episodic\\2026-09-30_genesis_template_init.md",
+      "degree": 1,
+      "is_hub": false
+    },
+    {
+      "id": "branding_industrial_pop",
+      "label": "branding industrial pop",
+      "group": "tech",
+      "path": "brain\\memories\\procedural\\branding_industrial_pop.md",
+      "degree": 3,
+      "is_hub": false
+    },
+    {
+      "id": "git_autonomous_checkpoint",
+      "label": "git autonomous checkpoint",
+      "group": "conceito",
+      "path": "brain\\memories\\procedural\\git_autonomous_checkpoint.md",
+      "degree": 3,
+      "is_hub": false
+    },
+    {
+      "id": "neural_traceability_hud",
+      "label": "neural traceability hud",
+      "group": "conceito",
+      "path": "brain\\memories\\procedural\\neural_traceability_hud.md",
+      "degree": 3,
+      "is_hub": false
+    },
+    {
+      "id": "prefrontal_code_review",
+      "label": "prefrontal code review",
+      "group": "regra",
+      "path": "brain\\memories\\procedural\\prefrontal_code_review.md",
+      "degree": 3,
+      "is_hub": false
+    },
+    {
+      "id": "proc_adversarial_plan_review",
+      "label": "proc adversarial plan review",
+      "group": "conceito",
+      "path": "brain\\memories\\procedural\\proc_adversarial_plan_review.md",
+      "degree": 3,
+      "is_hub": false
+    },
+    {
+      "id": "proc_protocolo_nao_cometa_erros",
+      "label": "proc protocolo nao cometa erros",
+      "group": "conceito",
+      "path": "brain\\memories\\procedural\\proc_protocolo_nao_cometa_erros.md",
+      "degree": 3,
+      "is_hub": false
+    },
+    {
+      "id": "Lobo_Frontal",
+      "label": "Lobo Frontal",
+      "group": "regra",
+      "path": "brain\\lobes\\frontal\\Lobo_Frontal.md",
+      "degree": 36,
+      "is_hub": true
+    },
+    {
+      "id": "Sistema_Limbico",
+      "label": "Sistema Limbico",
+      "group": "limbico",
+      "path": "brain\\lobes\\limbico\\Sistema_Limbico.md",
+      "degree": 11,
+      "is_hub": true
+    },
+    {
+      "id": "Cortex_Visual_Intelligence_Studio",
+      "label": "Cortex Visual Intelligence Studio",
+      "group": "cortex",
+      "path": "brain\\lobes\\occipital\\Cortex_Visual_Intelligence_Studio.md",
+      "degree": 1,
+      "is_hub": false
+    },
+    {
+      "id": "Lobo_Occipital",
+      "label": "Lobo Occipital",
+      "group": "tech",
+      "path": "brain\\lobes\\occipital\\Lobo_Occipital.md",
+      "degree": 11,
+      "is_hub": true
+    },
+    {
+      "id": "Graphify_Code_Architecture",
+      "label": "Graphify Code Architecture",
+      "group": "tech",
+      "path": "brain\\lobes\\parietal\\Graphify_Code_Architecture.md",
+      "degree": 3,
+      "is_hub": false
+    },
+    {
+      "id": "Lobo_Parietal",
+      "label": "Lobo Parietal",
+      "group": "tech",
+      "path": "brain\\lobes\\parietal\\Lobo_Parietal.md",
+      "degree": 47,
+      "is_hub": true
+    },
+    {
+      "id": "Lobo_Temporal",
+      "label": "Lobo Temporal",
+      "group": "sessao",
+      "path": "brain\\lobes\\temporal\\Lobo_Temporal.md",
+      "degree": 8,
+      "is_hub": true
+    }
+  ],
+  "links": [
+    {
+      "source": "Cortex_Central",
+      "target": "Dossie_Psicologico"
+    },
+    {
+      "source": "Cortex_Central",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "Cortex_Central",
+      "target": "Anti_Sicofancia"
+    },
+    {
+      "source": "Cortex_Central",
+      "target": "Tolerancia_Zero_Emojis"
+    },
+    {
+      "source": "Cortex_Central",
+      "target": "Sincronizacao_Autonoma"
+    },
+    {
+      "source": "Cortex_Central",
+      "target": "Arquetipo_Ultron_Cognitivo"
+    },
+    {
+      "source": "Cortex_Central",
+      "target": "Model_Gateway"
+    },
+    {
+      "source": "Cortex_Central",
+      "target": "Executive_System"
+    },
+    {
+      "source": "Cortex_Central",
+      "target": "Tool_Bus"
+    },
+    {
+      "source": "Cortex_Central",
+      "target": "Permission_Cortex"
+    },
+    {
+      "source": "Cortex_Central",
+      "target": "Continuous_Runtime"
+    },
+    {
+      "source": "Cortex_Central",
+      "target": "Hybrid_Retrieval"
+    },
+    {
+      "source": "Cortex_Central",
+      "target": "Auto_Evolucao_Continua"
+    },
+    {
+      "source": "session_handoff",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "personality",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Adversarial_Plan_Review",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Adversarial_Plan_Review",
+      "target": "Anti_Sicofancia"
+    },
+    {
+      "source": "Adversarial_Plan_Review",
+      "target": "Lobo_Frontal"
+    },
+    {
+      "source": "Adversarial_Plan_Review",
+      "target": "Executive_System"
+    },
+    {
+      "source": "Algebra_Linear_Computacional_SVD_e_Low_Rank_Adaptation",
+      "target": "Microarquitetura_de_Computadores_e_Fisica_do_Silicio"
+    },
+    {
+      "source": "Algebra_Linear_Computacional_SVD_e_Low_Rank_Adaptation",
+      "target": "Grafos_Computacionais_MLIR_e_Otimizacao_de_Tensores"
+    },
+    {
+      "source": "Algebra_Linear_Computacional_SVD_e_Low_Rank_Adaptation",
+      "target": "Quantizacao_Aritmetica_e_Precisao_Reduzida_FP8_INT4"
+    },
+    {
+      "source": "Algebra_Linear_Computacional_SVD_e_Low_Rank_Adaptation",
+      "target": "Model_Gateway"
+    },
+    {
+      "source": "Algebra_Linear_Computacional_SVD_e_Low_Rank_Adaptation",
+      "target": "Lobo_Parietal"
+    },
+    {
+      "source": "Algebra_Linear_Computacional_SVD_e_Low_Rank_Adaptation",
+      "target": "Lobo_Frontal"
+    },
+    {
+      "source": "Anti_Sicofancia",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Anti_Sicofancia",
+      "target": "Operador"
+    },
+    {
+      "source": "Anti_Sicofancia",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Anti_Sicofancia",
+      "target": "Decisoes_Arquitetura"
+    },
+    {
+      "source": "Anti_Sicofancia",
+      "target": "Dossie_Psicologico"
+    },
+    {
+      "source": "Anti_Sicofancia",
+      "target": "Protocolo_Nao_Cometa_Erros"
+    },
+    {
+      "source": "Anti_Sicofancia",
+      "target": "Permission_Cortex"
+    },
+    {
+      "source": "Arquetipo_Ultron_Cognitivo",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Arquetipo_Ultron_Cognitivo",
+      "target": "Tolerancia_Zero_Emojis"
+    },
+    {
+      "source": "Arquetipo_Ultron_Cognitivo",
+      "target": "Anti_Sicofancia"
+    },
+    {
+      "source": "Arquetipo_Ultron_Cognitivo",
+      "target": "Permission_Cortex"
+    },
+    {
+      "source": "Arquetipo_Ultron_Cognitivo",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Arquetipo_Ultron_Cognitivo",
+      "target": "Operador"
+    },
+    {
+      "source": "Arquetipo_Ultron_Cognitivo",
+      "target": "Sensory_Watcher"
+    },
+    {
+      "source": "Arquetipo_Ultron_Cognitivo",
+      "target": "Protocolo_Nao_Cometa_Erros"
+    },
+    {
+      "source": "Arquetipo_Ultron_Cognitivo",
+      "target": "Dossie_Psicologico"
+    },
+    {
+      "source": "Arquetipo_Ultron_Cognitivo",
+      "target": "Lobo_Frontal"
+    },
+    {
+      "source": "Arquetipo_Ultron_Cognitivo",
+      "target": "Lobo_Temporal"
+    },
+    {
+      "source": "Arquiteturas_MoE_e_Modelos_de_Espaco_de_Estados_SSM",
+      "target": "Compiladores"
+    },
+    {
+      "source": "Arquiteturas_MoE_e_Modelos_de_Espaco_de_Estados_SSM",
+      "target": "TokLang_Core_Engine"
+    },
+    {
+      "source": "Arquiteturas_MoE_e_Modelos_de_Espaco_de_Estados_SSM",
+      "target": "Grafos_Computacionais_MLIR_e_Otimizacao_de_Tensores"
+    },
+    {
+      "source": "Arquiteturas_MoE_e_Modelos_de_Espaco_de_Estados_SSM",
+      "target": "Microarquitetura_de_Computadores_e_Fisica_do_Silicio"
+    },
+    {
+      "source": "Arquiteturas_MoE_e_Modelos_de_Espaco_de_Estados_SSM",
+      "target": "Lobo_Parietal"
+    },
+    {
+      "source": "Auto_Evolucao_Continua",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Auto_Evolucao_Continua",
+      "target": "Lobo_Frontal"
+    },
+    {
+      "source": "Auto_Evolucao_Continua",
+      "target": "Lobo_Parietal"
+    },
+    {
+      "source": "Auto_Evolucao_Continua",
+      "target": "Operador"
+    },
+    {
+      "source": "Auto_Evolucao_Continua",
+      "target": "Anti_Sicofancia"
+    },
+    {
+      "source": "Auto_Evolucao_Continua",
+      "target": "Tolerancia_Zero_Emojis"
+    },
+    {
+      "source": "Auto_Evolucao_Continua",
+      "target": "Enxame_Ultron_Distribuido"
+    },
+    {
+      "source": "Auto_Evolucao_Continua",
+      "target": "Arquetipo_Ultron_Cognitivo"
+    },
+    {
+      "source": "Banco_de_Dados_SQL",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "Banco_de_Dados_SQL",
+      "target": "Teoria_de_Sistemas_Distribuidos_Consenso_e_Tolerancia_a_Falhas"
+    },
+    {
+      "source": "Battle_IA_Benchmark",
+      "target": "Operador"
+    },
+    {
+      "source": "Battle_IA_Benchmark",
+      "target": "Model_Gateway"
+    },
+    {
+      "source": "Battle_IA_Benchmark",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Battle_IA_Benchmark",
+      "target": "TokLang_Core_Engine"
+    },
+    {
+      "source": "Blueprint_First",
+      "target": "spec_driven_development"
+    },
+    {
+      "source": "Blueprint_First",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Blueprint_First",
+      "target": "Lobo_Frontal"
+    },
+    {
+      "source": "Blueprint_First",
+      "target": "Lobo_Parietal"
+    },
+    {
+      "source": "Blueprint_First",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "Blueprint_First",
+      "target": "Drift_Checking"
+    },
+    {
+      "source": "Camada_Interacao_Operacional",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Camada_Interacao_Operacional",
+      "target": "Arquetipo_Ultron_Cognitivo"
+    },
+    {
+      "source": "Camada_Interacao_Operacional",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Camada_Interacao_Operacional",
+      "target": "Python_Engine"
+    },
+    {
+      "source": "Camada_Interacao_Operacional",
+      "target": "Anti_Sicofancia"
+    },
+    {
+      "source": "Cognitive_Core_V3",
+      "target": "Hybrid_Retrieval"
+    },
+    {
+      "source": "Cognitive_Core_V3",
+      "target": "Executive_System"
+    },
+    {
+      "source": "Cognitive_Core_V3",
+      "target": "REM_Consolidator"
+    },
+    {
+      "source": "Cognitive_Core_V3",
+      "target": "Model_Gateway"
+    },
+    {
+      "source": "Cognitive_Core_V3",
+      "target": "Permission_Cortex"
+    },
+    {
+      "source": "Cognitive_Core_V3",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Compiladores",
+      "target": "Lobo_Parietal"
+    },
+    {
+      "source": "Compiladores",
+      "target": "Operador"
+    },
+    {
+      "source": "Compiladores",
+      "target": "Engenharia_de_Compiladores_e_Representacoes_Intermediarias"
+    },
+    {
+      "source": "Conselho_da_Alianca",
+      "target": "Sistema_Limbico"
+    },
+    {
+      "source": "Conselho_da_Alianca",
+      "target": "Lobo_Frontal"
+    },
+    {
+      "source": "Conselho_da_Alianca",
+      "target": "Operador"
+    },
+    {
+      "source": "Conselho_da_Alianca",
+      "target": "Anti_Sicofancia"
+    },
+    {
+      "source": "Conselho_da_Alianca",
+      "target": "Conselho_da_Alianca"
+    },
+    {
+      "source": "Continuous_Runtime",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Continuous_Runtime",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Continuous_Runtime",
+      "target": "Python_Engine"
+    },
+    {
+      "source": "Continuous_Runtime",
+      "target": "Proactive_Engine"
+    },
+    {
+      "source": "Continuous_Runtime",
+      "target": "Sincronizacao_Autonoma"
+    },
+    {
+      "source": "Continuous_Runtime",
+      "target": "Sensory_Watcher"
+    },
+    {
+      "source": "Copywriting_Anti_Slop",
+      "target": "copywriting_anti_slop"
+    },
+    {
+      "source": "Copywriting_Anti_Slop",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Copywriting_Anti_Slop",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Copywriting_Anti_Slop",
+      "target": "Operador"
+    },
+    {
+      "source": "Daemon_Autonomo_ThSyr",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Daemon_Autonomo_ThSyr",
+      "target": "Python_Engine"
+    },
+    {
+      "source": "Daemon_Autonomo_ThSyr",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "Daemon_Autonomo_ThSyr",
+      "target": "Continuous_Runtime"
+    },
+    {
+      "source": "Daemon_Autonomo_ThSyr",
+      "target": "Sensory_Watcher"
+    },
+    {
+      "source": "Decisoes_Arquitetura",
+      "target": "Operador"
+    },
+    {
+      "source": "Decisoes_Arquitetura",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Decisoes_Arquitetura",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Decisoes_Arquitetura",
+      "target": "Anti_Sicofancia"
+    },
+    {
+      "source": "Decisoes_Arquitetura",
+      "target": "Tolerancia_Zero_Emojis"
+    },
+    {
+      "source": "Decisoes_Arquitetura",
+      "target": "Sincronizacao_Autonoma"
+    },
+    {
+      "source": "Design_System_Editorial",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Design_System_Editorial",
+      "target": "design_systems"
+    },
+    {
+      "source": "Design_System_Editorial",
+      "target": "Operador"
+    },
+    {
+      "source": "Design_System_Industrial_Pop",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Design_System_Industrial_Pop",
+      "target": "design_systems"
+    },
+    {
+      "source": "Design_System_Industrial_Pop",
+      "target": "Operador"
+    },
+    {
+      "source": "Design_System_Industrial_Pop",
+      "target": "design_excellence_benchmark"
+    },
+    {
+      "source": "Dossie_Psicologico",
+      "target": "Operador"
+    },
+    {
+      "source": "Dossie_Psicologico",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Drift_Checking",
+      "target": "spec_driven_development"
+    },
+    {
+      "source": "Drift_Checking",
+      "target": "Blueprint_First"
+    },
+    {
+      "source": "Drift_Checking",
+      "target": "Anti_Sicofancia"
+    },
+    {
+      "source": "Drift_Checking",
+      "target": "Lobo_Frontal"
+    },
+    {
+      "source": "Engenharia_de_Compiladores_e_Representacoes_Intermediarias",
+      "target": "Compiladores"
+    },
+    {
+      "source": "Engenharia_de_Compiladores_e_Representacoes_Intermediarias",
+      "target": "TokLang_Core_Engine"
+    },
+    {
+      "source": "Engenharia_de_Compiladores_e_Representacoes_Intermediarias",
+      "target": "Lobo_Parietal"
+    },
+    {
+      "source": "Engenharia_de_Compiladores_e_Representacoes_Intermediarias",
+      "target": "Microarquitetura_de_Computadores_e_Fisica_do_Silicio"
+    },
+    {
+      "source": "Engenharia_de_Compiladores_e_Representacoes_Intermediarias",
+      "target": "Grafos_Computacionais_MLIR_e_Otimizacao_de_Tensores"
+    },
+    {
+      "source": "Engenharia_de_Software_e_UML",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "Engenharia_de_Software_e_UML",
+      "target": "Blueprint_First"
+    },
+    {
+      "source": "Enxame_Ultron_Distribuido",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Enxame_Ultron_Distribuido",
+      "target": "Operador"
+    },
+    {
+      "source": "Enxame_Ultron_Distribuido",
+      "target": "TokLang_Core_Engine"
+    },
+    {
+      "source": "Enxame_Ultron_Distribuido",
+      "target": "Protocolo_Nao_Cometa_Erros"
+    },
+    {
+      "source": "Enxame_Ultron_Distribuido",
+      "target": "Tolerancia_Zero_Emojis"
+    },
+    {
+      "source": "Enxame_Ultron_Distribuido",
+      "target": "Auto_Evolucao_Continua"
+    },
+    {
+      "source": "Enxame_Ultron_Distribuido",
+      "target": "Lobo_Parietal"
+    },
+    {
+      "source": "Enxame_Ultron_Distribuido",
+      "target": "Lobo_Frontal"
+    },
+    {
+      "source": "Enxame_Ultron_Distribuido",
+      "target": "Arquetipo_Ultron_Cognitivo"
+    },
+    {
+      "source": "Enxame_Ultron_Distribuido",
+      "target": "Sensory_Watcher"
+    },
+    {
+      "source": "Estrutura_de_Dados",
+      "target": "Java_POO_e_Arquitetura_Industrial"
+    },
+    {
+      "source": "Estrutura_de_Dados",
+      "target": "Java_Excecoes_e_Resiliencia"
+    },
+    {
+      "source": "Estudos_Avancados_CC",
+      "target": "Estrutura_de_Dados"
+    },
+    {
+      "source": "Estudos_Avancados_CC",
+      "target": "Teoria_de_Sistemas_Distribuidos_Consenso_e_Tolerancia_a_Falhas"
+    },
+    {
+      "source": "Estudos_Avancados_CC",
+      "target": "Compiladores"
+    },
+    {
+      "source": "Executive_System",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Executive_System",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Executive_System",
+      "target": "Tool_Bus"
+    },
+    {
+      "source": "Executive_System",
+      "target": "Permission_Cortex"
+    },
+    {
+      "source": "Executive_System",
+      "target": "Session_Handoff"
+    },
+    {
+      "source": "Frontend_Craft_e_Apple_Design_Protocol",
+      "target": "Lobo_Parietal"
+    },
+    {
+      "source": "Frontend_Craft_e_Apple_Design_Protocol",
+      "target": "Design_System_Industrial_Pop"
+    },
+    {
+      "source": "Frontend_Craft_e_Apple_Design_Protocol",
+      "target": "Enxame_Ultron_Distribuido"
+    },
+    {
+      "source": "Frontend_Craft_e_Apple_Design_Protocol",
+      "target": "Operador"
+    },
+    {
+      "source": "Gazeta_Tecnologica_Global",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Gazeta_Tecnologica_Global",
+      "target": "Operador"
+    },
+    {
+      "source": "Gazeta_Tecnologica_Global",
+      "target": "Lobo_Occipital"
+    },
+    {
+      "source": "Gazeta_Tecnologica_Global",
+      "target": "Lobo_Frontal"
+    },
+    {
+      "source": "Gazeta_Tecnologica_Global",
+      "target": "Protocolo_Nao_Cometa_Erros"
+    },
+    {
+      "source": "Grafos_Computacionais_MLIR_e_Otimizacao_de_Tensores",
+      "target": "Compiladores"
+    },
+    {
+      "source": "Grafos_Computacionais_MLIR_e_Otimizacao_de_Tensores",
+      "target": "Microarquitetura_de_Computadores_e_Fisica_do_Silicio"
+    },
+    {
+      "source": "Grafos_Computacionais_MLIR_e_Otimizacao_de_Tensores",
+      "target": "Engenharia_de_Compiladores_e_Representacoes_Intermediarias"
+    },
+    {
+      "source": "Grafos_Computacionais_MLIR_e_Otimizacao_de_Tensores",
+      "target": "TokLang_Core_Engine"
+    },
+    {
+      "source": "Grafos_Computacionais_MLIR_e_Otimizacao_de_Tensores",
+      "target": "Lobo_Parietal"
+    },
+    {
+      "source": "Hybrid_Retrieval",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Hybrid_Retrieval",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Hybrid_Retrieval",
+      "target": "Python_Engine"
+    },
+    {
+      "source": "Inteligencia_Artificial_e_ML",
+      "target": "MiroFish_MultiAgent_Simulation"
+    },
+    {
+      "source": "Inteligencia_Artificial_e_ML",
+      "target": "Python_Engine"
+    },
+    {
+      "source": "Inteligencia_Artificial_e_ML",
+      "target": "Model_Gateway"
+    },
+    {
+      "source": "Java_Excecoes_e_Resiliencia",
+      "target": "Java_POO_e_Arquitetura_Industrial"
+    },
+    {
+      "source": "Java_Excecoes_e_Resiliencia",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "Java_POO_e_Arquitetura_Industrial",
+      "target": "Operador"
+    },
+    {
+      "source": "Java_POO_e_Arquitetura_Industrial",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Java_POO_e_Arquitetura_Industrial",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "Java_POO_e_Arquitetura_Industrial",
+      "target": "Continuous_Runtime"
+    },
+    {
+      "source": "Karpathy_Engineering_Guidelines",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Karpathy_Engineering_Guidelines",
+      "target": "Protocolo_Nao_Cometa_Erros"
+    },
+    {
+      "source": "Karpathy_Engineering_Guidelines",
+      "target": "Lobo_Frontal"
+    },
+    {
+      "source": "Karpathy_Engineering_Guidelines",
+      "target": "Lobo_Parietal"
+    },
+    {
+      "source": "Karpathy_Engineering_Guidelines",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Karpathy_Engineering_Guidelines",
+      "target": "Anti_Sicofancia"
+    },
+    {
+      "source": "Karpathy_Engineering_Guidelines",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "Lobo_Limbico",
+      "target": "Sistema_Limbico"
+    },
+    {
+      "source": "Lobo_Limbico",
+      "target": "Anti_Sicofancia"
+    },
+    {
+      "source": "Lobo_Limbico",
+      "target": "Tolerancia_Zero_Emojis"
+    },
+    {
+      "source": "Lobo_Limbico",
+      "target": "Permission_Cortex"
+    },
+    {
+      "source": "Lobo_Limbico",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Logo_Design_Engine",
+      "target": "Lobo_Occipital"
+    },
+    {
+      "source": "Logo_Design_Engine",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Logo_Design_Engine",
+      "target": "Frontend_Craft_e_Apple_Design_Protocol"
+    },
+    {
+      "source": "Logo_Design_Engine",
+      "target": "Design_System_Editorial"
+    },
+    {
+      "source": "Logo_Design_Engine",
+      "target": "Design_System_Industrial_Pop"
+    },
+    {
+      "source": "Logo_Design_Engine",
+      "target": "design_excellence_benchmark"
+    },
+    {
+      "source": "Logo_Design_Engine",
+      "target": "Copywriting_Anti_Slop"
+    },
+    {
+      "source": "Mecanica_de_Raciocinio_Sintetico_MCTS_e_Process_Reward_Models",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Mecanica_de_Raciocinio_Sintetico_MCTS_e_Process_Reward_Models",
+      "target": "Lobo_Frontal"
+    },
+    {
+      "source": "Mecanica_de_Raciocinio_Sintetico_MCTS_e_Process_Reward_Models",
+      "target": "Executive_System"
+    },
+    {
+      "source": "Mecanica_de_Raciocinio_Sintetico_MCTS_e_Process_Reward_Models",
+      "target": "Adversarial_Plan_Review"
+    },
+    {
+      "source": "Mecanica_de_Raciocinio_Sintetico_MCTS_e_Process_Reward_Models",
+      "target": "Microarquitetura_de_Computadores_e_Fisica_do_Silicio"
+    },
+    {
+      "source": "Mecanica_de_Raciocinio_Sintetico_MCTS_e_Process_Reward_Models",
+      "target": "TokLang_Core_Engine"
+    },
+    {
+      "source": "Microarquitetura_de_Computadores_e_Fisica_do_Silicio",
+      "target": "Lobo_Parietal"
+    },
+    {
+      "source": "Microarquitetura_de_Computadores_e_Fisica_do_Silicio",
+      "target": "Compiladores"
+    },
+    {
+      "source": "Microarquitetura_de_Computadores_e_Fisica_do_Silicio",
+      "target": "TokLang_Core_Engine"
+    },
+    {
+      "source": "Microarquitetura_de_Computadores_e_Fisica_do_Silicio",
+      "target": "Sensory_Watcher"
+    },
+    {
+      "source": "Microarquitetura_de_Computadores_e_Fisica_do_Silicio",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "Microarquitetura_de_Computadores_e_Fisica_do_Silicio",
+      "target": "Grafos_Computacionais_MLIR_e_Otimizacao_de_Tensores"
+    },
+    {
+      "source": "MiroFish_MultiAgent_Simulation",
+      "target": "Lobo_Parietal"
+    },
+    {
+      "source": "MiroFish_MultiAgent_Simulation",
+      "target": "Adversarial_Plan_Review"
+    },
+    {
+      "source": "MiroFish_MultiAgent_Simulation",
+      "target": "Hybrid_Retrieval"
+    },
+    {
+      "source": "MiroFish_MultiAgent_Simulation",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "MiroFish_MultiAgent_Simulation",
+      "target": "Executive_System"
+    },
+    {
+      "source": "Model_Gateway",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Model_Gateway",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Model_Gateway",
+      "target": "Python_Engine"
+    },
+    {
+      "source": "Motor_Vetorial_Local",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Motor_Vetorial_Local",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "Motor_Vetorial_Local",
+      "target": "Python_Engine"
+    },
+    {
+      "source": "Operador",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Operador",
+      "target": "Dossie_Psicologico"
+    },
+    {
+      "source": "Padroes_Engenharia",
+      "target": "Operador"
+    },
+    {
+      "source": "Padroes_Engenharia",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Padroes_Engenharia",
+      "target": "engineering_patterns"
+    },
+    {
+      "source": "Padroes_Engenharia",
+      "target": "Banco_de_Dados_SQL"
+    },
+    {
+      "source": "Padroes_Engenharia",
+      "target": "Engenharia_de_Software_e_UML"
+    },
+    {
+      "source": "Padroes_Engenharia",
+      "target": "Karpathy_Engineering_Guidelines"
+    },
+    {
+      "source": "Paradoxo_do_Superpolimento_e_Slop_de_Segunda_Ordem",
+      "target": "Operador"
+    },
+    {
+      "source": "Paradoxo_do_Superpolimento_e_Slop_de_Segunda_Ordem",
+      "target": "Copywriting_Anti_Slop"
+    },
+    {
+      "source": "Paradoxo_do_Superpolimento_e_Slop_de_Segunda_Ordem",
+      "target": "Anti_Sicofancia"
+    },
+    {
+      "source": "Paradoxo_do_Superpolimento_e_Slop_de_Segunda_Ordem",
+      "target": "Dossie_Psicologico"
+    },
+    {
+      "source": "Paradoxo_do_Superpolimento_e_Slop_de_Segunda_Ordem",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Permission_Cortex",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Permission_Cortex",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Permission_Cortex",
+      "target": "Anti_Sicofancia"
+    },
+    {
+      "source": "Permission_Cortex",
+      "target": "Tool_Bus"
+    },
+    {
+      "source": "Permission_Cortex",
+      "target": "Executive_System"
+    },
+    {
+      "source": "Permission_Cortex",
+      "target": "Operador"
+    },
+    {
+      "source": "Proactive_Engine",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Proactive_Engine",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Proactive_Engine",
+      "target": "Continuous_Runtime"
+    },
+    {
+      "source": "Proactive_Engine",
+      "target": "Operador"
+    },
+    {
+      "source": "Protocolo_Nao_Cometa_Erros",
+      "target": "Operador"
+    },
+    {
+      "source": "Protocolo_Nao_Cometa_Erros",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Protocolo_Nao_Cometa_Erros",
+      "target": "Lobo_Frontal"
+    },
+    {
+      "source": "Protocolo_Nao_Cometa_Erros",
+      "target": "Anti_Sicofancia"
+    },
+    {
+      "source": "Protocolo_Nao_Cometa_Erros",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Protocolo_Nao_Cometa_Erros",
+      "target": "proc_protocolo_nao_cometa_erros"
+    },
+    {
+      "source": "Protocolo_Nao_Cometa_Erros",
+      "target": "Dossie_Psicologico"
+    },
+    {
+      "source": "Protocolo_Nao_Cometa_Erros",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "Protocolo_Nao_Cometa_Erros",
+      "target": "metodologia_code_makers"
+    },
+    {
+      "source": "Python_Engine",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Python_Engine",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Python_Engine",
+      "target": "Continuous_Runtime"
+    },
+    {
+      "source": "Python_Engine",
+      "target": "Model_Gateway"
+    },
+    {
+      "source": "Python_Engine",
+      "target": "Executive_System"
+    },
+    {
+      "source": "Python_Engine",
+      "target": "Tool_Bus"
+    },
+    {
+      "source": "Python_Engine",
+      "target": "Hybrid_Retrieval"
+    },
+    {
+      "source": "Python_Engine",
+      "target": "Operador"
+    },
+    {
+      "source": "Quantizacao_Aritmetica_e_Precisao_Reduzida_FP8_INT4",
+      "target": "Microarquitetura_de_Computadores_e_Fisica_do_Silicio"
+    },
+    {
+      "source": "Quantizacao_Aritmetica_e_Precisao_Reduzida_FP8_INT4",
+      "target": "Grafos_Computacionais_MLIR_e_Otimizacao_de_Tensores"
+    },
+    {
+      "source": "Quantizacao_Aritmetica_e_Precisao_Reduzida_FP8_INT4",
+      "target": "TokLang_Core_Engine"
+    },
+    {
+      "source": "Quantizacao_Aritmetica_e_Precisao_Reduzida_FP8_INT4",
+      "target": "Compiladores"
+    },
+    {
+      "source": "Quantizacao_Aritmetica_e_Precisao_Reduzida_FP8_INT4",
+      "target": "Lobo_Parietal"
+    },
+    {
+      "source": "Redes_Corporativas",
+      "target": "Lobo_Parietal"
+    },
+    {
+      "source": "Redes_Corporativas",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "Redes_de_Computadores",
+      "target": "Redes_Corporativas"
+    },
+    {
+      "source": "REM_Consolidator",
+      "target": "Sensory_Watcher"
+    },
+    {
+      "source": "REM_Consolidator",
+      "target": "Continuous_Runtime"
+    },
+    {
+      "source": "REM_Consolidator",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "REM_Consolidator",
+      "target": "Motor_Vetorial_Local"
+    },
+    {
+      "source": "Seguranca_da_Informacao",
+      "target": "Teoria_de_Sistemas_Distribuidos_Consenso_e_Tolerancia_a_Falhas"
+    },
+    {
+      "source": "Sensory_Watcher",
+      "target": "Continuous_Runtime"
+    },
+    {
+      "source": "Sensory_Watcher",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Sensory_Watcher",
+      "target": "REM_Consolidator"
+    },
+    {
+      "source": "Sensory_Watcher",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Session_Handoff",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Session_Handoff",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Session_Handoff",
+      "target": "Sincronizacao_Autonoma"
+    },
+    {
+      "source": "Session_Handoff",
+      "target": "Operador"
+    },
+    {
+      "source": "Sincronizacao_Autonoma",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Sincronizacao_Autonoma",
+      "target": "Operador"
+    },
+    {
+      "source": "Sincronizacao_Autonoma",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Sincronizacao_Autonoma",
+      "target": "Decisoes_Arquitetura"
+    },
+    {
+      "source": "Teoria_das_Filas_Latencia_de_Cauda_e_Engenharia_de_SRE",
+      "target": "Teoria_de_Sistemas_Distribuidos_Consenso_e_Tolerancia_a_Falhas"
+    },
+    {
+      "source": "Teoria_das_Filas_Latencia_de_Cauda_e_Engenharia_de_SRE",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "Teoria_das_Filas_Latencia_de_Cauda_e_Engenharia_de_SRE",
+      "target": "Lobo_Parietal"
+    },
+    {
+      "source": "Teoria_das_Filas_Latencia_de_Cauda_e_Engenharia_de_SRE",
+      "target": "Enxame_Ultron_Distribuido"
+    },
+    {
+      "source": "Teoria_das_Filas_Latencia_de_Cauda_e_Engenharia_de_SRE",
+      "target": "Daemon_Autonomo_ThSyr"
+    },
+    {
+      "source": "Teoria_de_Sistemas_Distribuidos_Consenso_e_Tolerancia_a_Falhas",
+      "target": "Lobo_Parietal"
+    },
+    {
+      "source": "Teoria_de_Sistemas_Distribuidos_Consenso_e_Tolerancia_a_Falhas",
+      "target": "Microarquitetura_de_Computadores_e_Fisica_do_Silicio"
+    },
+    {
+      "source": "Teoria_de_Sistemas_Distribuidos_Consenso_e_Tolerancia_a_Falhas",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "Teoria_de_Sistemas_Distribuidos_Consenso_e_Tolerancia_a_Falhas",
+      "target": "Enxame_Ultron_Distribuido"
+    },
+    {
+      "source": "Teoria_de_Sistemas_Distribuidos_Consenso_e_Tolerancia_a_Falhas",
+      "target": "Banco_de_Dados_SQL"
+    },
+    {
+      "source": "ThSyr",
+      "target": "Operador"
+    },
+    {
+      "source": "ThSyr",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "ThSyr",
+      "target": "Anti_Sicofancia"
+    },
+    {
+      "source": "ThSyr",
+      "target": "Dossie_Psicologico"
+    },
+    {
+      "source": "ThSyr",
+      "target": "Sincronizacao_Autonoma"
+    },
+    {
+      "source": "ThSyr",
+      "target": "Tolerancia_Zero_Emojis"
+    },
+    {
+      "source": "ThSyr",
+      "target": "Protocolo_Nao_Cometa_Erros"
+    },
+    {
+      "source": "ThSyr",
+      "target": "Permission_Cortex"
+    },
+    {
+      "source": "ThSyr",
+      "target": "Tool_Bus"
+    },
+    {
+      "source": "ThSyr",
+      "target": "Python_Engine"
+    },
+    {
+      "source": "TokLang_Core_Engine",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "TokLang_Core_Engine",
+      "target": "Compiladores"
+    },
+    {
+      "source": "TokLang_Core_Engine",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "TokLang_Core_Engine",
+      "target": "Grafos_Computacionais_MLIR_e_Otimizacao_de_Tensores"
+    },
+    {
+      "source": "Tolerancia_Zero_Emojis",
+      "target": "Operador"
+    },
+    {
+      "source": "Tolerancia_Zero_Emojis",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Tolerancia_Zero_Emojis",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Tolerancia_Zero_Emojis",
+      "target": "Decisoes_Arquitetura"
+    },
+    {
+      "source": "Tolerancia_Zero_Emojis",
+      "target": "Dossie_Psicologico"
+    },
+    {
+      "source": "Tool_Bus",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Tool_Bus",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Tool_Bus",
+      "target": "Executive_System"
+    },
+    {
+      "source": "Tool_Bus",
+      "target": "Permission_Cortex"
+    },
+    {
+      "source": "Tool_Bus",
+      "target": "Python_Engine"
+    },
+    {
+      "source": "master_context",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "psychological_dossier",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "user",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "academic_standards",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "academic_standards",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "analise_quimica_relacional",
+      "target": "Conselho_da_Alianca"
+    },
+    {
+      "source": "analise_quimica_relacional",
+      "target": "Sistema_Limbico"
+    },
+    {
+      "source": "analise_quimica_relacional",
+      "target": "Lobo_Frontal"
+    },
+    {
+      "source": "analise_quimica_relacional",
+      "target": "Operador"
+    },
+    {
+      "source": "atlas_governance",
+      "target": "Blueprint_First"
+    },
+    {
+      "source": "atlas_governance",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "atlas_governance",
+      "target": "Lobo_Frontal"
+    },
+    {
+      "source": "blender_3d_modeling_standards",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "copywriting_anti_slop",
+      "target": "Copywriting_Anti_Slop"
+    },
+    {
+      "source": "copywriting_anti_slop",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "copywriting_anti_slop",
+      "target": "Lobo_Occipital"
+    },
+    {
+      "source": "design_excellence_benchmark",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "design_excellence_benchmark",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "design_systems",
+      "target": "design_excellence_benchmark"
+    },
+    {
+      "source": "engineering_patterns",
+      "target": "spec_driven_development"
+    },
+    {
+      "source": "engineering_patterns",
+      "target": "Graphify_Code_Architecture"
+    },
+    {
+      "source": "engineering_patterns",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "engineering_patterns",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "engineering_patterns",
+      "target": "Lobo_Parietal"
+    },
+    {
+      "source": "metodologia_code_makers",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "metodologia_code_makers",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "repository_organization",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "spec_driven_development",
+      "target": "Graphify_Code_Architecture"
+    },
+    {
+      "source": "spec_driven_development",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "spec_driven_development",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "spec_driven_development",
+      "target": "Lobo_Parietal"
+    },
+    {
+      "source": "2026-09-30_genesis_template_init",
+      "target": "Lobo_Temporal"
+    },
+    {
+      "source": "branding_industrial_pop",
+      "target": "Lobo_Frontal"
+    },
+    {
+      "source": "branding_industrial_pop",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "branding_industrial_pop",
+      "target": "ThSyr"
+    },
+    {
+      "source": "git_autonomous_checkpoint",
+      "target": "Lobo_Frontal"
+    },
+    {
+      "source": "git_autonomous_checkpoint",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "git_autonomous_checkpoint",
+      "target": "ThSyr"
+    },
+    {
+      "source": "neural_traceability_hud",
+      "target": "Lobo_Frontal"
+    },
+    {
+      "source": "neural_traceability_hud",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "neural_traceability_hud",
+      "target": "ThSyr"
+    },
+    {
+      "source": "prefrontal_code_review",
+      "target": "Lobo_Frontal"
+    },
+    {
+      "source": "prefrontal_code_review",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "prefrontal_code_review",
+      "target": "ThSyr"
+    },
+    {
+      "source": "proc_adversarial_plan_review",
+      "target": "Lobo_Frontal"
+    },
+    {
+      "source": "proc_adversarial_plan_review",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "proc_adversarial_plan_review",
+      "target": "ThSyr"
+    },
+    {
+      "source": "proc_protocolo_nao_cometa_erros",
+      "target": "Lobo_Frontal"
+    },
+    {
+      "source": "proc_protocolo_nao_cometa_erros",
+      "target": "Sistema_Limbico"
+    },
+    {
+      "source": "Lobo_Frontal",
+      "target": "Anti_Sicofancia"
+    },
+    {
+      "source": "Lobo_Frontal",
+      "target": "Tolerancia_Zero_Emojis"
+    },
+    {
+      "source": "Lobo_Frontal",
+      "target": "Sincronizacao_Autonoma"
+    },
+    {
+      "source": "Lobo_Frontal",
+      "target": "Dossie_Psicologico"
+    },
+    {
+      "source": "Lobo_Frontal",
+      "target": "Operador"
+    },
+    {
+      "source": "Lobo_Frontal",
+      "target": "Decisoes_Arquitetura"
+    },
+    {
+      "source": "Lobo_Frontal",
+      "target": "Cortex_Central"
+    },
+    {
+      "source": "Lobo_Frontal",
+      "target": "Executive_System"
+    },
+    {
+      "source": "Lobo_Frontal",
+      "target": "Session_Handoff"
+    },
+    {
+      "source": "Lobo_Frontal",
+      "target": "Drift_Checking"
+    },
+    {
+      "source": "Lobo_Frontal",
+      "target": "Blueprint_First"
+    },
+    {
+      "source": "Lobo_Frontal",
+      "target": "Adversarial_Plan_Review"
+    },
+    {
+      "source": "Lobo_Frontal",
+      "target": "metodologia_code_makers"
+    },
+    {
+      "source": "Lobo_Frontal",
+      "target": "Protocolo_Nao_Cometa_Erros"
+    },
+    {
+      "source": "Lobo_Frontal",
+      "target": "Permission_Cortex"
+    },
+    {
+      "source": "Lobo_Frontal",
+      "target": "Mecanica_de_Raciocinio_Sintetico_MCTS_e_Process_Reward_Models"
+    },
+    {
+      "source": "Sistema_Limbico",
+      "target": "Conselho_da_Alianca"
+    },
+    {
+      "source": "Sistema_Limbico",
+      "target": "Anti_Sicofancia"
+    },
+    {
+      "source": "Sistema_Limbico",
+      "target": "Tolerancia_Zero_Emojis"
+    },
+    {
+      "source": "Sistema_Limbico",
+      "target": "Permission_Cortex"
+    },
+    {
+      "source": "Sistema_Limbico",
+      "target": "Protocolo_Nao_Cometa_Erros"
+    },
+    {
+      "source": "Sistema_Limbico",
+      "target": "Dossie_Psicologico"
+    },
+    {
+      "source": "Sistema_Limbico",
+      "target": "Operador"
+    },
+    {
+      "source": "Cortex_Visual_Intelligence_Studio",
+      "target": "Lobo_Occipital"
+    },
+    {
+      "source": "Lobo_Occipital",
+      "target": "Frontend_Craft_e_Apple_Design_Protocol"
+    },
+    {
+      "source": "Lobo_Occipital",
+      "target": "Design_System_Editorial"
+    },
+    {
+      "source": "Lobo_Occipital",
+      "target": "Design_System_Industrial_Pop"
+    },
+    {
+      "source": "Lobo_Occipital",
+      "target": "Copywriting_Anti_Slop"
+    },
+    {
+      "source": "Lobo_Occipital",
+      "target": "design_excellence_benchmark"
+    },
+    {
+      "source": "Lobo_Occipital",
+      "target": "metodologia_code_makers"
+    },
+    {
+      "source": "Lobo_Occipital",
+      "target": "Logo_Design_Engine"
+    },
+    {
+      "source": "Graphify_Code_Architecture",
+      "target": "Lobo_Parietal"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "Padroes_Engenharia"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "Banco_de_Dados_SQL"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "Python_Engine"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "ThSyr"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "Blueprint_First"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "academic_standards"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "Compiladores"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "TokLang_Core_Engine"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "Redes_Corporativas"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "Redes_de_Computadores"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "Seguranca_da_Informacao"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "Estrutura_de_Dados"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "Java_POO_e_Arquitetura_Industrial"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "Java_Excecoes_e_Resiliencia"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "MiroFish_MultiAgent_Simulation"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "Enxame_Ultron_Distribuido"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "Tool_Bus"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "blender_3d_modeling_standards"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "metodologia_code_makers"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "Microarquitetura_de_Computadores_e_Fisica_do_Silicio"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "Engenharia_de_Compiladores_e_Representacoes_Intermediarias"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "Grafos_Computacionais_MLIR_e_Otimizacao_de_Tensores"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "Teoria_de_Sistemas_Distribuidos_Consenso_e_Tolerancia_a_Falhas"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "Arquiteturas_MoE_e_Modelos_de_Espaco_de_Estados_SSM"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "Quantizacao_Aritmetica_e_Precisao_Reduzida_FP8_INT4"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "Teoria_das_Filas_Latencia_de_Cauda_e_Engenharia_de_SRE"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "Algebra_Linear_Computacional_SVD_e_Low_Rank_Adaptation"
+    },
+    {
+      "source": "Lobo_Parietal",
+      "target": "Frontend_Craft_e_Apple_Design_Protocol"
+    },
+    {
+      "source": "Lobo_Temporal",
+      "target": "Operador"
+    },
+    {
+      "source": "Lobo_Temporal",
+      "target": "Session_Handoff"
+    },
+    {
+      "source": "Lobo_Temporal",
+      "target": "Dossie_Psicologico"
+    },
+    {
+      "source": "Lobo_Temporal",
+      "target": "Decisoes_Arquitetura"
+    },
+    {
+      "source": "Lobo_Temporal",
+      "target": "REM_Consolidator"
+    },
+    {
+      "source": "Lobo_Temporal",
+      "target": "Sincronizacao_Autonoma"
+    }
+  ]
+};
+
+    const colorMap = {
+      "cortex": "#ff3366",
+      "operador": "#58a6ff",
+      "regra": "#ff7b72",
+      "frontal": "#ff7b72",
+      "limbico": "#f778ba",
+      "tech": "#79c0ff",
+      "parietal": "#79c0ff",
+      "design": "#d2a8ff",
+      "occipital": "#d2a8ff",
+      "sessao": "#bc8cff",
+      "temporal": "#bc8cff",
+      "projeto": "#3fb950",
+      "conceito": "#8b949e"
+    };
+
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    const svg = d3.select("#canvas")
+      .attr("viewBox", [0, 0, width, height]);
+
+    // Defs para efeitos de luz e filtros glow
+    const defs = svg.append("defs");
+    const filter = defs.append("filter")
+      .attr("id", "glow")
+      .attr("x", "-50%")
+      .attr("y", "-50%")
+      .attr("width", "200%")
+      .attr("height", "200%");
+
+    filter.append("feGaussianBlur")
+      .attr("stdDeviation", "5")
+      .attr("result", "coloredBlur");
+
+    const feMerge = filter.append("feMerge");
+    feMerge.append("feMergeNode").attr("in", "coloredBlur");
+    feMerge.append("feMergeNode").attr("in", "SourceGraphic");
+
+    const g = svg.append("g");
+
+    const zoom = d3.zoom()
+      .scaleExtent([0.1, 4])
+      .on("zoom", (event) => {
+        g.attr("transform", event.transform);
+      });
+
+    svg.call(zoom);
+
+    const simulation = d3.forceSimulation(data.nodes)
+      .force("link", d3.forceLink(data.links).id(d => d.id).distance(120))
+      .force("charge", d3.forceManyBody().strength(-380))
+      .force("center", d3.forceCenter(width / 2, height / 2))
+      .force("collision", d3.forceCollide().radius(28));
+
+    const link = g.append("g")
+      .attr("class", "links-layer")
+      .selectAll(".link")
+      .data(data.links)
+      .enter().append("line")
+      .attr("class", "link");
+
+    const node = g.append("g")
+      .attr("class", "nodes-layer")
+      .selectAll(".node")
+      .data(data.nodes)
+      .enter().append("g")
+      .attr("class", "node")
+      .attr("data-id", d => d.id.toLowerCase())
+      .call(d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended));
+
+    // Halo para pulsos
+    node.append("circle")
+      .attr("class", "pulse-halo")
+      .attr("r", 12)
+      .attr("stroke", d => colorMap[d.group] || "#8b949e");
+
+    // Circulo principal do neuronio
+    node.append("circle")
+      .attr("class", "node-circle")
+      .attr("r", d => d.group === "cortex" ? 14 : (d.group === "operador" ? 12 : 8))
+      .attr("fill", d => colorMap[d.group] || "#8b949e")
+      .attr("stroke", "#070a0f")
+      .attr("stroke-width", 2);
+
+    node.append("text")
+      .attr("x", 12)
+      .attr("y", 4)
+      .text(d => d.label);
+
+    simulation.on("tick", () => {
+      link
+        .attr("x1", d => d.source.x)
+        .attr("y1", d => d.source.y)
+        .attr("x2", d => d.target.x)
+        .attr("y2", d => d.target.y);
+
+      node.attr("transform", d => `translate(${d.x},${d.y})`);
+    });
+
+    function dragstarted(event, d) {
+      if (!event.active) simulation.alphaTarget(0.3).restart();
+      d.fx = d.x;
+      d.fy = d.y;
+    }
+
+    function dragged(event, d) {
+      d.fx = event.x;
+      d.fy = event.y;
+    }
+
+    function dragended(event, d) {
+      if (!event.active) simulation.alphaTarget(0);
+      d.fx = null;
+      d.fy = null;
+    }
+
+    function resetGlobalView() {
+      node.classed("dimmed", false);
+      node.select(".node-circle")
+        .transition().duration(400)
+        .attr("r", d => d.group === "cortex" ? 14 : (d.group === "operador" ? 12 : 8))
+        .attr("filter", null)
+        .attr("stroke", "#070a0f")
+        .attr("stroke-width", 2);
+
+      svg.transition().duration(800).call(
+        zoom.transform,
+        d3.zoomIdentity
+      );
+    }
+
+    document.getElementById("btn-reset-focus").addEventListener("click", resetGlobalView);
+
+  </script>
+</body>
+</html>

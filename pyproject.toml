@@ -9,7 +9,7 @@ description = "ThSyr - Cognitive Copilot and Continuous JARVIS-Level Agent Runti
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [
-    { name = "ThSyr Community", email = "thsyr@local" }
+    { name = "ThSyr Community", email = "thsyr@sagital.ai" }
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
